@@ -1,0 +1,61 @@
+label > * {
+    vertical-align: text-top;
+}
+
+.form {
+    display: grid;
+    grid: auto / auto auto auto;
+    gap: 5px;
+    place-content: start;
+    place-items: center start;
+}
+
+.form > label:not(:has(*)) {
+    place-self: stretch;
+    background: #ccc;
+    font-weight: bold;
+    padding: 5px;
+}
+
+.form > section {
+    grid-column: 1 / -1;
+}
+
+.err {
+    color: red;
+}
+
+
+.dot a:hover{
+    font-size: 18px;
+}
+
+#dot {
+    height: 50px;
+    width: 50px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    text-decoration: none;
+    position: absolute;
+    font-size: 30px;
+}
+
+#dot a {
+    color: #333;
+    text-decoration: none;
+}
+
+.dot_left{
+    bottom: 100px;
+    left: 50px; 
+}
+
+.dot_right{    
+    color: #666;
+    bottom: 100px;
+    right: 50px;
+}

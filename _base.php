@@ -49,20 +49,52 @@ function redirect($url = null) {
 // Set or get temporary session variable
 function temp($key, $value = null) {
     if ($value !== null) {
-        //Create new session variable
         $_SESSION["temp_$key"] = $value;
     }
     else {
-        //Read session variable and destroy it
         $value = $_SESSION["temp_$key"] ?? null;
         unset($_SESSION["temp_$key"]);
         return $value;
     }
 }
 
+// Obtain uploaded file --> cast to object
+function get_file($key) {
+    $f = $_FILES[$key] ?? null;
+    
+    if ($f && $f['error'] == 0) {
+        return (object)$f;
+    }
+
+    return null;
+}
+
+// Crop, resize and save photo
+function save_photo($f, $folder, $width = 200, $height = 200) {
+    $photo = uniqid() . '.jpg';
+    
+    require_once 'lib/SimpleImage.php';
+    $img = new SimpleImage();
+    $img->fromFile($f->tmp_name)
+        ->thumbnail($width, $height)
+        ->toFile("$folder/$photo", 'image/jpeg');
+
+    return $photo;
+}
+
+// Is money?
+function is_money($value) {
+    return preg_match('/^\-?\d+(\.\d{1,2})?$/', $value);
+}
+
 // ============================================================================
 // HTML Helpers
 // ============================================================================
+
+// Placeholder for TODO
+function TODO() {
+    echo '<span>TODO</span>';
+}
 
 // Encode HTML special characters
 function encode($value) {
@@ -73,6 +105,19 @@ function encode($value) {
 function html_text($key, $attr = '') {
     $value = encode($GLOBALS[$key] ?? '');
     echo "<input type='text' id='$key' name='$key' value='$value' $attr>";
+}
+
+// Generate <input type='number'>
+function html_number($key, $min = '', $max = '', $step = '', $attr = '') {
+    $value = encode($GLOBALS[$key] ?? '');
+    echo "<input type='number' id='$key' name='$key' value='$value'
+                 min='$min' max='$max' step='$step' $attr>";
+}
+
+// Generate <input type='search'>
+function html_search($key, $attr = '') {
+    $value = encode($GLOBALS[$key] ?? '');
+    echo "<input type='search' id='$key' name='$key' value='$value' $attr>";
 }
 
 // Generate <input type='radio'> list
@@ -103,6 +148,26 @@ function html_select($key, $items, $default = '- Select One -', $attr = '') {
     echo '</select>';
 }
 
+// Generate <input type='file'>
+function html_file($key, $accept = '', $attr = '') {
+    echo "<input type='file' id='$key' name='$key' accept='$accept' $attr>";
+}
+
+// Generate table headers <th>
+function table_headers($fields, $sort, $dir, $href = '') {
+    foreach ($fields as $k => $v) {
+        $d = 'asc'; // Default direction
+        $c = '';    // Default class
+        
+        if ($k == $sort) {
+            $d = $dir == 'asc' ? 'desc' : 'asc';
+            $c = $dir;
+        }
+
+        echo "<th><a href='?sort=$k&dir=$d&$href' class='$c'>$v</a></th>";
+    }
+}
+
 // ============================================================================
 // Error Handlings
 // ============================================================================
@@ -122,5 +187,37 @@ function err($key) {
 }
 
 // ============================================================================
+// Database Setups and Functions
+// ============================================================================
+
+// Global PDO object
+$_db = new PDO('mysql:dbname=tar_grocer', 'root', '', [
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
+]);
+
+// Is unique?
+function is_unique($value, $table, $field) {
+    global $_db;
+    $stm = $_db->prepare("SELECT COUNT(*) FROM $table WHERE $field = ?");
+    $stm->execute([$value]);
+    return $stm->fetchColumn() == 0;
+}
+
+// Is exists?
+function is_exists($value, $table, $field) {
+    global $_db;
+    $stm = $_db->prepare("SELECT COUNT(*) FROM $table WHERE $field = ?");
+    $stm->execute([$value]);
+    return $stm->fetchColumn() > 0;
+}
+
+// ============================================================================
 // Global Constants and Variables
 // ============================================================================
+
+
+$_products = $_db->query('SELECT product_id, product_name, product_img, product_desc, product_price, product_stock FROM product WHERE product_status=1;');
+                //  ->fetchAll(PDO::FETCH_KEY_PAIR);
+
+$_categories = $_db->query('SELECT category_id, category_name FROM category')
+                 ->fetchAll(PDO::FETCH_KEY_PAIR);
