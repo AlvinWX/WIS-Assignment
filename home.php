@@ -36,6 +36,7 @@ include '_head.php';
 
     <section class="products" id="products">
         <div class="heading">
+            <a href="productdetail.php">GO!!!</a>
             <h1>Top Selling Products</h1>
         </div>
 
