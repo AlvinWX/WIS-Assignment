@@ -14,7 +14,7 @@ if (!$s) {
 
 // ----------------------------------------------------------------------------
 $_title = 'Detail';
-include '_head.php';
+include '_admin_head.php';
 ?>
 
 <table class="table detail">
@@ -45,4 +45,4 @@ include '_head.php';
 <button data-get="/product.php"><i class="fa fa-arrow-left" aria-hidden="true"></i>  Back</button>
 
 <?php
-include '_foot.php';
+include '_admin_foot.php';

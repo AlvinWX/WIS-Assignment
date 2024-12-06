@@ -7,7 +7,7 @@ $arr = $_db->query('SELECT * FROM product WHERE product_status=1')->fetchAll();
 
 // ----------------------------------------------------------------------------
 $_title = 'Product List';
-include '_head.php';
+include '_admin_head.php';
 ?>
 
 <?php if(count($arr)) {?>
@@ -44,4 +44,4 @@ include '_head.php';
 <a href="product_add.php"><span id="dot" class="dot_right"><i class="fa fa-plus" aria-hidden="true"></i></span></a>
 
 <?php
-include '_foot.php';
+include '_admin_foot.php';

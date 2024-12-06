@@ -15,7 +15,7 @@ $arr = $_db->query('SELECT * FROM product WHERE product_status=0')->fetchAll();
 
 // ----------------------------------------------------------------------------
 $_title = 'Product List';
-include '_head.php';
+include '_admin_head.php';
 ?>
 
 <p><?= count($arr) ?> record(s)</p>
@@ -43,4 +43,4 @@ include '_head.php';
     <?php endforeach ?>
 </table>
 <?php
-include '_foot.php';
+include '_admin_foot.php';

@@ -113,7 +113,7 @@ if (is_post()) {
 
 // ----------------------------------------------------------------------------
 $_title = 'Insert';
-include '_head.php';
+include '_admin_head.php';
 ?>
 
 <form method="post" class="form" enctype="multipart/form-data">
@@ -167,4 +167,4 @@ include '_head.php';
 </form>
 
 <?php
-include '_foot.php';
+include '_admin_foot.php';
