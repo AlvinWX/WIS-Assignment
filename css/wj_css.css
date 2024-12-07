@@ -1,0 +1,487 @@
+/*wj*/
+
+/* =========================== */
+/* Header and Navigation        */
+/* =========================== */
+
+header {
+    width: 100%;
+    padding: 15px 40px;
+    color: #000; /* Black font */
+    background-color: #fff; /* White background */
+    position: fixed; /* Fix the header at the top */
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    display: flex; /* Flexbox for alignment */
+    align-items: center; /* Center items vertically */
+    justify-content: space-between; /* Space between logo and title */
+    transition: transform 0.3s ease; /* Smooth hide/show transition */
+}
+
+
+header h1 {
+    margin: 0;
+    padding-left: 40px;
+    background: url(/images/favicon.png) no-repeat left / 50px;
+}
+
+.home-logo img {
+    max-width: 100px;
+    height: auto;
+    cursor: pointer;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    position: relative;
+}
+
+nav a {
+    margin: 0 10px;
+    padding: 8px 15px;
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+    border-radius: 5px;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: #333;
+}
+
+nav a::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: #333;
+    transition: width 0.3s ease, left 0.3s ease;
+}
+
+nav a:hover::before {
+    width: 100%;
+    left: 0;
+}
+
+/* =========================== */
+/* Dropdown Menu Styles         */
+/* =========================== */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    top:25px;
+    z-index: 1;
+}
+
+nav ul li:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content a {
+    padding: 12px 16px;
+    color: black;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #f9f9f9;
+}
+
+/* =========================== */
+/* Main Content Styles          */
+/* =========================== */
+main {
+    padding: 20px 50px;
+    text-align: center;
+}
+
+main h1 {
+    margin-top: 0;
+}
+
+.search-container {
+    display: none;
+    position: absolute;
+    top: 95px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    padding: 10px 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    z-index: 1000;
+}
+
+.search-bar {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    outline: none;
+}
+
+.search-bar:focus {
+    border-bottom: 2px solid red;
+}
+
+.search-container.show {
+    display: block;
+}
+
+.right-logo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding-right: 50px ;
+}
+
+.right-logo img{
+    max-width: 35px; /* Adjust logo size */
+    height: auto; /* Maintain aspect ratio */
+    cursor: pointer; /* Indicate clickability */
+    padding-right: 30px ;
+}
+
+.right-logo a {
+    text-decoration: none;
+}
+
+/* =========================== */
+/* Form Styles (Login/Register) */
+/* =========================== */
+.login-container,
+.register-container {
+    background-color: #fff;
+    padding: 3rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+.message {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+    font-size: 1.1rem;
+}
+
+.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.login-form,
+.register-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+input {
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* =========================== */
+/* Button Styles                */
+/* =========================== */
+.login-btn,
+.register-btn {
+    padding: 1rem;
+    background-color: #007bff;
+    color: white;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-btn:hover,
+.register-btn:hover {
+    background-color: #0056b3;
+}
+
+.login-links {
+    margin-top: 2rem;
+    font-size: 1rem;
+}
+
+.login-links a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.login-links a:hover {
+    text-decoration: underline;
+}
+
+.login-links p {
+    margin: 0.5rem 0;
+}
+
+/* =========================== */
+/* Password Field Styles        */
+/* =========================== */
+.password-field-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-field-container input {
+    padding-right: 30px;
+}
+
+.eye-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+/* =========================== */
+/* Footer Styles                */
+/* =========================== */
+footer {
+    padding: 10px 50px;
+    background: #fff; /* Change footer background color to white */
+    clear: both; /* Ensure footer clears any floated elements */
+}
+/*footer*/
+.column1{
+    width: 25%;
+    float: left;
+  }
+  
+  .column1 ul li{
+    list-style: none;
+  }
+  
+  .column1 li a{
+    text-decoration: none;
+    color: gray;
+    font-size: 13px;
+  }
+  
+  .column1 li a:hover{
+    text-decoration: underline;
+    color: #717171;
+  }
+  
+  .column2{
+    width: 25%;
+    float:left;
+  }
+  
+  .column2 ul li{
+    list-style: none;
+  }
+  
+  .column2 li a{
+    text-decoration: none;
+    color: gray;
+    font-size: 13px;
+  }
+  
+  .column2 li a:hover{
+    text-decoration: underline;
+    color: #717171;
+  }
+  
+  .column3{
+    width: 25%;
+    float: left;
+  }
+  
+  .column3 ul li{
+    list-style: none;
+  }
+  
+  .column3 li a{
+    text-decoration: none;
+    color: gray;
+    font-size: 13px;
+  }
+  
+  .column3 li a:hover{
+    text-decoration: underline;
+    color: #717171;
+  }
+  
+  .column4{
+    width: 25%;
+    float: left;
+  }
+  
+  .column4 ul li{
+    list-style: none;
+  }
+  
+  .column4 li a{
+    text-decoration: none;
+    color: gray;
+    font-size: 15px;
+  }
+  
+  .column4 li a:hover{
+    text-decoration: underline;
+    color: #717171;
+  }
+  
+  .column4 li img{
+    width: 45px;
+  }
+  
+  .row{
+    line-height: 45px;
+    font-size: 18px;
+    padding: 25px;
+  }
+  
+  .row::after{
+    clear: both;
+    display: table;
+    content: "";
+  }
+  
+  .copyright p{
+    font-size: 11px;
+    float: right;
+    padding-right: 20px;
+  }
+  
+  /* General styling for the register page */
+.register-container {
+    background-color: #fff;
+    padding: 3rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+.message {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+    font-size: 1.1rem;
+}
+
+.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.register-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+input, select {
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+button.register-btn {
+    padding: 1rem;
+    background-color: #007bff;
+    color: white;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button.register-btn:hover {
+    background-color: #0056b3;
+}
