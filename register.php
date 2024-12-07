@@ -1,5 +1,5 @@
 <?php
-require '../_base.php';
+require '_base.php';
 
 session_start(); // Start the session
 date_default_timezone_set('Asia/Kuala_Lumpur');
@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_FILES['profile_pic']) && $_FILES['profile_pic']['error'] === UPLOAD_ERR_OK) {
         $profilePic = $_FILES['profile_pic'];
         $profilePicName = time() . "_" . basename($profilePic['name']);
-        $targetDir = "../uploads/profiles/";
+        $targetDir = "uploads/profiles/";
         $targetFile = $targetDir . $profilePicName;
 
         // Allow certain file formats
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $_SESSION['user'] = $email;
             $success = "Registration successful! Welcome, $name.";
-            header('Location: /page/login.php');
+            header('Location: login.php');
             exit;
         } else {
             $error = "Sorry, there was an error uploading your file.";
@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $_title = 'Register';
-include '../_head.php';
+include '_head.php';
 ?>
 
 <body>
@@ -104,7 +104,11 @@ include '../_head.php';
 
             <div class="input-group">
                 <label for="password">Password:</label>
-                <input type="password" name="password" id="password" required>
+                <div class="password-field-container">
+                    <input type="password" name="password" id="password" required>
+                    <!-- Eye icon inside the password field -->
+                    <img src="/images/closed-eyes.png" alt="Show Password" id="togglePassword" class="eye-icon">
+                </div>
             </div>
 
             <div class="input-group">
@@ -129,9 +133,24 @@ include '../_head.php';
             <button type="submit" class="register-btn">Register</button>
         </form>
     </div>
+
+    <script>
+        // Toggle password visibility when eye icon is clicked
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('togglePassword');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text'; // Show password
+                eyeIcon.src = '/images/opened-eye.png'; // Change icon to opened-eye
+            } else {
+                passwordInput.type = 'password'; // Hide password
+                eyeIcon.src = '/images/closed-eyes.png'; // Change icon to closed-eye
+            }
+        });
+    </script>
 </body>
 </html>
 
 <?php
-include '../_foot.php';
+include '_foot.php';
 ?>

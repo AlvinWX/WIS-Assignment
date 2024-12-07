@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $_SESSION['flash_error'] = "Please fill in both email and password.";
     }
-    header("Location: /page/login.php");
+    header("Location: login.php");
     exit;
 }
 
@@ -68,18 +68,18 @@ include '_head.php';
             <div class="input-group password-container">
                 <label for="password">Password:</label>
                 <div class="password-field-container">
-                    <input type="password" name="password" id="password" required>
-                    <!-- Default image is the closed-eye icon -->
-                    <img src="/images/closed-eyes.png" alt="Show Password" id="togglePassword" class="eye-icon">
-                </div>
+                <input type="password" name="password" id="password" required>
+                <!-- Eye icon inside the password field -->
+                <img src="/images/closed-eyes.png" alt="Show Password" id="togglePassword" class="eye-icon">
             </div>
+        </div>
 
             <button type="submit" class="login-btn">Login</button>
         </form>
 
         <div class="login-links">
             <p><a href="/page/forgot-password.php">Forgot Password?</a></p>
-            <p>Don't have an account? <a href="/page/register.php">Sign Up</a></p>
+            <p>Don't have an account? <a href="register.php">Sign Up</a></p>
         </div>
     </div>
 
@@ -97,7 +97,6 @@ include '_head.php';
             }
         });
     </script>
-    
 </body>
 </html>
 
