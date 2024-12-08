@@ -6,6 +6,7 @@
     <title><?= $_title ?? 'Untitled' ?></title>
     <link rel="shortcut icon" href="/images/favicon.png">
     <link rel="stylesheet" href="/css/wj_css.css">
+    <link rel="stylesheet" href="/css/yj_app.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="/js/app.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,8 +31,8 @@
                     <a href="#">More</a>
                     <div class="dropdown-content">
                         <a href="#">XXXXX</a>
-                        <a href="#p">XXXXXX</a>
-                        <a href="#">XXXXXX</a>
+                        <a href="/page/chanyijing/admin/member_management/member_list.php">Member Management</a>
+                        <a href="/page/chanyijing/admin/admin_management/admin_list.php">Admin Management</a>
                     </div>
                 </li>
             </ul>
