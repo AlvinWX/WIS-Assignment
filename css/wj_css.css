@@ -1,5 +1,11 @@
 /*wj*/
 
+body {
+    font-family: 'Montserrat', sans-serif;
+    color: #333;
+    justify-content: center;
+    align-items: center;
+}
 /* =========================== */
 /* Header and Navigation        */
 /* =========================== */
@@ -182,6 +188,7 @@ main h1 {
     width: 100%;
     max-width: 400px;
     text-align: center;
+    margin: auto;
 }
 
 h2 {
@@ -288,15 +295,18 @@ input:focus {
 }
 
 .password-field-container input {
-    padding-right: 30px;
+    padding-right: 30px; /* Space for the eye icon */
 }
 
+/* Style for the eye icon */
 .eye-icon {
     position: absolute;
-    right: 10px;
+    right: 10px; /* Position icon to the right side of the input */
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
+    width: 20px; /* Make the eye icon smaller */
+    height: 20px; /* Maintain a square shape */
 }
 
 /* =========================== */
