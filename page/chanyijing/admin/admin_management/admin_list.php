@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="/css/yj_app.css">
+
 <?php
 require '../../../../_base.php';
 

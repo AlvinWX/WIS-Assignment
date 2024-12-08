@@ -6,7 +6,7 @@
     <title><?= $_title ?? 'Untitled' ?></title>
     <link rel="shortcut icon" href="/images/favicon.png">
     <link rel="stylesheet" href="/css/wj_css.css">
-    <link rel="stylesheet" href="/css/yj_app.css">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="/js/app.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
