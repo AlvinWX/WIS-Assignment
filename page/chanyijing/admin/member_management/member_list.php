@@ -41,11 +41,8 @@ include '../../../../_head.php';
             <button data-post="member_delete.php?memberID=<?= $s->memberID ?>"data-confirm>Delete</button>
             </td>
         </tr>
-        <?php endforeach ?>
+    <?php endforeach ?>
 </table>
-
-<br>
-<button data-get="member_list.php">Back</button>
 
 <?php
 include '../../../../_foot.php';

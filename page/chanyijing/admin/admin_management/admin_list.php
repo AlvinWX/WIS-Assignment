@@ -40,7 +40,7 @@ include '../../../../_head.php';
             <button data-post="admin_delete.php?adminID=<?= $s->adminID ?>"data-confirm>Delete</button>
             </td>
         </tr>
-        <?php endforeach ?>
+    <?php endforeach ?>
 </table>
 
 <?php
