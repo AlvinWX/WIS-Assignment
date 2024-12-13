@@ -1,0 +1,92 @@
+.products{
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.products-container{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, auto));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.products-container .box{
+    padding: 10px;
+    width: 160px;
+    background-color: white;
+    box-shadow: 1px 2px 11px 4px rgba(129, 141, 141, 0.15);
+    border-radius: 0.5rem;
+    position: relative;
+}
+
+.products-container .box:hover{
+    background: #d4d4d4;
+    transition: 0.2s all linear;
+    cursor: pointer;
+}
+
+.products-container .box img{
+    width: 100%;
+    height: 100px;
+    object-fit: contain;
+    object-position: center;
+}
+
+.products-container .box span{
+    font-weight: 500;
+    font-size: 13px;
+}
+
+.products-container .box h2{
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0.1rem 0;
+}
+
+.products-container .box h3{
+    margin: 0.1rem 0;
+}
+
+.products-container .box .price{
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+}
+
+.products-container .box .price span{
+    color: black;
+}
+
+.products-container .box .bx-cart-alt{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 10px;
+    background: #5874f1;
+    font-size: 20px;
+    border-radius: 0.5rem 0 0.5rem 0;
+}
+
+.products-container .box .bx-cart-alt:hover{
+    background: rgb(3, 89, 164);
+    transition: 0.2s all linear;
+    cursor: pointer;
+}
+
+.products-container .box .bx-heart{
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 25px;
+    color:#dc4c32;
+}
+
+.products-container .box .bx-heart:hover{
+    color: #420c09;
+    transition: 0.2s all linear;
+}
+
+.products-container .box .sold{
+    font-size: 15px;
+}

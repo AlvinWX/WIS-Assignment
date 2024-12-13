@@ -1,18 +1,4 @@
 // ============================================================================
-// General Functions
-// ============================================================================
-
-// JavaScript to toggle the search bar visibility
-document.addEventListener('DOMContentLoaded', function () {
-    const searchIcon = document.getElementById('search-icon');
-    const searchContainer = document.getElementById('search-container');
-
-    searchIcon.addEventListener('click', function () {
-        // Toggle the "show" class to show/hide the search bar
-        searchContainer.classList.toggle('show');
-    });
-});
-// ============================================================================
 // Page Load (jQuery)
 // ============================================================================
 
@@ -25,7 +11,7 @@ $(() => {
     
     // Confirmation message
     $('[data-confirm]').on('click', e => {
-        const text = e.target.dataset.confirm || 'Are you sure you want to delete the record?';
+        const text = e.target.dataset.confirm || 'Are you sure you want to delete this record?';
         if (!confirm(text)) {
             e.preventDefault();
             e.stopImmediatePropagation();

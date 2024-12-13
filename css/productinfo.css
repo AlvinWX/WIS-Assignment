@@ -1,0 +1,207 @@
+@import url('https://fonts.googleapis.com/css2?family=Parkinsans:wght@300..800&display=swap');/*p*/
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');/*h2*/
+
+body{
+    box-sizing: border-box;
+    padding: 0;
+    margin-top: 11rem;
+    line-height: 1.5;
+    background: whitesmoke;
+}
+
+.product-title{
+    font-family: "Rubik", sans-serif;
+    line-height: 1.25;
+    font-size: 2.5rem;
+    text-transform: capitalize;
+    font-weight: 700;
+    position: relative;
+    color:#12263a;
+    margin: 1rem 0;
+}
+
+p{
+    font-family: "Parkinsans", sans-serif;
+    line-height: 1.5;
+    font-size: 0.9rem;
+    padding: 0.3rem 0;
+    opacity: 0.9;
+}
+
+.card-wrapper{
+    max-width: 1100px;
+    margin: 0 auto 11rem auto;
+    padding: 10px;
+}
+
+.product-images img{
+    width: 100%;
+    display: block;
+}
+
+.image-display{
+    overflow: hidden;
+    background: white;
+    border-radius: 10px;
+}
+
+.image-showcase{
+    display: flex;
+    width: 100%;
+    transition: all 0.5s ease;
+}
+
+.image-showcase img{
+    min-width: 100%;
+}
+
+.image-select{
+    display: flex;
+}
+
+.image-item{
+    margin: 0.3rem;
+}
+
+.image-item:nth-child(1),
+.image-item:nth-child(2),
+.image-item:nth-child(3){
+    margin-right: 0;
+}
+
+.image-item:hover{
+    opacity: 0.8;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #5874f1;
+}
+
+.product-content{
+    padding: 2rem 1rem;
+}
+
+.product-title::after{
+    content: "";
+    position: absolute;
+    left:0;
+    bottom: 0;
+    height: 4px;
+    width: 80px;
+    background: #12263a;
+}
+
+.product-category{
+    font-weight: 500;
+    font-size: 1.3rem;
+    display: flex;
+    margin-bottom: 0.5rem;
+    padding-top: 0.3rem;
+    text-decoration: underline;
+    color:#5874f1;
+}
+
+.product-category:hover{
+    transition: 0.5s all ease;
+    cursor: pointer;
+    color:#061a72;
+}
+
+.product-price{
+    font-size: 2rem;
+    font-weight: 500;
+    padding: 5px 0;
+    color: #e1221c;
+    font-family: "Rubik", sans-serif;
+}
+
+.product-desc span{
+    color: #12263a;
+    font-weight:700;
+    padding-bottom: 0.2rem;
+    font-size: 20px;
+}
+
+.purchase-info{
+    display: flex;
+}
+
+.purchase-info input,
+.purchase-info button{
+    border: 1.5px solid #ddd;
+    border-radius: 25px;
+    text-align: center;
+    padding: 0.45rem 0.8rem;
+    outline: 0;
+    margin-right: 0.2rem;
+    margin-bottom: 1rem;
+}
+
+.purchase-info .decrease,
+.purchase-info .increase{
+    width: 40px;
+}
+
+.purchase-info input{
+    width: 60px;
+}
+
+.purchase-info button {
+    background: #f0f0f0;
+    cursor: pointer;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.purchase-info .decrease{
+    cursor:pointer;
+    color: white;
+    background: #dc4c32;
+}
+
+.purchase-info .increase{
+    cursor:pointer;
+    color: white;
+    background: #5874f1;
+}
+
+.purchase-info .add-to-cart{
+    cursor:pointer;
+    color: white;
+    background: #00bcb4;
+    width: 300px;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.purchase-info .btn:hover{
+    opacity: 0.9;
+}
+
+@media screen and (min-width: 992px){
+    .card{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 1.5rem;
+    }
+
+    .card-wrapper{
+        height: 100vh;    
+        justify-content: center;
+        align-items: center;
+    }
+
+    .product-images{
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .product-content{
+        padding-top: 0;
+    }
+}
+
+

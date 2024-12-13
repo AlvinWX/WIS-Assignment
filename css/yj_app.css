@@ -1,0 +1,166 @@
+/* Main Content ------------------------------------------------------------ */
+
+main {
+    padding: 20px 50px;
+    background-color: #ffffff;
+}
+
+main h1 {
+    margin-top: 0;
+    color: #333;
+}
+
+/* Table ------------------------------------------------------------------- */
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.table th, .table td {
+    padding: 12px 15px;
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: 1px solid #ddd;
+}
+
+.table th {
+    background-color: #ffccd5;
+    color: #333;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.table tr:hover {
+    background-color: #ffebeb; 
+}
+
+.table td:last-child {
+    position: relative;
+}
+
+.table .popup {
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    translate: 5px -50%;
+    z-index: 999;
+    border: 1px solid #ddd;
+    display: none;
+}
+
+.table tr:hover .popup {
+    display: block;
+}
+
+.detail th {
+    text-align: left;
+}
+
+/* Flash Message ----------------------------------------------------------- */
+
+#info {
+    position: fixed;
+    color: #fff;
+    background: #ff6666; /* Light red for message */
+    border: 1px solid #cc3333;
+    border-radius: 5px;
+    padding: 10px 20px;
+    left: 50%;
+    translate: -50% 0;
+    z-index: 999;
+    top: -100px;
+    opacity: 0;
+}
+
+#info:not(:empty) {
+    animation: fade 5s;
+}
+
+@keyframes fade {
+    0% { top: -100px; opacity: 0; }
+    10% { top:  100px; opacity: 1; }
+    90% { top:  100px; opacity: 1; }
+    100% { top: -100px; opacity: 0; }
+}
+
+/* Form -------------------------------------------------------------------- */
+
+label > * {
+    vertical-align: text-top;
+}
+
+.form {
+    display: grid;
+    grid: auto / auto auto auto;
+    gap: 10px;
+    place-content: start;
+    place-items: center start;
+}
+
+.form > label:not(:has(*)) {
+    place-self: stretch;
+    background: #ffccd5;
+    font-weight: bold;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+.form > section {
+    grid-column: 1 / -1;
+}
+
+.err {
+    color: red;
+}
+
+/* Input, Button, and Select styles --------------------------------------- */
+
+input, button, select, textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 170px;
+    margin: 5px;
+    font-size: 16px;
+}
+
+input[type="radio"] {
+    width: auto;               
+    margin: 8px 5px;             
+    vertical-align: middle;    
+    accent-color: #007bff;    
+}
+
+input:focus, button:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #66b3ff;
+}
+
+button {
+    background-color: #66b3ff; 
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background-color: #3399ff; 
+}
+
+.profile-pic-container {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.profile-pic-container img {
+    width: 150px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
