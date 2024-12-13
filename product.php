@@ -16,6 +16,7 @@ include '_admin_head.php';
     <tr>
         <th>Id</th>
         <th>Name</th>
+        <th>Product Image</th>
         <th>Description</th>
         <th>Price</th>
         <th>Stock Left</th>
@@ -25,13 +26,14 @@ include '_admin_head.php';
     <tr>
         <td><?= $s->product_id ?></td>
         <td><?= $s->product_name ?></td>
+        <td><?= $s->product_img ?></td>
         <td><?= $s->product_desc ?></td>
         <td><?= $s->product_price ?></td>
         <td><?= $s->product_stock ?></td>
         <td>
             <!-- TODO -->
-            <button  data-get="product_detail.php?id=<?= $s->product_id ?>">Detail</button>
-            <button  data-get="product_update.php?id=<?= $s->product_id ?>">Update</button>
+            <button data-get="product_detail.php?id=<?= $s->product_id ?>">Detail</button>
+            <button data-get="product_update.php?id=<?= $s->product_id ?>">Update</button>
             <button data-post="product_delete.php?id=<?= $s->product_id ?> "data-confirm>Delete</button>
         </td>
     </tr>
