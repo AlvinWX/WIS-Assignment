@@ -76,11 +76,6 @@ if (is_post()) {
         $_err['product_photo'] = 'Maximum 1MB';
     }
 
-    if (!$_err) {
-        //move_uploaded_file($f->tmp_name, "uploads/$f->name");
-        
-    }
-
     // Output
     if (!$_err) {
         $product_photo = uniqid() . '.jpg';
@@ -137,10 +132,10 @@ include '_admin_head.php';
     <?= html_text('product_name', 'maxlength="100"') ?>
     <?= err('product_name') ?>
 
-    <label for="product_photo">Photo</label>
+    <label for="product_photo">Cover Picture</label>
     <label class="upload" tabindex="0">
-        <?= html_file('product_photo','image/*') ?>
-        <img src="/images/product_photo.jpg">
+        <?= html_file('product_photo','image/*','hidden') ?>
+        <img src="/images/photo.jpg" style="width: 200px; height: 200px;">
     </label>
     <?= err('product_photo') ?>
 

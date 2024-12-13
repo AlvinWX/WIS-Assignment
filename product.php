@@ -4,6 +4,8 @@ require '_base.php';
 
 // // TODO
 $arr = $_db->query('SELECT * FROM product WHERE product_status=1')->fetchAll();
+$photos = glob('images/*.jpg');
+$photos = array_map('basename',$photos);
 
 // ----------------------------------------------------------------------------
 $_title = 'Product List';
@@ -26,7 +28,7 @@ include '_admin_head.php';
     <tr>
         <td><?= $s->product_id ?></td>
         <td><?= $s->product_name ?></td>
-        <td><?= $s->product_img ?></td>
+        <td><img src="/images/<?= $s->product_img ?>"></td>
         <td><?= $s->product_desc ?></td>
         <td><?= $s->product_price ?></td>
         <td><?= $s->product_stock ?></td>
