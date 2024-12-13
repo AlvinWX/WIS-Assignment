@@ -221,8 +221,8 @@ $_genders = [
     'Female' => 'Female'
 ];
 
- $_members = $_db->query('SELECT memberID, memberName FROM member')
-                  ->fetchAll(PDO::FETCH_KEY_PAIR);
+// $_members = $_db->query('SELECT memberID, memberName FROM member')
+//                   ->fetchAll(PDO::FETCH_KEY_PAIR);
                   
 //  $_products = $_db->query('SELECT product_id, product_name, product_img, product_desc, product_price, product_stock FROM product WHERE product_status=1;');
 //                  //  ->fetchAll(PDO::FETCH_KEY_PAIR);

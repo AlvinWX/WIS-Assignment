@@ -2,6 +2,17 @@
 require '_base.php';
 
 include '_head.php';
+
+$id = req('id');
+
+$stm = $_db->prepare('SELECT * FROM product p JOIN category c ON p.category_id = c.category_id WHERE product_id = ?'); 
+$stm->execute([$id]);
+$s = $stm->fetch();
+
+if (!$s) { 
+    redirect('/');
+}
+
 ?>
 
 <title>Product Info</title>
@@ -35,17 +46,17 @@ include '_head.php';
             </div>
             <!--card right-->
             <div class = "product-content">
-                <span class = "product-title">Julie's Sour and Cream & Onion Sandwich</span>
+                <span class = "product-title"><?= $s -> product_name ?></span>
 
-                <span class = "product-category">Category: Food</span>
+                <span class = "product-category">Category: <?= $s -> category_name ?></span>
 
                 <div class= "product-price">
-                    RM 10.00
+                    RM <?= $s -> product_price ?>
                 </div>
 
                 <div class = "product-desc">
                     <span>Product information:</span>
-                    <p>Indulge in the creamy and tangy delight of Julie's Sour Cream Sandwich, a delectable treat perfect for satisfying your sweet cravings. Each 280g pack features delightful sandwich biscuits generously filled with a luscious layer of smooth sour cream-flavored cream. The combination of the buttery, golden-baked biscuits and the indulgent sour cream filling creates a harmonious balance of flavors and textures. Ideal for snacking, sharing, or accompanying your favorite hot or cold beverages, Julie's Sour Cream Sandwich promises a moment of pure indulgence in every bite. Elevate your snack time with these delightful sandwich biscuits that bring together the richness of sour cream and the irresistible crunch of golden biscuits, making them a delightful addition to any occasion.</p>
+                    <p><?= $s -> product_desc ?></p>
                 </div>
 
                 
