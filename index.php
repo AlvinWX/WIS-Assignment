@@ -90,7 +90,7 @@ include '_head.php';
         <div class="products-container">
         <?php foreach ($top_selling_arr as $s): ?>
             <div class="box" data-get="productinfo.php?id=<?= $s->product_id ?>">
-                <img src="images/biscuit1.png" data-get="productinfo.php?id=<?= $s->product_id ?>">
+                <img src="images/<?= $s->product_img ?>" data-get="productinfo.php?id=<?= $s->product_id ?>">
                 <span data-get="productinfo.php?id=<?= $s->product_id ?>"><?= $s->category_name?></span>
                 <h2 data-get="productinfo.php?id=<?= $s->product_id ?>"><?= $s->product_name?></h2>
                 <h3 class="price" data-get="productinfo.php?id=<?= $s->product_id ?>">RM <?= $s->product_price?></h3>
@@ -98,57 +98,6 @@ include '_head.php';
                 <i class='bx bx-heart' ></i>
                 <span class="sold" data-get="productinfo.php?id=<?= $s->product_id ?>"><?= $s->product_sold?> sold</span>
             </div>
-            <!-- <button data-get="productinfo.php?id=<?= $s->product_id ?>">Detail</button> -->
-
-            <!-- <div class="box">
-                <img src="images/biscuit1.png">
-                <span>Food</span>
-                <h2>Julie's Sour and Cream & Onion Sandwich</h2>
-                <h3 class="price">RM 10.00</h3>
-                <i class='bx bx-cart-alt' ></i>
-                <i class='bx bx-heart'> </i>
-                <span class="sold">4k sold</span>
-            </div>
-
-            <div class="box">
-                <img src="images/biscuit1.png">
-                <span>Food</span>
-                <h2>Julie's Sour and Cream & Onion Sandwich</h2>
-                <h3 class="price">RM 10.00</h3>
-                <i class='bx bx-cart-alt' ></i>
-                <i class='bx bx-heart' ></i>
-                <span class="sold">4k sold</span>
-            </div>
-
-            <div class="box">
-                <img src="images/biscuit1.png">
-                <span>Food</span>
-                <h2>Julie's Sour and Cream & Onion Sandwich</h2>
-                <h3 class="price">RM 10.00</h3>
-                <i class='bx bx-cart-alt' ></i>
-                <i class='bx bx-heart' ></i>
-                <span class="sold">4k sold</span>
-            </div>
-
-            <div class="box">
-                <img src="images/biscuit1.png">
-                <span>Food</span>
-                <h2>Julie's Sour and Cream & Onion Sandwich</h2>
-                <h3 class="price">RM 10.00</h3>
-                <i class='bx bx-cart-alt' ></i>
-                <i class='bx bx-heart' ></i>
-                <span class="sold">4k sold</span>
-            </div>
-
-            <div class="box">
-                <img src="images/biscuit1.png">
-                <span>Food</span>
-                <h2>Julie's Sour and Cream & Onion Sandwich</h2>
-                <h3 class="price">RM 10.00</h3>
-                <i class='bx bx-cart-alt' ></i>
-                <i class='bx bx-heart' ></i>
-                <span class="sold">4k sold</span>
-            </div> -->
             <?php endforeach ?>
             </div>
             

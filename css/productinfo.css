@@ -56,7 +56,9 @@ p{
 }
 
 .image-select{
-    display: flex;
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    justify-content: center;
 }
 
 .image-item{
@@ -112,6 +114,12 @@ p{
     padding: 5px 0;
     color: #e1221c;
     font-family: "Rubik", sans-serif;
+}
+
+.product-quantity{
+    font-size: 20px;
+    padding-bottom: 10px;
+    font-weight: 500;
 }
 
 .product-desc span{
