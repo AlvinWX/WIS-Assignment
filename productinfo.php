@@ -15,7 +15,7 @@ if (!$s) {
 
 ?>
 
-<title><?= $s -> product_name ?></title>
+<title><?= $s -> product_name ?> @ TAR GROCER</title>
 <link rel="stylesheet" href="css/productinfo.css">
 <script src="js/productinfo.js" defer></script>
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -50,7 +50,7 @@ if (!$s) {
                 <span class = "product-category" data-get="productsearch.php?product_name=&category_id=<?= $s->category_id ?>">Category: <?= $s -> category_name ?></span>
 
                 <div class= "product-price">
-                    RM <?= $s -> product_price ?>
+                    RM <?= sprintf('%.2f', $s->product_price) ?>
                 </div>
 
                 <div class= "product-quantity">

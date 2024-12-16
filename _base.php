@@ -168,6 +168,21 @@ function table_headers($fields, $sort, $dir, $href = '') {
     }
 }
 
+//Generate sort buttons
+function sort_buttons($productName, $productCategory, $minPrice, $maxPrice, $fields, $sort, $dir, $href = '') {
+    foreach ($fields as $k => $v) {
+        $d = 'asc'; // Default direction
+        $c = '';    // Default class
+        
+        if ($k == $sort) {
+            $d = $dir == 'asc' ? 'desc' : 'asc';
+            $c = $dir;
+        }
+
+        echo "<button><a href='?product_name=$productName&category_id=$productCategory&minprice=$minPrice&maxprice=$maxPrice&sort=$k&dir=$d&$href' class='$c'>$v</a></button>";
+    }
+}
+
 // ============================================================================
 // Error Handlings
 // ============================================================================

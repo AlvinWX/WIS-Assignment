@@ -14,8 +14,9 @@ body{
     justify-content: center;
     position: relative;
     align-items: center; 
-    gap: 15px; 
+    gap: 10px; 
     margin-top: 20vh;
+    flex: 0 1 auto; /* Items won't shrink unnecessarily */
 }
 
 .searchmenu div{
@@ -23,7 +24,26 @@ body{
 }
 
 .searchbar{
-    width: 500px;
+    width: 350px;
+}
+
+.minpricerange, .maxpricerange{
+    width: 40px;
+    position: relative;
+}
+
+.minpricerange{
+    margin-right: 26px;
+}
+
+.maxpricerange{
+    margin-right: 9px;
+}
+
+.text{
+    translate: 0 -4px;
+    font-weight: 400;
+    font-family: "Kanit", serif;
 }
 
 .heading h1{
@@ -38,13 +58,15 @@ body{
 }
 
 .searchbutton button{
+    position: relative;
     cursor:pointer;
     color: white;
-    width: 200px;
+    width: 150px;
     height: 40px;
+    margin-left: 20px;
     background: #00bcb4;
     font-weight: 700;
-    font-size: 18px;
+    font-size: 15px;
     border: none;
     border-radius: 23px;
     translate: 0 -4px;
@@ -52,4 +74,69 @@ body{
 
 .searchbutton button:hover{
     opacity: 0.9;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.sort{
+    display: inline-flex;
+    align-items: center; 
+    gap: 15px; 
+}
+
+.sort button{
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+    height: 40px;
+    padding: 10px;
+    background: #8093e7;
+}
+
+.sort button a{
+    color: white;
+    font-weight: 600;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.sort button a.asc::after{
+    content: ' ▴';
+}
+
+.sort button a.desc::after{
+    content: ' ▾';
+}
+
+
+.sort button:hover{
+    opacity: 0.9;
+}
+
+.paging{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+nav.pager {
+    margin-top: 5px;
+    align-items: center; 
+    justify-content: flex-start; 
+    gap: 8px;
+}
+
+nav.pager a {
+    outline: 2px solid #333;
+    color: #333;
+    border-radius: 25px;
+}
+
+nav.pager a.active {
+    color: #00bcb4;
+    font-weight: 900;
 }

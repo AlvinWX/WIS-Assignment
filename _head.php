@@ -38,7 +38,7 @@
         </nav>
         <div class="right-logo">
             
-            <a href="/productsearch.php">
+            <a href="/productsearch.php?product_name=&category_id=&minprice=&maxprice=&sort=product_name&dir=asc">
                 <img class="search" src="/images/search.png" alt="Search Icon" id="search-icon">
             </a>
 
