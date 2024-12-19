@@ -22,9 +22,12 @@ $dir = req('dir');
 in_array($dir, ['asc', 'desc']) ||
 $dir = 'asc';
 
+$searchString = "";
+
 $nameQuery = "";
 if($productName != null){
     $nameQuery = "'%$productName%'";
+    $searchString = $searchString . $productName;
 } else{
     $nameQuery = "'%'";
 }
@@ -37,15 +40,16 @@ if($productCategory != null){
 $priceQuery = "";
 if($minPrice != null && $maxPrice != null){
     $priceQuery = " AND product_price BETWEEN " . $minPrice . " AND " . $maxPrice;
+    $searchString = $searchString . " from RM " . sprintf('%.2f', $minPrice) . " to RM " . sprintf('%.2f', $maxPrice);
 }
     
 $query = 'SELECT * FROM product p 
 JOIN category c ON p.category_id = c.category_id 
-WHERE product_name LIKE ' . $nameQuery
+WHERE product_status=1 AND product_stock > 0
+AND product_name LIKE ' . $nameQuery
 . $categoryQuery
 . $priceQuery
 . ' ORDER BY ' . $sort . ' ' . $dir;
-echo($query);
 
 $page = req('page', 1);
 require_once 'lib/SimplePager.php';
@@ -66,7 +70,7 @@ $arr = $p->result;
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <title>Search Product <?=$productName ?></title>
+    <title>Search Product <?=$searchString ?></title>
 </head>
 <body>
     <form class="searchmenu">
@@ -82,7 +86,7 @@ $arr = $p->result;
 
     <section class="products" id="products">
         <div class="heading">
-            <h1>Search Results: <?=$productName ?> </h1>
+            <h1>Search Results: <?=$searchString ?> </h1>
             <?= $p->count ?> of <?= $p->item_count ?> product(s) |
             Page <?= $p->page ?> of <?= $p->page_count ?>
         </div>
