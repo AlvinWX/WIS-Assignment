@@ -1,19 +1,24 @@
 body{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
     width: 100%;
     min-height: 100vh;
     justify-content: center;
     background-color: whitesmoke;
-
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    margin-top: 20vh;
 }
 
 .heading h1{
-    padding: 10px;
     font-style: bold; 
     font-size: 2.1rem;
     font-weight: 600;
     font-family: "Kanit", serif;
 }
 
+.cart-display{
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}

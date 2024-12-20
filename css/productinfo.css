@@ -164,6 +164,14 @@ input[type="number"]::-webkit-outer-spin-button {
     margin: 0;
 }
 
+.purchase-info .remove{
+    cursor:pointer;
+    color: white;
+    background: #8f200c;
+    font-weight: 700;
+    font-size: 13px;
+}
+
 .purchase-info .decrease{
     cursor:pointer;
     color: white;
@@ -177,7 +185,7 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .purchase-info .add-to-cart{
-    cursor:pointer;
+    cursor: pointer;
     color: white;
     background: #00bcb4;
     width: 300px;

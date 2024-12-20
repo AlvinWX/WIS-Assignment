@@ -12,6 +12,30 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat+Underline:ital,wght@0,100..900;1,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 </head>
+
+<style>
+.right-logo .quantity{
+    background: #dc4c32;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 12px;
+    position: absolute;
+    right: 0; 
+    top: 0; 
+    transform: translate(-50%, -25%); 
+    padding: 5px;
+    width: 18px; 
+    height: 18px; 
+}
+
+.right-logo a {
+    position: relative;
+}
+</style>
+
 <body>
     
 
@@ -42,8 +66,9 @@
                 <img class="search" src="/images/search.png" alt="Search Icon" id="search-icon">
             </a>
 
-            <a href="/index.php">
-                <img src="/images/shopping-cart.png" alt="Clickable Image">
+            <a href="/shoppingcart.php">
+                <img src="/images/shopping-cart.png" alt="Shopping Cart">
+                <span class="quantity">0</span>
             </a>
 
             <a href="/login.php">
