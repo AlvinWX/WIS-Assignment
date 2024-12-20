@@ -3,8 +3,6 @@
 <?php
 require '../../../../_base.php';
 
-// ----------------------------------------------------------------------------
-
 if (is_get()) {
     $adminID = req('adminID');
 
@@ -22,12 +20,11 @@ if (is_get()) {
 
 if (is_post()) {
     // Input
-    $adminID       = req('adminID'); // From hidden field or URL
+    $adminID       = req('adminID'); 
     $adminName     = req('adminName');
     $adminGender   = req('adminGender');
-    $adminEmail    = req('adminEmail'); // Optional
-    $adminPhone    = req('adminPhone'); // Optional
-
+    $adminEmail    = req('adminEmail'); 
+    $adminPhone    = req('adminPhone'); 
     // Validation errors array
     $_err = [];
 
@@ -57,13 +54,11 @@ if (is_post()) {
     }
 }
 
-// ----------------------------------------------------------------------------
-
 $_title = 'Update admin';
 include '../../../../_head.php';
 ?>
 
-<form method="post" class="form">
+<form method="post" class="update-form">
     <label for="adminID">admin ID</label>
     <b><?= $adminID ?></b>
     <?= err('adminID') ?>

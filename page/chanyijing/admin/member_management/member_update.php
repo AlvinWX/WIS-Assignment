@@ -3,8 +3,6 @@
 <?php
 require '../../../../_base.php';
 
-// ----------------------------------------------------------------------------
-
 if (is_get()) {
     $memberID = req('memberID');
 
@@ -16,8 +14,23 @@ if (is_get()) {
         redirect('member_list.php');
     }
 
+    // Fetch address details
+    $stm = $_db->prepare('SELECT * FROM address WHERE memberID = ?');
+    $stm->execute([$memberID]);
+    $address = $stm->fetch();
+
+    if (!$address) {
+        $address = (object)[
+            'addressStreet' => '',
+            'addressPostcode' => '',
+            'addressCity' => '',
+            'addressState' => '',
+        ];
+    }
+
     // Extract the values from the result
     extract((array)$s);
+    extract((array)$address);
 }
 
 if (is_post()) {
@@ -27,6 +40,10 @@ if (is_post()) {
     $memberGender   = req('memberGender');
     $memberEmail    = req('memberEmail'); // Optional
     $memberPhone    = req('memberPhone'); // Optional
+    $addressStreet  = req('addressStreet');
+    $addressPostcode= req('addressPostcode');
+    $addressCity    = req('addressCity');
+    $addressState   = req('addressState');
 
     // Validation errors array
     $_err = [];
@@ -45,6 +62,31 @@ if (is_post()) {
         $_err['name'] = 'Invalid value';
     }
 
+    // Validate address fields
+    if ($addressStreet == '') {
+        $_err['addressStreet'] = 'Required';
+    } elseif (strlen($addressStreet) > 255) {
+        $_err['addressStreet'] = 'Maximum length 255';
+    }
+
+    if ($addressPostcode == '') {
+        $_err['addressPostcode'] = 'Required';
+    } elseif (strlen($addressPostcode) > 5) {
+        $_err['addressPostcode'] = 'Maximum length for postcode is 5';
+    }
+
+    if ($addressCity == '') {
+        $_err['addressCity'] = 'Required';
+    } elseif (strlen($addressCity) > 100) {
+        $_err['addressCity'] = 'Maximum length 100';
+    }
+
+    if ($addressState == '') {
+        $_err['addressState'] = 'Required';
+    } elseif (strlen($memberName) > 100) {
+        $_err['addressState'] = 'Maximum length 100';
+    }
+
     // Output
     if (!$_err) {
         $stm = $_db->prepare('UPDATE member
@@ -52,18 +94,22 @@ if (is_post()) {
                               WHERE memberID = ?');
         $stm->execute([$memberName, $memberGender, $memberEmail, $memberPhone, $memberID]);
 
+        $stm = $_db->prepare('UPDATE address
+                              SET addressStreet = ?, addressPostcode = ?, addressCity = ?, addressState = ?
+                            WHERE memberID = ?');
+        $stm->execute([$addressStreet, $addressPostcode, $addressCity, $addressState, $memberID]);
+
+        
         temp('info', 'Record updated successfully.');
         redirect('member_list.php');
     }
 }
 
-// ----------------------------------------------------------------------------
-
 $_title = 'Update Member';
 include '../../../../_head.php';
 ?>
 
-<form method="post" class="form">
+<form method="post" class="update-form">
     <label for="memberID">Member ID</label>
     <b><?= $memberID ?></b>
     <?= err('memberID') ?>
@@ -84,9 +130,25 @@ include '../../../../_head.php';
     <?= html_text('memberPhone') ?>
     <?= err('memberPhone') ?>
 
+    <label for="addressStreet">Street</label>
+    <?= html_text('addressStreet', 'maxlength="255"', $addressStreet) ?>
+    <?= err('address') ?>
+
+    <label for="addressPostcode">Postcode</label>
+    <?= html_text('addressPostcode', 'maxlength="5"', $addressPostcode) ?>
+    <?= err('address') ?>
+
+    <label for="addressCity">City</label>
+    <?= html_text('addressCity', 'maxlength="100"', $addressCity) ?>
+    <?= err('address') ?>
+
+    <label for="addressState">State</label>
+    <?= html_text('addressState', 'maxlength="100"', $addressState) ?>
+    <?= err('address') ?>
+
     <section>
         <button data-get="member_list.php">Cancel</button>
-        <button>Submit</button>
+        <button>Update</button>
         <button type="reset">Reset</button>
     </section>
 </form>
