@@ -1,3 +1,17 @@
+<?php
+
+    //Retrieve member cart
+    $get_cart_stm = $_db -> prepare('SELECT * FROM cart c JOIN member m ON m.memberID = c.member_id WHERE c.member_id = ?');
+    $get_cart_stm -> execute(["MB00001"]); //HERE NEED TO CHANGE AFTERWARDS
+    $shoppingCart = $get_cart_stm -> fetch();
+
+    //Retrieve added to cart already items
+    $get_products_stm = $_db -> prepare('SELECT * FROM cart_product WHERE cart_id = ?');
+    $get_products_stm -> execute([$shoppingCart->cart_id]); 
+    $cart_products = $get_products_stm -> fetchAll();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,6 +36,7 @@
     align-items: center;
     color: white;
     font-size: 12px;
+    font-weight: 800;
     position: absolute;
     right: 0; 
     top: 0; 
@@ -68,7 +83,7 @@
 
             <a href="/shoppingcart.php">
                 <img src="/images/shopping-cart.png" alt="Shopping Cart">
-                <span class="quantity">0</span>
+                <span class="quantity"><?= count($cart_products) ?></span>
             </a>
 
             <a href="/login.php">

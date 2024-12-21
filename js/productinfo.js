@@ -39,3 +39,5 @@ function confirmDelete(id, cart, page) {
         window.location.href = 'removeproduct.php?id=' + id + '&cart_id=' + cart + '&page=' + page; // Redirect to PHP script
     }
 }
+
+

@@ -22,3 +22,168 @@ body{
     margin-left: auto;
     margin-right: auto;
 }
+
+.no-products{
+    width: 100%;
+    text-align: center;
+    margin: 15px;
+    font-size: 2rem;
+    color: #dc4c32;
+}
+
+.box {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 3px 3px 5px rgba(0,0,0,0.2), 
+                5px 5px 10px rgba(0,0,0,0.15), 
+                10px 10px 20px rgba(0,0,0,0.1);
+    transform: rotateX(5deg);
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-radius: 25px;
+}
+
+.box:hover {
+    transform: rotateX(0deg);
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
+    background-color: rgb(219, 219, 219);
+}
+
+.product-image {
+    flex: 0 0 100px; 
+    padding-right: 10px; 
+}
+
+.product-image img {
+    width: 100%; 
+    height: auto; 
+}
+
+.product-content {
+    flex: 1; 
+    padding-right: 10px; 
+}
+
+.product-content span{
+    font-weight: 400;
+    font-size: 15px;
+}
+
+.product-name{
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0.1rem 0;
+}
+
+.box .product-content .sold{
+    font-size: 16px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.purchase-info {
+    display: flex; 
+    align-items: center; 
+}
+
+.purchase-info input,
+.purchase-info button{
+    border: 1.5px solid #ddd;
+    border-radius: 25px;
+    text-align: center;
+    padding: 0.45rem 0.8rem;
+    outline: 0;
+    margin-right: 0.2rem;
+}
+
+.purchase-info .decrease,
+.purchase-info .increase{
+    width: 40px;
+}
+
+.purchase-info input{
+    width: 60px;
+    margin-bottom: 0;
+}
+
+.purchase-info button {
+    background: #f0f0f0;
+    cursor: pointer;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.purchase-info .remove{
+    cursor:pointer;
+    color: white;
+    background: #8f200c;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.purchase-info .decrease{
+    cursor:pointer;
+    color: white;
+    background: #dc4c32;
+}
+
+.purchase-info .increase{
+    cursor:pointer;
+    color: white;
+    background: #5874f1;
+}
+
+.multipliedPrice{
+    font-size: 30px;
+    font-weight: 500;
+    color: #e1221c;
+    font-family: "Rubik", sans-serif;
+}
+
+.subtotal {
+    padding-left: 10px; 
+    white-space: nowrap; 
+}
+
+.subtotal .price {
+    font-weight: bold; 
+    color: #e1221c;
+    font-size: 2rem;
+    font-family: "Rubik", sans-serif;
+}
+
+.cart-subtotal{
+    font-weight: bold; 
+    color: #e1221c;
+    font-size: 2rem;
+    font-family: "Rubik", sans-serif;
+
+    display: flex;              
+    justify-content: space-between; 
+    align-items: center;        
+    width: 100%;
+    margin-top: 15px;
+    margin-bottom: 15px;                
+}
+
+.cart-subtotal .subtitle {
+    margin: 0;
+    padding: 0;
+}
+
+.cart-subtotal .price{
+    padding: 0;
+    margin: 0 18px 0 0;
+}
+
+.action-button{
+    border-radius: 25px;
+    
+}

@@ -11,7 +11,8 @@ $remove_product_stm -> execute([$id, $cart]);
 
 if($page == 'product-info')
     redirect('/..');
-
+else if($page == 'cart')
+    redirect('shoppingcart.php');
 ?>
 
 <!DOCTYPE html>
