@@ -12,6 +12,10 @@ if(!$s){
     redirect('member_list.php');
 }
 
+$addr_stm = $_db->prepare('SELECT * FROM address WHERE memberID = ?');
+$addr_stm->execute([$memberID]);
+$address = $addr_stm->fetch();
+
 $_title = 'MemberDetail';
 include '../../../../_head.php';
 ?>
@@ -45,6 +49,10 @@ include '../../../../_head.php';
     <tr>
         <th>Date Joined</th>
         <td><?= $s->memberDateJoined ?></td>
+    </tr>
+    <tr>
+        <th>Address</th>
+        <td><?= $address->addressStreet . ', ' . $address->addressPostcode . ', ' . $address->addressCity . ', ' . $address->addressState ?></td>
     </tr>
 </table>
 

@@ -156,15 +156,20 @@ function html_file($key, $accept = '', $attr = '') {
 // Generate table headers <th>
 function table_headers($fields, $sort, $dir, $href = '') {
     foreach ($fields as $k => $v) {
-        $d = 'asc'; // Default direction
-        $c = '';    // Default class
+        $d = 'asc';
+        $c = '';    
         
         if ($k == $sort) {
             $d = $dir == 'asc' ? 'desc' : 'asc';
             $c = $dir;
         }
 
-        echo "<th><a href='?sort=$k&dir=$d&$href' class='$c'>$v</a></th>";
+        $arrow = '';
+        if ($k == $sort) {
+            $arrow = $dir == 'asc' ? ' ▲' : ' ▼';
+        }
+
+        echo "<th><a href='?sort=$k&dir=$d&$href' class='$c'>$v";
     }
 }
 
@@ -234,6 +239,11 @@ function is_exists($value, $table, $field) {
 $_genders = [
     'Male' => 'Male',
     'Female' => 'Female'
+];
+
+$_adminTiers = [
+    'High' => 'High',
+    'Low' => 'Low'
 ];
 
 // $_members = $_db->query('SELECT memberID, memberName FROM member')

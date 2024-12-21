@@ -11,11 +11,16 @@ main h1 {
 }
 
 /* Table ------------------------------------------------------------------- */
-
 .table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-left: 10px; 
+    margin-right: 10px;
+    margin: 0 auto; 
+    padding: 10px;  
+    width: 98%; 
+    margin-top: 140px; 
+    margin-bottom: 20px;
 }
 
 .table th, .table td {
@@ -28,6 +33,9 @@ main h1 {
 .table th {
     background-color: #ffccd5;
     color: #333;
+    text-align: left; /* Align text left by default */
+    padding: 10px; /* Adjust padding to ensure enough space */
+    border: 1px solid #ddd; /* Optional border for better visualization */
 }
 
 .table tr:nth-child(even) {
@@ -58,6 +66,27 @@ main h1 {
 
 .detail th {
     text-align: left;
+}
+
+a {
+    text-decoration: none; /* Remove underline */
+    color: #000; /* Default color */
+}
+
+a.asc::after {
+    content: ' ▲'; /* Ascending arrow */
+}
+
+a.desc::after {
+    content: ' ▼'; /* Descending arrow */
+}
+
+.search-bar {
+    position: relative; 
+    display: flex; 
+    align-items: center;
+    gap: 30px; 
+    top: 120px; 
 }
 
 /* Flash Message ----------------------------------------------------------- */
@@ -93,15 +122,17 @@ label > * {
     vertical-align: text-top;
 }
 
-.form {
+.update-form {
     display: grid;
     grid: auto / auto auto auto;
     gap: 10px;
     place-content: start;
     place-items: center start;
+    margin-top: 140px; 
+    margin-left: 30px;
 }
 
-.form > label:not(:has(*)) {
+.update-form > label:not(:has(*)) {
     place-self: stretch;
     background: #ffccd5;
     font-weight: bold;
@@ -109,7 +140,7 @@ label > * {
     border-radius: 5px;
 }
 
-.form > section {
+.update-form > section {
     grid-column: 1 / -1;
 }
 
