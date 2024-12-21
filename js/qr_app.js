@@ -64,22 +64,31 @@ $(() => {
     });
 
     
-    // Photo preview
+    // Photo preview for multiple files
     $('label.upload input[type=file]').on('change', e => {
-        const f = e.target.files[0];
-        const img = $(e.target).siblings('img')[0];
+        const files = e.target.files;
+        const previewContainer = $('#product_photo_previews');
+        previewContainer.empty();  // Clear previous previews
 
-        if (!img) return;
+        Array.from(files).forEach(file => {
+            const imgOrVideo = document.createElement(file.type.startsWith('image/') ? 'img' : 'video');
+            
+            if (file.type.startsWith('image/')) {
+                imgOrVideo.src = URL.createObjectURL(file);
+                imgOrVideo.style.maxWidth = '200px';  // Adjust size as needed
+                imgOrVideo.style.margin = '5px';  // Add space between previews
+            } else if (file.type.startsWith('video/')) {
+                imgOrVideo.src = URL.createObjectURL(file);
+                imgOrVideo.controls = true;  // Add video controls (play, pause, etc.)
+                imgOrVideo.style.maxWidth = '200px';  // Adjust size as needed
+                imgOrVideo.style.margin = '5px';  // Add space between previews
+            }
 
-        img.dataset.src ??= img.src;
-
-        if (f?.type.startsWith('image/')) {
-            img.src = URL.createObjectURL(f);
-        }
-        else {
-            img.src = img.dataset.src;
-            e.target.value = '';
-        }
+            // Append to the preview container
+            previewContainer.append(imgOrVideo);
+        });
     });
+
+    
 
 });
