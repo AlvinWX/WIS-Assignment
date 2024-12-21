@@ -42,6 +42,7 @@
     font-size: 13px;
     font-weight: 600;
     margin: 0.1rem 0;
+    min-height: 50px;
 }
 
 .products-container .box h3{
@@ -88,5 +89,5 @@
 }
 
 .products-container .box .sold{
-    font-size: 15px;
+    font-size: 13px;
 }

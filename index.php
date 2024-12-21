@@ -5,7 +5,9 @@ session_start();
 $success = $_SESSION['flash_success'] ?? '';
 $error = $_SESSION['flash_error'] ?? '';
 
-$top_selling_arr = $_db->query('SELECT * FROM product p JOIN category c ON p.category_id = c.category_id WHERE product_status=1 ORDER BY product_sold DESC LIMIT 5')->fetchAll();
+$top_selling_arr = $_db->query('SELECT * FROM product p JOIN category c ON p.category_id = c.category_id WHERE product_status=1 AND product_stock > 0 ORDER BY product_sold desc LIMIT 5')->fetchAll();
+
+$lowest_price_arr = $_db->query('SELECT * FROM product p JOIN category c ON p.category_id = c.category_id WHERE product_status=1 AND product_stock > 0 ORDER BY product_price asc LIMIT 5')->fetchAll();
 
 // Clear flash messages after displaying them
 unset($_SESSION['flash_success'], $_SESSION['flash_error']);
@@ -90,69 +92,35 @@ include '_head.php';
         <div class="products-container">
         <?php foreach ($top_selling_arr as $s): ?>
             <div class="box" data-get="productinfo.php?id=<?= $s->product_id ?>">
-                <img src="images/biscuit1.png" data-get="productinfo.php?id=<?= $s->product_id ?>">
+                <img src="images/<?= $s->product_img ?>" data-get="productinfo.php?id=<?= $s->product_id ?>">
                 <span data-get="productinfo.php?id=<?= $s->product_id ?>"><?= $s->category_name?></span>
                 <h2 data-get="productinfo.php?id=<?= $s->product_id ?>"><?= $s->product_name?></h2>
-                <h3 class="price" data-get="productinfo.php?id=<?= $s->product_id ?>">RM <?= $s->product_price?></h3>
+                <h3 class="price" data-get="productinfo.php?id=<?= $s->product_id ?>">RM <?= sprintf('%.2f', $s->product_price)?></h3>
                 <i class='bx bx-cart-alt' onclick="" ></i>
                 <i class='bx bx-heart' ></i>
-                <span class="sold" data-get="productinfo.php?id=<?= $s->product_id ?>"><?= $s->product_sold?> sold</span>
+                <span class="sold" data-get="productinfo.php?id=<?= $s->product_id ?>"><?= $s->product_sold?> sold || <?= $s->product_stock?> left</span>
             </div>
-            <!-- <button data-get="productinfo.php?id=<?= $s->product_id ?>">Detail</button> -->
-
-            <!-- <div class="box">
-                <img src="images/biscuit1.png">
-                <span>Food</span>
-                <h2>Julie's Sour and Cream & Onion Sandwich</h2>
-                <h3 class="price">RM 10.00</h3>
-                <i class='bx bx-cart-alt' ></i>
-                <i class='bx bx-heart'> </i>
-                <span class="sold">4k sold</span>
-            </div>
-
-            <div class="box">
-                <img src="images/biscuit1.png">
-                <span>Food</span>
-                <h2>Julie's Sour and Cream & Onion Sandwich</h2>
-                <h3 class="price">RM 10.00</h3>
-                <i class='bx bx-cart-alt' ></i>
-                <i class='bx bx-heart' ></i>
-                <span class="sold">4k sold</span>
-            </div>
-
-            <div class="box">
-                <img src="images/biscuit1.png">
-                <span>Food</span>
-                <h2>Julie's Sour and Cream & Onion Sandwich</h2>
-                <h3 class="price">RM 10.00</h3>
-                <i class='bx bx-cart-alt' ></i>
-                <i class='bx bx-heart' ></i>
-                <span class="sold">4k sold</span>
-            </div>
-
-            <div class="box">
-                <img src="images/biscuit1.png">
-                <span>Food</span>
-                <h2>Julie's Sour and Cream & Onion Sandwich</h2>
-                <h3 class="price">RM 10.00</h3>
-                <i class='bx bx-cart-alt' ></i>
-                <i class='bx bx-heart' ></i>
-                <span class="sold">4k sold</span>
-            </div>
-
-            <div class="box">
-                <img src="images/biscuit1.png">
-                <span>Food</span>
-                <h2>Julie's Sour and Cream & Onion Sandwich</h2>
-                <h3 class="price">RM 10.00</h3>
-                <i class='bx bx-cart-alt' ></i>
-                <i class='bx bx-heart' ></i>
-                <span class="sold">4k sold</span>
-            </div> -->
             <?php endforeach ?>
-            </div>
-            
+        </div>
 
+        <div class="heading">
+            <h1>Lowest Price Products</h1>
+        </div>
+
+        <div class="products-container">
+        <?php foreach ($lowest_price_arr as $s): ?>
+            <div class="box" data-get="productinfo.php?id=<?= $s->product_id ?>">
+                <img src="images/<?= $s->product_img ?>" data-get="productinfo.php?id=<?= $s->product_id ?>">
+                <span data-get="productinfo.php?id=<?= $s->product_id ?>"><?= $s->category_name?></span>
+                <h2 data-get="productinfo.php?id=<?= $s->product_id ?>"><?= $s->product_name?></h2>
+                <h3 class="price" data-get="productinfo.php?id=<?= $s->product_id ?>">RM <?= sprintf('%.2f', $s->product_price)?></h3>
+                <i class='bx bx-cart-alt' onclick="" ></i>
+                <i class='bx bx-heart' ></i>
+                <span class="sold" data-get="productinfo.php?id=<?= $s->product_id ?>"><?= $s->product_sold?> sold || <?= $s->product_stock?> left</span>
+            </div>
+            <?php endforeach ?>
+        </div>
+            
     </section>
 
 </body>

@@ -156,6 +156,26 @@ function html_file($key, $accept = '', $attr = '') {
 // Generate table headers <th>
 function table_headers($fields, $sort, $dir, $href = '') {
     foreach ($fields as $k => $v) {
+        $d = 'asc';
+        $c = '';    
+        
+        if ($k == $sort) {
+            $d = $dir == 'asc' ? 'desc' : 'asc';
+            $c = $dir;
+        }
+
+        $arrow = '';
+        if ($k == $sort) {
+            $arrow = $dir == 'asc' ? ' ▲' : ' ▼';
+        }
+
+        echo "<th><a href='?sort=$k&dir=$d&$href' class='$c'>$v";
+    }
+}
+
+//Generate sort buttons
+function sort_buttons($productName, $productCategory, $minPrice, $maxPrice, $fields, $sort, $dir, $href = '') {
+    foreach ($fields as $k => $v) {
         $d = 'asc'; // Default direction
         $c = '';    // Default class
         
@@ -164,7 +184,7 @@ function table_headers($fields, $sort, $dir, $href = '') {
             $c = $dir;
         }
 
-        echo "<th><a href='?sort=$k&dir=$d&$href' class='$c'>$v</a></th>";
+        echo "<button><a href='?product_name=$productName&category_id=$productCategory&minprice=$minPrice&maxprice=$maxPrice&sort=$k&dir=$d&$href' class='$c'>$v</a></button>";
     }
 }
 
@@ -219,6 +239,11 @@ function is_exists($value, $table, $field) {
 $_genders = [
     'Male' => 'Male',
     'Female' => 'Female'
+];
+
+$_adminTiers = [
+    'High' => 'High',
+    'Low' => 'Low'
 ];
 
 // $_members = $_db->query('SELECT memberID, memberName FROM member')

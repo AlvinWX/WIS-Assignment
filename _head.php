@@ -6,7 +6,6 @@
     <!-- <title><?= $_title ?? 'Untitled' ?></title> -->
     <link rel="shortcut icon" href="/images/favicon.png">
     <link rel="stylesheet" href="/css/wj_css.css">
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="/js/app.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,7 +37,10 @@
             </ul>
         </nav>
         <div class="right-logo">
-            <img class="search" src="/images/search.png" alt="Search Icon" id="search-icon">
+            
+            <a href="/productsearch.php?product_name=&category_id=&minprice=&maxprice=&sort=product_name&dir=asc">
+                <img class="search" src="/images/search.png" alt="Search Icon" id="search-icon">
+            </a>
 
             <a href="/index.php">
                 <img src="/images/shopping-cart.png" alt="Clickable Image">

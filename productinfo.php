@@ -15,7 +15,7 @@ if (!$s) {
 
 ?>
 
-<title>Product Info</title>
+<title><?= $s -> product_name ?> @ TAR GROCER</title>
 <link rel="stylesheet" href="css/productinfo.css">
 <script src="js/productinfo.js" defer></script>
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -27,11 +27,10 @@ if (!$s) {
             <div class="product-images">
                 <div class="image-display">
                     <div class="image-showcase">
-                        <img src="images/biscuit1.png">
-                        <img src="images/biscuit1.png">
+                        <img src="images/<?= $s -> product_img ?>">
                     </div>
                 </div>
-                <div class="image-select">
+                <!-- <div class="image-select">
                     <div class="image-item">
                         <a href="#" data-id="1">
                             <img src="images/biscuit1.png">
@@ -42,16 +41,20 @@ if (!$s) {
                             <img src="images/biscuit1.png">
                         </a>
                     </div>
-                </div>
+                </div> -->
             </div>
             <!--card right-->
             <div class = "product-content">
                 <span class = "product-title"><?= $s -> product_name ?></span>
 
-                <span class = "product-category">Category: <?= $s -> category_name ?></span>
+                <span class = "product-category" data-get="productsearch.php?product_name=&category_id=<?= $s->category_id ?>">Category: <?= $s -> category_name ?></span>
 
                 <div class= "product-price">
-                    RM <?= $s -> product_price ?>
+                    RM <?= sprintf('%.2f', $s->product_price) ?>
+                </div>
+
+                <div class= "product-quantity">
+                    <?= $s -> product_sold ?> sold || <?= $s -> product_stock ?> left
                 </div>
 
                 <div class = "product-desc">
@@ -62,7 +65,7 @@ if (!$s) {
                 
                 <div class="purchase-info">
                     <button class="decrease" onclick="decreaseValue()">-</button>
-                    <input type="number" id="spinnerValue" value="1" min="1" max="99" step="1">
+                    <input type="number" id="spinnerValue" value="1" min="1" max="<?= $s -> product_stock ?>" step="1">
                     <button class="increase" onclick="increaseValue()">+</button>
                     <button type = "button" class="add-to-cart">Add to Cart<i class='bx bx-cart-alt' ></i></button>
 
