@@ -10,10 +10,10 @@ if (is_post()) {
     $product_price = req('product_price');
     $product_stock = req('product_stock');
     $category_id = req('category_id');
-    // $product_photo = req('product_photo');
+    // $product_cover = req('product_cover');
     
-    // $product_photo = basename($product_photo);
-    // unlink("images/$product_photo");
+    // $product_cover = basename($product_cover);
+    // unlink("images/$product_cover");
         
     // temp('info', 'Photo deleted');
     // redirect('demo2.php');
@@ -44,17 +44,17 @@ if (is_post()) {
         $_err['product_desc'] = 'Maximum length 1000';
     }
 
-    // Validate program_id
+    // Validate price
     if ($product_price == '') {
         $_err['product_price'] = 'Required';
     }
 
-    // Validate program_id
+    // Validate stock
     if ($product_stock == '') {
         $_err['product_stock'] = 'Required';
     }
 
-    // Validate program_id
+    // Validate category_id
     if ($category_id == '') {
         $_err['category_id'] = 'Required';
     }
@@ -63,47 +63,77 @@ if (is_post()) {
     }
 
     
-    $f = get_file('product_photo');
+    // $f = get_file('product_cover');
 
-    // Validate: photo (file)
-    if ($f == null) {
-        $_err['product_photo'] = 'Required';
+    // // Validate: photo (file)
+    // if ($f == null) {
+    //     $_err['product_cover'] = 'Required';
+    // }
+    // else if (!str_starts_with($f->type, 'image/')) {
+    //     $_err['product_cover'] = 'Must be image';
+    // }
+    // else if ($f->size > 1 * 1024 * 1024) {
+    //     $_err['product_cover'] = 'Maximum 1MB';
+    // }
+    // Handle product_cover (single image)
+    $cover_file = isset($_FILES['product_cover']) ? $_FILES['product_cover'] : null;
+    if ($cover_file == null || $cover_file['error'] != UPLOAD_ERR_OK) {
+        $_err['product_cover'] = 'Required';
+    } else if (!str_starts_with(mime_content_type($cover_file['tmp_name']), 'image/')) {
+        $_err['product_cover'] = 'Must be an image';
+    } else if ($cover_file['size'] > 1 * 1024 * 1024) {
+        $_err['product_cover'] = 'Maximum 1MB';
     }
-    else if (!str_starts_with($f->type, 'image/')) {
-        $_err['product_photo'] = 'Must be image';
-    }
-    else if ($f->size > 1 * 1024 * 1024) {
-        $_err['product_photo'] = 'Maximum 1MB';
+
+    // Handle product_photo (multiple images)
+    $photo_files = isset($_FILES['product_photo']) ? $_FILES['product_photo'] : null;
+    $photo_resources = [];
+    if ($photo_files && is_array($photo_files['name'])) {
+        foreach ($photo_files['name'] as $index => $name) {
+            $tmp_name = $photo_files['tmp_name'][$index];$type = mime_content_type($tmp_name);
+            $size = $photo_files['size'][$index];
+            
+            $extension = pathinfo($name, PATHINFO_EXTENSION);
+            if (!in_array($extension, ['jpg', 'jpeg', 'png','webp'])) {
+                $_err['product_photo'] = 'All files must be images';
+            }else if ($size > 1 * 1024 * 1024) {
+                $_err['product_photo'] = 'Each image must be under 1MB';
+            } else {
+                $unique_name = uniqid() . '.' . pathinfo($name, PATHINFO_EXTENSION);
+                move_uploaded_file($tmp_name, "uploads/$unique_name");             
+                $photo_resources[] = $unique_name;
+            }
+        }
     }
 
     // Output
     if (!$_err) {
-        $product_photo = uniqid() . '.jpg';
+        $product_cover = uniqid() . '.jpg';
 
         require_once 'lib/SimpleImage.php';
         $img = new SimpleImage();
-        $img->fromFile($f->tmp_name)
-            ->thumbnail(200,200)
-            ->toFile("images/$product_photo",'image/jpeg');
-        // $fullUrl = $protocol . $host . rtrim($path, '/') . "/images/$product_photo";
+        $img->fromFile($cover_file['tmp_name'])
+            ->thumbnail(200, 200)
+            ->toFile("images/$product_cover", 'image/jpeg');
+
         $arr = $_db->query('SELECT * FROM product ORDER BY product_id DESC LIMIT 1')->fetchAll(PDO::FETCH_ASSOC);
         if (!empty($arr)) {
             $product_id = $arr[0]['product_id'];
-            $numeric_part = substr($product_id, 2); 
+            $numeric_part = substr($product_id, 2);
             $incremented_numeric = str_pad((int)$numeric_part + 1, strlen($numeric_part), '0', STR_PAD_LEFT);
             $product_id = "PD" . $incremented_numeric;
         } else {
             $product_id = "PD00001";
         }
+
         $stm = $_db->prepare('INSERT INTO product
-                              (product_id, product_name, product_img, product_desc, product_price, product_stock, product_last_update, admin_id, category_id)
-                              VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)');
-        $stm->execute([$product_id, $product_name, $product_photo, $product_desc, $product_price, $product_stock, date("Y-m-d H:i:s"), 0, $category_id]);
+                              (product_id, product_name, product_cover, product_resources, product_desc, product_price, product_stock, product_last_update, admin_id, category_id)
+                              VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+        $stm->execute([$product_id, $product_name, $product_cover, json_encode($photo_resources), $product_desc, $product_price, $product_stock, date("Y-m-d H:i:s"), 0, $category_id]);
+
         temp('info', 'Product added.');
         redirect('product.php');
     }
-
-
 }
 
 // ----------------------------------------------------------------------------
@@ -132,15 +162,8 @@ include '_admin_head.php';
     <?= html_text('product_name', 'maxlength="100"') ?>
     <?= err('product_name') ?>
 
-    <label for="product_photo">Cover Picture</label>
-    <label class="upload" tabindex="0">
-        <?= html_file('product_photo','image/*','hidden') ?>
-        <img src="/images/photo.jpg" style="width: 200px; height: 200px;">
-    </label>
-    <?= err('product_photo') ?>
-
     <label>Description</label>
-    <?= html_text('product_desc',  'maxlength="10"') ?>
+    <?= html_text('product_desc',  'maxlength="1000"') ?>
     <?= err('product_desc') ?>
 
     <label>Product Price</label>
@@ -155,11 +178,43 @@ include '_admin_head.php';
     <?= html_select('category_id', $_categories) ?>
     <?= err('category_id') ?>
 
+    <label for="product_cover">Cover Picture</label>
+    <label class="upload" tabindex="0">
+        <?= html_file('product_cover', 'image/*', 'hidden') ?>
+        <img src="/images/photo.jpg" style="width: 200px; height: 200px;">
+    </label>
+    <?= err('product_cover') ?>
+
+    <label for="product_photo">Extra Resources</label>
+    <label class="upload" tabindex="0">
+        <?= html_file('product_photo[]', 'image/*', 'multiple') ?>
+        <div id="product_photo_previews"></div>
+    </label>
+    <?= err('product_photo') ?>
+
     <section>
         <button>Submit</button>
         <button type="reset">Reset</button>
     </section>
 </form>
+<script>
+    const existingResources = <?php echo json_encode($product_resources); ?>;  // PHP to JS array conversion
 
+    existingResources.forEach(resource => {
+        const ext = resource.split('.').pop().toLowerCase();
+        const previewElement = document.createElement(ext === 'mp4' || ext === 'avi' ? 'video' : 'img');
+
+        previewElement.src = `uploads/${resource}`;
+        previewElement.style.maxWidth = '200px'; 
+        previewElement.style.margin = '5px'; 
+        
+        // if (ext === 'mp4' || ext === 'avi') {
+        //     previewElement.controls = true; 
+        // }
+        
+        $('#product_photo_previews').append(previewElement);
+    });
+
+</script>
 <?php
 include '_admin_foot.php';
