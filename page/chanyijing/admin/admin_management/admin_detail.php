@@ -16,7 +16,7 @@ $_title = 'Admin Detail';
 include '../../../../_head.php';
 ?>
 
-<table class="table detail">
+<table class="table">
     <tr>
         <th>Profile Picture</th>
         <td class="profile-pic-container">

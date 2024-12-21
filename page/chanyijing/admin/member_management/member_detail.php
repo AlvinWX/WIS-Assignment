@@ -16,11 +16,11 @@ $addr_stm = $_db->prepare('SELECT * FROM address WHERE memberID = ?');
 $addr_stm->execute([$memberID]);
 $address = $addr_stm->fetch();
 
-$_title = 'MemberDetail';
+$_title = 'Member Detail';
 include '../../../../_head.php';
 ?>
 
-<table class="table detail">
+<table class="table">
     <tr>
         <th>Profile Picture</th>
         <td class="profile-pic-container">
@@ -57,7 +57,6 @@ include '../../../../_head.php';
 </table>
 
 <br>
-
 <button data-get="member_list.php">Back</button>
 
 <?php

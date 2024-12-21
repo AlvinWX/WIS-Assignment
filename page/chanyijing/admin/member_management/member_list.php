@@ -9,7 +9,7 @@ $fields = [
     'memberID'   => 'Member ID',
     'memberName' => 'Name',
     'memberDateJoined' => 'Date Joined',
-    'memberGender' => 'Gender'
+    'memberGender' => 'Gender',
 ];
 
 // Retrieve search and filter parameters
@@ -30,15 +30,7 @@ $stm = $_db->prepare('SELECT * FROM member
                       ORDER BY ' . $sort . ' ' . $dir);
 
 $stm->execute(["%$memberName%", $memberGender, $memberGender == null]);
-
-//Paging
-$page = req('page', 1);
-
-require_once '../../../../lib/SimplePager.php';
-$p = new SimplePager("SELECT * FROM member ORDER BY $sort $dir", [], 10, $page);
-$arr = $p->result;
-
-// $arr = $_db->query("SELECT * FROM member ORDER BY $sort $dir")->fetchAll();
+$arr= $stm->fetchAll();
 
 //-----------------------------------------------------------------------------
 
@@ -47,20 +39,22 @@ include '../../../../_head.php';
 ?>
 
 <div class="search-bar">
-    <?= html_search('memberName', 'placeholder="Enter name to search"') ?>
-    <?= html_select('memberGender', $_genders, 'All Genders') ?>
-    <button>Search</button>
+    <form>
+        <?= html_search('memberName', 'placeholder="Enter name to search"') ?>
+        <?= html_select('memberGender', $_genders, 'All Genders') ?>
+        <button>Search</button>
+    </form>
 </div>
 
 <table class="table">
     <tr>
         <th>Member List</th>
-        <td><?= $p->count ?> of <?= $p->item_count ?> member(s)</td>
         <td><td>
-        <td>Page <?= $p->page ?> of <?= $p->page_count ?></td>
+        <td><?= count($arr) ?> member(s)</td>
+        <td>
     </tr>
     <tr>
-        <?= table_headers($fields, $sort, $dir, "page=$page") ?>
+        <?= table_headers($fields, $sort, $dir) ?>
         <th>
     </tr>
 
@@ -81,7 +75,6 @@ include '../../../../_head.php';
 
 <button data-get="member_list.php">All Member(s)</button>
 <br/><br/><br/>
-<?= $p->html("sort=$sort&dir=$dir") ?>
 
 <?php
 include '../../../../_foot.php';

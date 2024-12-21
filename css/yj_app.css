@@ -1,5 +1,4 @@
 /* Main Content ------------------------------------------------------------ */
-
 main {
     padding: 20px 50px;
     background-color: #ffffff;
@@ -31,11 +30,11 @@ main h1 {
 }
 
 .table th {
-    background-color: #ffccd5;
+    background-color: #b0c4de; /* Grey-blue */
     color: #333;
-    text-align: left; /* Align text left by default */
-    padding: 10px; /* Adjust padding to ensure enough space */
-    border: 1px solid #ddd; /* Optional border for better visualization */
+    text-align: left;
+    padding: 10px;
+    border: 1px solid #ddd;
 }
 
 .table tr:nth-child(even) {
@@ -43,7 +42,7 @@ main h1 {
 }
 
 .table tr:hover {
-    background-color: #ffebeb; 
+    background-color: #e6f2ff; 
 }
 
 .table td:last-child {
@@ -69,32 +68,93 @@ main h1 {
 }
 
 a {
-    text-decoration: none; /* Remove underline */
-    color: #000; /* Default color */
+    text-decoration: none;
+    color: #000;
 }
 
 a.asc::after {
-    content: ' ▲'; /* Ascending arrow */
+    content: ' ▲';
 }
 
 a.desc::after {
-    content: ' ▼'; /* Descending arrow */
+    content: ' ▼';
 }
 
+/* Order Listing Table ----------------------------------------------------- */
+.order-listing-table {
+    width: 95%;
+    margin: 140px auto 10px auto; 
+    border-collapse: collapse;
+    padding: 10px;
+    background-color: #f9f9f9;
+}
+
+.order-listing-table th, .order-listing-table td {
+    padding: 12px 15px;
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: 1px solid #ddd;
+}
+
+.order-listing-table th {
+    background-color: #b0c4de;
+    color: #333;
+    text-align: left;
+    padding: 10px;
+    border: 1px solid #ddd;
+    font-weight: bold;
+    font-size: 16px;
+    width: 20%;
+}
+
+.order-listing-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.order-listing-table tr:hover {
+    background-color: #e6f2ff;
+}
+
+.order-listing-table td:last-child {
+    position: relative;
+}
+
+.order-listing-table .popup {
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    translate: 5px -50%;
+    z-index: 999;
+    border: 1px solid #ddd;
+    display: none;
+}
+
+.order-listing-table tr:hover .popup {
+    display: block;
+}
+
+/* Search bar ----------------------------------------------------------- */
 .search-bar {
     position: relative; 
     display: flex; 
     align-items: center;
+    justify-content: flex-end; 
     gap: 30px; 
     top: 120px; 
 }
 
-/* Flash Message ----------------------------------------------------------- */
+.search-bar form {
+    display: flex; 
+    gap: 10px;   
+    align-items: center; 
+    margin-right: 20px;
+}
 
+/* Flash Message ----------------------------------------------------------- */
 #info {
     position: fixed;
     color: #fff;
-    background: #ff6666; /* Light red for message */
+    background: #ff6666;
     border: 1px solid #cc3333;
     border-radius: 5px;
     padding: 10px 20px;
@@ -117,7 +177,6 @@ a.desc::after {
 }
 
 /* Form -------------------------------------------------------------------- */
-
 label > * {
     vertical-align: text-top;
 }
@@ -149,13 +208,12 @@ label > * {
 }
 
 /* Input, Button, and Select styles --------------------------------------- */
-
 input, button, select, textarea {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     width: 170px;
-    margin: 5px;
+    margin: 15px;
     font-size: 16px;
 }
 

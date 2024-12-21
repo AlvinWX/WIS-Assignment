@@ -246,6 +246,14 @@ $_adminTiers = [
     'Low' => 'Low'
 ];
 
+$_orderStatuses = [
+    'Pending' => 'Pending',
+    'Packed' => 'Packed',
+    'Shipped' => 'Shipped',
+    'Delivered' => 'Delivered',
+    'Cancelled' => 'Cancelled'
+];
+
 // $_members = $_db->query('SELECT memberID, memberName FROM member')
 //                   ->fetchAll(PDO::FETCH_KEY_PAIR);
                   

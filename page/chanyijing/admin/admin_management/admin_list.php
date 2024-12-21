@@ -28,15 +28,7 @@ $stm = $_db->prepare('SELECT * FROM admin
                       AND (adminTier = ? OR ?)
                       ORDER BY ' . $sort . ' ' . $dir);
 $stm->execute(["%$adminName%", $adminTier, $adminTier == null]);
-
-//Paging
-$page = req('page', 1);
-
-require_once '../../../../lib/SimplePager.php';
-$p = new SimplePager("SELECT * FROM admin ORDER BY $sort $dir", [], 10, $page);
-$arr = $p->result;
-
-// $arr = $_db->query("SELECT * FROM admin ORDER BY $sort $dir")->fetchAll();
+$arr= $stm->fetchAll();
 
 //-----------------------------------------------------------------------------
 
@@ -46,20 +38,21 @@ include '../../../../_head.php';
 
 <!-- Seach Bar -->
 <div class="search-bar">
-    <?= html_search('adminName', 'placeholder="Enter name to search"') ?>
-    <?= html_select('adminTier', $_adminTiers, 'All Tiers') ?>
+    <form>
+        <?= html_search('adminName', 'placeholder="Enter name to search"') ?>
+        <?= html_select('adminTier', $_adminTiers, 'All Tiers') ?>
     <button>Search</button>
+    </form>
 </div>
 
 <table class="table">
     <tr>
         <th>Admin List</th>
-        <td><?= $p->count ?> of <?= $p->item_count ?> admin(s)</td>
-        <td>
-        <td>Page <?= $p->page ?> of <?= $p->page_count ?></td>
+        <td><td>
+        <td><?= count($arr) ?> admin(s)</td>
     </tr>
     <tr>
-        <?= table_headers($fields, $sort, $dir, "page=$page") ?>
+        <?= table_headers($fields, $sort, $dir) ?>
         <th>
     </tr>
 
@@ -79,7 +72,6 @@ include '../../../../_head.php';
 
 <button data-get="admin_list.php">All Admin(s)</button>
 <br/><br/><br/>
-<?= $p->html("sort=$sort&dir=$dir") ?>
 
 <?php
 include '../../../../_foot.php';

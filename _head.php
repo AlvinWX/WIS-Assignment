@@ -29,7 +29,8 @@
                 <li>
                     <a href="#">More</a>
                     <div class="dropdown-content">
-                        <a href="#">XXXXX</a>
+                        <a href="/page/chanyijing/admin/order_management/order_list.php">Order Listing</a>
+                        <a href="/page/chanyijing/member/order_history/order_list.php">Order History</a>
                         <a href="/page/chanyijing/admin/member_management/member_list.php">Member Management</a>
                         <a href="/page/chanyijing/admin/admin_management/admin_list.php">Admin Management</a>
                     </div>
