@@ -4,6 +4,7 @@ require '_base.php';
 include '_head.php';
 
 $id = req('id');
+$path = req('path');
 
 $stm = $_db->prepare('SELECT * FROM product p JOIN category c ON p.category_id = c.category_id WHERE product_id = ?'); 
 $stm->execute([$id]);
@@ -55,15 +56,19 @@ if(isset($_POST['add-to-cart'], $_POST['product_id'], $_POST['quantity'])){
     }
     
     temp('info', 'Item added to cart.');
-    redirect('productsearch.php');
+    redirect($path);
 }
+
+$resources = json_decode($s -> product_resources, true);
 
 ?>
 
 <title><?= $s -> product_name ?> @ TAR GROCER</title>
 <link rel="stylesheet" href="css/productinfo.css">
 <link rel="stylesheet" href="css/flash.css">
+<link rel="stylesheet" href="css/imageslider.css">
 <script src="js/productinfo.js" defer></script>
+<script src="js/imageslider2.js" defer></script>
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
 <script>
@@ -78,23 +83,41 @@ window.onload = function() {
         <div class="card">
             <!--card left-->
             <div class="product-images">
-                <div class="image-display">
-                    <div class="image-showcase">
-                        <img src="images/<?= $s -> product_img ?>">
-                    </div>
-                </div>
-                <!-- <div class="image-select">
-                    <div class="image-item">
-                        <a href="#" data-id="1">
-                            <img src="images/biscuit1.png">
-                        </a>
-                    </div>
-                    <div class="image-item">
-                        <a href="#" data-id="2">
-                            <img src="images/biscuit1.png">
-                        </a>
-                    </div>
-                </div> -->
+            <div class = "slide-container">
+        
+        <div class="slides">
+        <img src="images/<?= $s->product_cover ?>" alt="Resource <?= $index + 1 ?>" class="image active">
+        <?php foreach ($resources as $index => $resource):?>
+                            <?php if (strpos(mime_content_type("uploads/$resource"), 'image/') !== false): ?>
+                                <img src="/uploads/<?= $resource ?>" alt="Resource <?= $index + 1 ?>" class="image">
+                            <?php elseif (strpos(mime_content_type("uploads/$resource"), 'video/') !== false): ?>
+                                <video controls>
+                                    <source src="/uploads/<?= $resource ?>" type="video/<?= pathinfo($resource, PATHINFO_EXTENSION) ?>" class="image">
+                                </video>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+        </div>
+
+        <div class="buttons">
+            <span class="next">&#10095;</span>
+            <span class="prev">&#10094;</span>
+        </div>
+
+        <div class="image-thumbnail">
+            <img class="img active" src="images/<?= $s->product_cover ?>" alt="Resource <?= $index + 1 ?>" attr='0' onclick="switchImage(this)">
+            <?php for($i = 1; $i <= count($resources); $i++): $resource = $resources[$i-1] ?>
+			    
+                <?php if (strpos(mime_content_type("uploads/$resource"), 'image/') !== false): ?>
+                                <img class="img" attr='<?= $i ?>' onclick="switchImage(this)" src="/uploads/<?= $resource ?>" alt="Resource <?= $index + 1 ?>">
+                            <?php elseif (strpos(mime_content_type("uploads/$resource"), 'video/') !== false): ?>
+                                <video controls>
+                                    <source class="img" attr='<?= $i ?>' onclick="switchImage(this)" src="/uploads/<?= $resource ?>" type="video/<?= pathinfo($resource, PATHINFO_EXTENSION) ?>">
+                                </video>
+                            <?php endif; ?>
+            <?php endfor; ?>
+        </div>
+
+            </div>
             </div>
             <!--card right-->
             <div class = "product-content">
@@ -112,7 +135,7 @@ window.onload = function() {
 
                 <div class="purchase-info">
                     <?php if($check_result != null && $check_result -> quantity > 0) { ?>
-                    <button class="remove" onclick="confirmDelete('<?= $s->product_id ?>', '<?= $check_result->cart_id ?>', 'product-info')">Remove</button>
+                    <button class="remove" onclick="confirmDelete('<?= $s->product_id ?>', '<?= $check_result->cart_id ?>', '<?= $path ?>')">Remove</button>
                     <?php } ?>
                     <button class="decrease" onclick="decreaseValue()">-</button>
                     <form method="post" id="quantitySelect"><input type="number" blur name="quantity" id="spinnerValue" value="<?= $currentQuantity ?>" min="1" max="<?= $s -> product_stock ?>" step="1"></form>

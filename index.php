@@ -66,6 +66,7 @@ if(isset($_POST['add-to-cart'], $_POST['product_id'])){
 }
 
 
+$fullPath = $_SERVER['REQUEST_URI'];
 
 ?>
 
@@ -148,24 +149,24 @@ if(isset($_POST['add-to-cart'], $_POST['product_id'])){
         <div class="products-container">
         <?php foreach ($top_selling_arr as $s): ?>
             <div class="box">
-                <img src="images/<?= $s->product_img ?>" data-get="productinfo.php?id=<?= $s->product_id ?>">
-                <span data-get="productinfo.php?id=<?= $s->product_id ?>"><?= $s->category_name?></span>
-                <h2 class="product-name" data-get="productinfo.php?id=<?= $s->product_id ?>"><?= $s->product_name?></h2>
+                <img src="images/<?= $s->product_cover ?>" data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>">
+                <span data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>"><?= $s->category_name?></span>
+                <h2 class="product-name" data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>"><?= $s->product_name?></h2>
                 <?php 
                     $get_cart_product = $_db->prepare('SELECT * FROM cart_product WHERE product_id = ? AND cart_id = ?');
                     $get_cart_product -> execute([$s->product_id, $shoppingCart->cart_id]);
                     $cartProductFound = $get_cart_product -> fetch();
                     if($cartProductFound != null){ ?>
-                        <h2 class="selected" data-get="productinfo.php?id=<?= $s->product_id ?>">Selected: <?= $cartProductFound->quantity?></h2>
+                        <h2 class="selected" data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>">Selected: <?= $cartProductFound->quantity?></h2>
                 <?php  } else { ?>
                         <h2 class="selected"></h2>
                     <?php  }  ?>
-                <h3 class="price" data-get="productinfo.php?id=<?= $s->product_id ?>">RM <?= sprintf('%.2f', $s->product_price)?></h3>
+                <h3 class="price" data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>">RM <?= sprintf('%.2f', $s->product_price)?></h3>
                 <form method="post">
                     <input hidden type="text" name="product_id" value="<?= $s->product_id ?>">
                     <input type="submit" name="add-to-cart" class= "add-to-cart" value="+">
                 <i class='bx bx-heart' ></i></form>
-                <span class="sold" data-get="productinfo.php?id=<?= $s->product_id ?>"><?= $s->product_sold?> sold || <?= $s->product_stock?> left</span>
+                <span class="sold" data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>"><?= $s->product_sold?> sold || <?= $s->product_stock?> left</span>
             </div>
             <?php endforeach ?>
         </div>
@@ -177,24 +178,24 @@ if(isset($_POST['add-to-cart'], $_POST['product_id'])){
         <div class="products-container">
         <?php foreach ($lowest_price_arr as $s): ?>
             <div class="box">
-                <img src="images/<?= $s->product_img ?>" data-get="productinfo.php?id=<?= $s->product_id ?>">
-                <span data-get="productinfo.php?id=<?= $s->product_id ?>"><?= $s->category_name?></span>
-                <h2 class="product-name" data-get="productinfo.php?id=<?= $s->product_id ?>"><?= $s->product_name?></h2>
+                <img src="images/<?= $s->product_cover ?>" data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>">
+                <span data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>"><?= $s->category_name?></span>
+                <h2 class="product-name" data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>"><?= $s->product_name?></h2>
                 <?php 
                     $get_cart_product = $_db->prepare('SELECT * FROM cart_product WHERE product_id = ? AND cart_id = ?');
                     $get_cart_product -> execute([$s->product_id, $shoppingCart->cart_id]);
                     $cartProductFound = $get_cart_product -> fetch();
                     if($cartProductFound != null){ ?>
-                        <h2 class="selected" data-get="productinfo.php?id=<?= $s->product_id ?>">Selected: <?= $cartProductFound->quantity?></h2>
+                        <h2 class="selected" data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>">Selected: <?= $cartProductFound->quantity?></h2>
                     <?php  } else { ?>
                         <h2 class="selected"></h2>
                 <?php  }  ?>
-                <h3 class="price" data-get="productinfo.php?id=<?= $s->product_id ?>">RM <?= sprintf('%.2f', $s->product_price)?></h3>
+                <h3 class="price" data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>">RM <?= sprintf('%.2f', $s->product_price)?></h3>
                 <form method="post">
                     <input hidden type="text" name="product_id" value="<?= $s->product_id ?>">
                     <input type="submit" name="add-to-cart" class= "add-to-cart" value="+">
                 <i class='bx bx-heart' ></i></form>
-                <span class="sold" data-get="productinfo.php?id=<?= $s->product_id ?>"><?= $s->product_sold?> sold || <?= $s->product_stock?> left</span>
+                <span class="sold" data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>"><?= $s->product_sold?> sold || <?= $s->product_stock?> left</span>
             </div>
             <?php endforeach ?>
         </div>

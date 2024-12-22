@@ -58,3 +58,9 @@ function updateQuantityInDatabase(quantity, productId, cartId) {
     })
     .catch(error => console.error('Error:', error));
 }
+
+function confirmClearCart(cart) {
+    if (confirm("Are you sure you want to clear your cart?")) {
+        window.location.href = 'clearcart.php?cart_id=' + cart;
+    }
+}

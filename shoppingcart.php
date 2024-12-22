@@ -12,17 +12,7 @@ $get_products_stm = $_db -> prepare('SELECT * FROM cart_product WHERE cart_id = 
 $get_products_stm -> execute([$shoppingCart->cart_id]); 
 $cart_products = $get_products_stm -> fetchAll();
 
-//If clear cart button is pressed
-if(isset($_POST['product_id'], $_POST['quantity'])){
-    
-    $productID = $_POST['product_id'];
-    $productQuantity = (int)$_POST['quantity'];
 
-    //If the product is add to cart before (The product definitely added before.)
-    $update_quantity_stm = $_db -> prepare('UPDATE cart_product SET quantity = ? WHERE cart_id = ? AND product_id = ?');
-    $update_quantity_stm -> execute([$productQuantity, $shoppingCart->cart_id, $productID]);
-    
-}
 
 ?>
 
@@ -38,7 +28,7 @@ if(isset($_POST['product_id'], $_POST['quantity'])){
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <script src="js/shoppingcart.js" defer></script>
-    <title>Shopping Cart</title>
+    <title>My Shopping Cart</title>
 </head>
 <script>
 window.onload = function() {
@@ -49,23 +39,22 @@ window.onload = function() {
     <div id="info"><?= temp('info')?></div>
     <section class="cart-display">
         <div class="heading">
-            <h1>Your Shopping Cart</h1>
-            <P>Total: <?= count($cart_products) ?> product(s) added to cart. </P>
+            <h1>My Shopping Cart</h1>
+            <P>Total <?= count($cart_products) ?> product(s) added to the cart. </P>
         </div>
 
         <?php if(count($cart_products)==0){ ?>
-            <h2 class="no-products">No products found.</h2>
+            <h2 class="no-products">No products added.</h2>
         <?php } $i = 0; $subtotal=0; ?>
 
         <?php foreach ($cart_products as $a): 
                 $value_id = "spinnerValue{$i}"; $price_id = "multipliedPrice{$i}";
-                //$value_id = "spinnerValue"; $price_id = "multipliedPrice";
                 $get_product_detail_stm = $_db->prepare('SELECT * FROM product p JOIN category c ON p.category_id = c.category_id WHERE product_id = ?');
                 $get_product_detail_stm -> execute([$a->product_id]);
                 $s = $get_product_detail_stm -> fetch();
             ?>
             <div class="box">
-                <div class="product-image"><img src="images/<?= $s->product_img ?>"></div>
+                <div class="product-image"><img src="images/<?= $s->product_cover ?>"></div>
                 <div class="product-content">
                     <span><?= $s->category_name?></span>
                     <h2 class="product-name"><?= $s->product_name?></h2>
@@ -86,13 +75,13 @@ window.onload = function() {
 
             <?php if(count($cart_products)>0){ ?>
                 <div class="cart-subtotal">
-                    <h3 class="subtitle">Cart subtotal:</h3>
+                    <h1 class="subtitle">Cart subtotal:</h1>
                     <h3 class="price">RM <?= sprintf('%.2f', $subtotal) ?></h3>
                 </div>
             
                 <div class="action-button">
-                    <button class="remove" onclick="">Clear Cart</button>
-                    <button class="decrease" onclick="">Checkout</button>
+                    <button class="clear" onclick="confirmClearCart('<?= $a->cart_id ?>')">Clear Cart</button>
+                    <button class="checkout" onclick="window.location.href='/checkout.php';">Checkout</button>
                 </div>
             <?php } $i = 0; ?>
 

@@ -4,7 +4,7 @@
 body{
     box-sizing: border-box;
     padding: 0;
-    margin-top: 11rem;
+    margin-top: 10rem;
     line-height: 1.5;
     background: whitesmoke;
 }
@@ -30,52 +30,13 @@ p{
 
 .card-wrapper{
     max-width: 1100px;
-    margin: 0 auto 11rem auto;
+    margin: 0 auto auto auto;
     padding: 10px;
 }
 
 .product-images img{
     width: 100%;
     display: block;
-}
-
-.image-display{
-    overflow: hidden;
-    background: white;
-    border-radius: 10px;
-}
-
-.image-showcase{
-    display: flex;
-    width: 100%;
-    transition: all 0.5s ease;
-}
-
-.image-showcase img{
-    min-width: 100%;
-}
-
-.image-select{
-    display: grid;
-    grid-template-columns: auto auto auto auto;
-    justify-content: center;
-}
-
-.image-item{
-    margin: 0.3rem;
-}
-
-.image-item:nth-child(1),
-.image-item:nth-child(2),
-.image-item:nth-child(3){
-    margin-right: 0;
-}
-
-.image-item:hover{
-    opacity: 0.8;
-    border-style: solid;
-    border-width: 1px;
-    border-color: #5874f1;
 }
 
 .product-content{
