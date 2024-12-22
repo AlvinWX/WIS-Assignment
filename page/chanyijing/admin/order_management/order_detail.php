@@ -4,40 +4,121 @@
 require '../../../../_base.php';
 
 //-----------------------------------------------------------------------------
-
+// Fetch order details 
 $order_id = req('order_id');
 $o_stm = $_db->prepare('SELECT * FROM `order` WHERE order_id = ?');
 $o_stm->execute([$order_id]);
 $o = $o_stm->fetch();
 
-if(!$o){
+if (!$o) {
     redirect('order_list.php');
 }
 
+// Fetch member details
 $m_stm = $_db->prepare('SELECT * FROM member WHERE memberID = ?');
 $m_stm->execute([$o->memberID]);
 $m = $m_stm->fetch();
 
+// Fetch shipping address
 $sa_stm = $_db->prepare('SELECT * FROM shipping_address WHERE shipping_address_id = ?');
 $sa_stm->execute([$o->shipping_address_id]);
 $sa = $sa_stm->fetch();
 
+// Fetch payment details
 $p_stm = $_db->prepare('SELECT * FROM payment WHERE order_id = ?');
 $p_stm->execute([$order_id]);
 $p = $p_stm->fetch();
 
+// Fetch payment method details
 $pm_stm = $_db->prepare('SELECT * FROM payment_method WHERE payment_method_id = ?');
 $pm_stm->execute([$p->payment_method_id]);
 $pm = $pm_stm->fetch();
 
-//havent finish yet
-$fields = [
-    'product_id'   => 'Product ID',
-    'product_name' => 'Name',
-    'product_img' => 'Image',
-    'order_product_quantity' => 'Qty',
-    'order_product_price' => 'Price (RM)'
-];
+// Fetch order products
+$op_stm = $_db->prepare('SELECT * FROM order_product WHERE order_id = ?');
+$op_stm->execute([$o->order_id]);
+$order_products = $op_stm->fetchAll(PDO::FETCH_ASSOC);
+
+// if(is_post()){
+//     $order_status = req('order_status');
+
+//     $_err = [];
+
+//     //Validate order status
+//     if ($order_status == '') {
+//         $_err['order_status'] = 'Please select an order status';
+//     }
+
+//     //Output
+//     if (!$_err) {
+//         if ($orderStatus !== $o->order_status) {
+//             $stm = $_db->prepare('UPDATE `order` SET order_status = ? WHERE order_id = ?');
+//             $stm->execute([$order_status, $order_id]);
+
+//             if (in_array($order_status, ['Shipped', 'Delivered'])) {
+//                 $current_time = date('Y-m-d H:i:s');
+                
+//                 if ($order_status == 'Shipped') {
+//                     $stm = $_db->prepare('UPDATE `order` SET order_ship_date = ? WHERE order_id = ?');
+//                     $stm->execute([$current_time, $order_id]);
+//                 } elseif ($order_status == 'Delivered') {
+//                     $stm = $_db->prepare('UPDATE `order` SET order_received_date = ? WHERE order_id = ?');
+//                     $stm->execute([$current_time, $order_id]);
+//                 } else {
+//                     $stm = $_db->prepare('UPDATE `order` SET order_ship_date = NULL, order_received_date = NULL WHERE order_id = ?');
+//                     $stm->execute([$order_id]);
+//                 }
+//             }
+
+//             temp('info', 'Order status updated successfully.');
+//         } else {
+//             temp('info', 'No change in order status.');
+//         }
+//         redirect('order_detail.php?order_id=' . $order_id);
+//     }
+// }
+
+if(is_post()){
+    $order_status = req('order_status');
+
+    $_err = [];
+
+    // Validate order status
+    if ($order_status == '') {
+        $_err['order_status'] = 'Please select an order status';
+    }
+
+    // Output
+    if (!$_err) {
+        if ($order_status !== $o->order_status) {
+            $stm = $_db->prepare('UPDATE `order` SET order_status = ? WHERE order_id = ?');
+            $stm->execute([$order_status, $order_id]);
+
+            if (in_array($order_status, ['Shipped', 'Delivered'])) {
+                $current_time = date('Y-m-d H:i:s');
+                
+                if ($order_status == 'Shipped') {
+                    $stm = $_db->prepare('UPDATE `order` SET order_ship_date = ? WHERE order_id = ?');
+                    $stm->execute([$current_time, $order_id]);
+                } elseif ($order_status == 'Delivered') {
+                    $stm = $_db->prepare('UPDATE `order` SET order_received_date = ? WHERE order_id = ?');
+                    $stm->execute([$current_time, $order_id]);
+                }
+            }
+
+            if (in_array($order_status, ['Pending', 'Packed', 'Cancelled'])) {
+                $stm = $_db->prepare('UPDATE `order` SET order_ship_date = NULL, order_received_date = NULL WHERE order_id = ?');
+                $stm->execute([$order_id]);
+            }
+
+            temp('info', 'Order status updated successfully.');
+        } else {
+            temp('info', 'No change in order status.');
+        }
+        
+        redirect('order_detail.php?order_id=' . $order_id);
+    }
+}
 
 //-----------------------------------------------------------------------------
 
@@ -45,10 +126,14 @@ $_title = 'Order Detail';
 include '../../../../_head.php';
 ?>
 
+<div class="top-heading-space">
+    <h3>Order Details for Order ID <?= $o->order_id ?></h3>
+</div>
+
+<!-- Customer Information Table -->
 <table class="order-listing-table">
     <tr>
-        <th>Customer Information</th>
-        <th>
+        <th colspan="2">Customer Information</th>
     </tr>
     <tr>
         <th>Member ID</th>
@@ -72,33 +157,87 @@ include '../../../../_head.php';
     </tr>
 </table>
 
-<!-- order details here -->
-
-
+<!-- Order Details Table -->
 <table class="order-listing-table">
     <tr>
-        <th>Order Summary</th>
-        <th>
+        <th colspan="6">Order Details</th>
+    </tr>
+    <tr>
+        <th>Product ID</th>
+        <th>Product Name</th>
+        <th>Product Image</th>
+        <th>Quantity</th>
+        <th>Price (RM)</th>
+        <th>Subtotal (RM)</th>
+    </tr>
+
+    <?php foreach ($order_products as $op): ?>
+        <?php
+        $prod_stm = $_db->prepare('SELECT * FROM product WHERE product_id = ?');
+        $prod_stm->execute([$op['product_id']]);
+        $prod = $prod_stm->fetch(PDO::FETCH_ASSOC);
+
+        // Calculate the subtotal for each product
+        $product_subtotal = $op['order_product_quantity'] * $op['order_product_price'];
+        ?>
+
+        <tr>
+            <td><?= $prod['product_id'] ?></td>
+            <td><?= $prod['product_name'] ?></td>
+            <td><img src="../../../../images/<?= $prod['product_img'] ?>" alt="<?= $prod['product_name'] ?>" style="width: 100px;"></td>
+            <td><?= $op['order_product_quantity'] ?></td>
+            <td><?= number_format($op['order_product_price'], 2) ?></td>
+            <td><?= number_format($product_subtotal, 2) ?></td>
+        </tr>
+    <?php endforeach; ?>
+</table>
+
+<!-- Order Status -->
+<form method="post">
+    <table class="order-listing-table">
+        <tr>
+            <th colspan="3">Update Order Status</th>
+        </tr>
+        <tr>
+            <td><?= html_select('order_status', $_orderStatuses, $o->order_status); ?></td>
+            <td><?= err('order_status') ?></td>
+            <td><button type="submit">Update Status</button></td>
+        </tr>
+    </table>
+</form>
+
+<!-- Order Summary Table -->
+<table class="order-listing-table">
+    <tr>
+        <th colspan="2">Order Summary</th>
     </tr>
     <tr>
         <th>Order ID</th>
         <td><?= $o->order_id ?></td>
     </tr>
     <tr>
-        <th>Order Datetime</th>
+        <th>Order Date & Time</th>
         <td><?= $o->order_date ?></td>
     </tr>
     <tr>
+        <th>Order Ship Date</th>
+        <td><?= $o->order_ship_date ?></td>
+    </tr>
+    <tr>
+        <th>Order Delivered Date</th>
+        <td><?= $o->order_received_date ?></td>
+    </tr>
+    <tr>
         <th>Subtotal (RM)</th>
-        <td><?= $o->order_subtotal ?></td>
+        <td><?= number_format($o->order_subtotal, 2) ?></td>
     </tr>
     <tr>
         <th>Delivery Fee (RM)</th>
-        <td><?= $o->order_delivery_fee ?></td>
+        <td><?= number_format($o->order_delivery_fee, 2) ?></td>
     </tr>
     <tr>
         <th>Tax (RM)</th>
-        <td><?= $o->order_tax ?></td>
+        <td><?= number_format($o->order_tax, 2) ?></td>
     </tr>
     <tr>
         <th>Voucher Applied</th>
@@ -106,18 +245,18 @@ include '../../../../_head.php';
     </tr>
     <tr>
         <th>Discount (RM)</th>
-        <td><?= $o->order_discount_price ?></td>
+        <td><?= number_format($o->order_discount_price, 2) ?></td>
     </tr>
     <tr>
         <th>Order Total (RM)</th>
-        <td><?= $o->order_total ?></td>
+        <td><?= number_format($o->order_total, 2) ?></td>
     </tr>
 </table>
 
+<!-- Payment Details Table -->
 <table class="order-listing-table">
     <tr>
-        <th>Payment Details</th>
-        <th>
+        <th colspan="2">Payment Details</th>
     </tr>
     <tr>
         <th>Payment ID</th>
@@ -133,13 +272,13 @@ include '../../../../_head.php';
     </tr>
     <tr>
         <th>Payment Amount (RM)</th>
-        <td><?= $p->payment_amount ?></td>
+        <td><?= number_format($p->payment_amount, 2) ?></td>
     </tr>
 </table>
-
 
 <br>
 <button data-get="order_list.php">Back</button>
 
 <?php
 include '../../../../_foot.php';
+?>

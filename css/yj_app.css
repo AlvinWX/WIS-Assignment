@@ -9,17 +9,17 @@ main h1 {
     color: #333;
 }
 
+.top-heading-space {
+    margin: 140px auto auto 40px;
+}
+
 /* Table ------------------------------------------------------------------- */
 .table {
-    width: 100%;
+    width: 95%;
+    margin: 50px auto 10px auto; 
     border-collapse: collapse;
-    margin-left: 10px; 
-    margin-right: 10px;
-    margin: 0 auto; 
-    padding: 10px;  
-    width: 98%; 
-    margin-top: 140px; 
-    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
 }
 
 .table th, .table td {
@@ -30,10 +30,10 @@ main h1 {
 }
 
 .table th {
-    background-color: #b0c4de; /* Grey-blue */
+    background-color: #b0c4de; 
     color: #333;
     text-align: left;
-    padding: 10px;
+    padding-left: 30px;
     border: 1px solid #ddd;
 }
 
@@ -83,7 +83,7 @@ a.desc::after {
 /* Order Listing Table ----------------------------------------------------- */
 .order-listing-table {
     width: 95%;
-    margin: 140px auto 10px auto; 
+    margin: 50px auto 10px auto; 
     border-collapse: collapse;
     padding: 10px;
     background-color: #f9f9f9;
@@ -183,24 +183,32 @@ label > * {
 
 .update-form {
     display: grid;
-    grid: auto / auto auto auto;
     gap: 10px;
     place-content: start;
     place-items: center start;
-    margin-top: 140px; 
-    margin-left: 30px;
+    margin-top: 20px; 
+    margin-left: 40px;
 }
 
 .update-form > label:not(:has(*)) {
     place-self: stretch;
     background: #ffccd5;
     font-weight: bold;
-    padding: 8px;
+    padding: 10px;
     border-radius: 5px;
 }
 
 .update-form > section {
     grid-column: 1 / -1;
+}
+
+form select {
+    width: 90%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    box-sizing: border-box; 
 }
 
 .err {
@@ -230,15 +238,14 @@ input:focus, button:focus, select:focus, textarea:focus {
 }
 
 button {
+    margin-left: 30px;
+    margin-right: 20px;
     background-color: #66b3ff; 
     color: white;
     cursor: pointer;
     transition: background 0.3s ease;
 }
 
-button:hover {
-    background-color: #3399ff; 
-}
 
 .profile-pic-container {
     text-align: center;

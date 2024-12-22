@@ -51,10 +51,12 @@ include '../../../../_head.php';
     </form>
 </div>
 
+<div class="top-heading-space">
+    <h3>Order List</h3>
+</div>
+
 <table class="table">
     <tr>
-        <th>Order List</th>
-        <td><td><td>
         <td><?= count($arr) ?> order(s)</td>
     </tr>
     <tr>
@@ -76,6 +78,8 @@ include '../../../../_head.php';
         </tr>
     <?php endforeach ?>
 </table>
+
+<button data-get="order_list.php">All Order(s)</button>
 
 
 <?php

@@ -46,10 +46,12 @@ include '../../../../_head.php';
     </form>
 </div>
 
+<div class="top-heading-space">
+    <h3>Member List</h3>
+</div>
+
 <table class="table">
     <tr>
-        <th>Member List</th>
-        <td><td>
         <td><?= count($arr) ?> member(s)</td>
         <td>
     </tr>

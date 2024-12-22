@@ -20,6 +20,10 @@ $_title = 'Member Detail';
 include '../../../../_head.php';
 ?>
 
+<div class="top-heading-space">
+    <h3>Member Detail</h3>
+</div>
+
 <table class="table">
     <tr>
         <th>Profile Picture</th>

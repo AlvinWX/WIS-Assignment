@@ -16,6 +16,10 @@ $_title = 'Admin Detail';
 include '../../../../_head.php';
 ?>
 
+<div class="top-heading-space">
+    <h3>Admin Detail</h3>
+</div>
+
 <table class="table">
     <tr>
         <th>Profile Picture</th>
