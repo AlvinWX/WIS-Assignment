@@ -41,11 +41,11 @@ include '../../../../_head.php';
     </tr>
     <tr>
         <th>Email</th>
-        <td><?= $s->adminEmail ?></td>
+        <td><a href="mailto:<?= $s->adminEmail ?>"><?= $s->adminEmail ?></a></td>
     </tr>
     <tr>
         <th>Phone</th>
-        <td><?= $s->adminPhone ?></td>
+        <td><a href="tel:<?= $s->adminPhone ?>"><?= $s->adminPhone ?></a></td>
     </tr>
     <tr>
         <th>Gender</th>

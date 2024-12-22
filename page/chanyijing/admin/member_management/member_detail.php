@@ -40,11 +40,11 @@ include '../../../../_head.php';
     </tr>
     <tr>
         <th>Email</th>
-        <td><?= $s->memberEmail ?></td>
+        <td><a href="mailto:<?= $s->memberEmail ?>"><?= $s->memberEmail ?></a></td>
     </tr>
     <tr>
         <th>Phone</th>
-        <td><?= $s->memberPhone ?></td>
+        <td><a href="tel:<?= $s->memberPhone ?>"><?= $s->memberPhone ?></a></td>
     </tr>
     <tr>
         <th>Gender</th>
@@ -55,9 +55,13 @@ include '../../../../_head.php';
         <td><?= $s->memberDateJoined ?></td>
     </tr>
     <tr>
-        <th>Address</th>
-        <td><?= $address->addressStreet . ', ' . $address->addressPostcode . ', ' . $address->addressCity . ', ' . $address->addressState ?></td>
-    </tr>
+    <th>Address</th>
+    <td>
+        <a href="https://www.google.com/maps/search/<?= urlencode($address->addressStreet . ', ' . $address->addressPostcode . ', ' . $address->addressCity . ', ' . $address->addressState) ?>" target="_blank">
+            <?= $address->addressStreet . ', ' . $address->addressPostcode . ', ' . $address->addressCity . ', ' . $address->addressState ?>
+        </a>
+    </td>
+</tr>
 </table>
 
 <br>

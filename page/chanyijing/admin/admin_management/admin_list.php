@@ -46,7 +46,7 @@ include '../../../../_head.php';
 </div>
 
 <div class="top-heading-space">
-    <h3>Admin List</h3>
+    <h2>Admin List</h2>
 </div>
 
 <table class="table">

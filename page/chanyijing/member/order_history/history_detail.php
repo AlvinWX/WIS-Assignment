@@ -4,15 +4,17 @@
 require '../../../../_base.php';
 
 //-----------------------------------------------------------------------------
+// Member ID
+$memberID = "MB00002";
+
 // Fetch order details 
 $order_id = req('order_id');
-$o_stm = $_db->prepare('SELECT * FROM `order` 
-                    WHERE order_id = ?');
+$o_stm = $_db->prepare('SELECT * FROM `order` WHERE order_id = ?');
 $o_stm->execute([$order_id]);
 $o = $o_stm->fetch();
 
 if (!$o) {
-    redirect('order_list.php');
+    die('Error: No order found for the given Order ID.');
 }
 
 // Fetch member details
@@ -40,47 +42,11 @@ $op_stm = $_db->prepare('SELECT * FROM order_product WHERE order_id = ?');
 $op_stm->execute([$o->order_id]);
 $order_products = $op_stm->fetchAll(PDO::FETCH_ASSOC);
 
-if(is_post()){
-    $order_status = req('order_status');
+// Delivery Icon
+$order_status = $o->order_status; 
 
-    $_err = [];
-
-    // Validate order status
-    if ($order_status == '') {
-        $_err['order_status'] = 'Please select an order status';
-    }
-
-    // Output
-    if (!$_err) {
-        if ($order_status !== $o->order_status) {
-            $stm = $_db->prepare('UPDATE `order` SET order_status = ? WHERE order_id = ?');
-            $stm->execute([$order_status, $order_id]);
-
-            if (in_array($order_status, ['Shipped', 'Delivered'])) {
-                $current_time = date('Y-m-d H:i:s');
-                
-                if ($order_status == 'Shipped') {
-                    $stm = $_db->prepare('UPDATE `order` SET order_ship_date = ? WHERE order_id = ?');
-                    $stm->execute([$current_time, $order_id]);
-                } elseif ($order_status == 'Delivered') {
-                    $stm = $_db->prepare('UPDATE `order` SET order_received_date = ? WHERE order_id = ?');
-                    $stm->execute([$current_time, $order_id]);
-                }
-            }
-
-            if (in_array($order_status, ['Pending', 'Packed', 'Cancelled'])) {
-                $stm = $_db->prepare('UPDATE `order` SET order_ship_date = NULL, order_received_date = NULL WHERE order_id = ?');
-                $stm->execute([$order_id]);
-            }
-
-            temp('info', 'Order status updated successfully.');
-        } else {
-            temp('info', 'No change in order status.');
-        }
-
-        redirect('order_detail.php?order_id=' . $order_id);
-    }
-}
+$image_path = '../../../../images/delivery_icon/';
+$icon = $image_path . $order_status . '.png';
 
 //-----------------------------------------------------------------------------
 
@@ -89,38 +55,30 @@ include '../../../../_head.php';
 ?>
 
 <div class="top-heading-space">
-    <h3>Order Details for Order ID <?= $o->order_id ?></h3>
+    <h3>Order Details</h3>
 </div>
 
 <!-- Customer Information Table -->
-<table class="order-listing-table">
-    <tr>
-        <th colspan="2"><h3>Customer Information</h3></th>
-    </tr>
-    <tr>
-        <th>Member ID</th>
-        <td><a href="../member_management/member_detail.php?id=<?= $m->memberID ?>"><?= $m->memberID ?></a></td>
-    </tr>
-    <tr>
-        <th>Name</th>
-        <td><?= $m->memberName ?></td>
-    </tr>
-    <tr>
-        <th>Email</th>
-        <td><a href="mailto:<?= $m->memberEmail ?>"><?= $m->memberEmail ?></a></td>
-    </tr>
-    <tr>
-        <th>Phone</th>
-        <td><a href="tel:<?= $m->memberPhone ?>"><?= $m->memberPhone ?></a></td>
-    </tr>
-    <tr>
-    <th>Shipping Address</th>
-    <td>
-        <a href="https://www.google.com/maps/search/<?= urlencode($sa->shipping_address_street . ', ' . $sa->shipping_address_postcode . ', ' . $sa->shipping_address_city . ', ' . $sa->shipping_address_state) ?>" target="_blank">
-            <?= $sa->shipping_address_street . ', ' . $sa->shipping_address_postcode . ', ' . $sa->shipping_address_city . ', ' . $sa->shipping_address_state ?>
-        </a>
-    </td>
-</tr>
+<div class="order-card">
+    <h2 class="order-status"><?= $o->order_status ?></h2>
+        <div class="order-status-icon">
+            <img src="<?= $icon ?>" alt="Order Status" />
+        </div>
+    <table class="order-listing-table">
+        <tr>
+            <th>Name</th>
+            <td colspan="2"><?= $m->memberName ?></td>
+        </tr>
+        <tr>
+            <th>Phone</th>
+            <td colspan="2"><?= $m->memberPhone ?></td>
+        </tr>
+        <tr>
+            <th>Shipping Address</th>
+            <td colspan="2"><?= $sa->shipping_address_street . ', ' . $sa->shipping_address_postcode . ', ' . $sa->shipping_address_city . ', ' . $sa->shipping_address_state ?></td>
+        </tr>
+    </table>
+</div>
 
 </table>
 
@@ -158,20 +116,6 @@ include '../../../../_head.php';
         </tr>
     <?php endforeach ?>
 </table>
-
-<!-- Order Status -->
-<form method="post">
-    <table class="order-listing-table">
-        <tr>
-            <th colspan="3"><h3>Update Order Status</h3></th>
-        </tr>
-        <tr>
-            <td><?= html_select('order_status', $_orderStatuses, $o->order_status); ?></td>
-            <td><?= err('order_status') ?></td>
-            <td><button type="submit">Update Status</button></td>
-        </tr>
-    </table>
-</form>
 
 <!-- Order Summary Table -->
 <table class="order-listing-table">
@@ -226,10 +170,6 @@ include '../../../../_head.php';
         <th colspan="2"><h3>Payment Details</h3></th>
     </tr>
     <tr>
-        <th>Payment ID</th>
-        <td><?= $p->payment_id ?></td>
-    </tr>
-    <tr>
         <th>Payment Date</th>
         <td><?= $p->payment_date ?></td>
     </tr>
@@ -244,7 +184,7 @@ include '../../../../_head.php';
 </table>
 
 <br>
-<button data-get="order_list.php">Back</button>
+<button data-get="history_list.php">Back</button>
 
 <?php
 include '../../../../_foot.php';

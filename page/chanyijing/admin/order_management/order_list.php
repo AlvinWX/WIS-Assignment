@@ -8,7 +8,7 @@ require '../../../../_base.php';
 $fields = [
     'order_id'   => 'Order ID',
     'order_date' => 'Order Date',
-    'order_total' => 'Total(RM)',
+    'order_total' => 'Total (RM)',
     'order_status' => 'Order Status',
 ];
 
@@ -52,7 +52,7 @@ include '../../../../_head.php';
 </div>
 
 <div class="top-heading-space">
-    <h3>Order List</h3>
+    <h2>Order List</h2>
 </div>
 
 <table class="table">
@@ -72,7 +72,6 @@ include '../../../../_head.php';
             <td><?= $o->order_status ?></td>
             <td>
             <button data-get="order_detail.php?order_id=<?= $o->order_id ?>">Order Detail</button>
-            <button data-get="order_update.php?order_id=<?= $o->$order_id ?>">Update Status</button>
             <button data-post="order_delete.php?order_id=<?= $o->order_id ?>"data-confirm>Delete</button>
             </td>
         </tr>

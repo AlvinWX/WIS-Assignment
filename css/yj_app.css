@@ -4,13 +4,13 @@ main {
     background-color: #ffffff;
 }
 
-main h1 {
-    margin-top: 0;
-    color: #333;
+p {
+    margin: 60px auto 50px 40px;
+    font-size: 20px;
 }
 
-.top-heading-space {
-    margin: 140px auto auto 40px;
+.top-heading-space{
+    margin: 150px auto auto 40px;
 }
 
 /* Table ------------------------------------------------------------------- */
@@ -133,6 +133,31 @@ a.desc::after {
     display: block;
 }
 
+/* Card ----------------------------------------------------------- */
+
+.order-card {
+    width: 92%;  
+    margin: 20px auto;  
+    padding: 20px;
+    background-color: #6da9e6;  
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+.order-status {
+    font-size: 35px;
+    color: #ededed;  
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.order-status-icon img {
+    width: 70px;
+    height: auto;
+    display: block;
+    margin: 0 auto 20px;  
+}
+
 /* Search bar ----------------------------------------------------------- */
 .search-bar {
     position: relative; 
@@ -148,6 +173,28 @@ a.desc::after {
     gap: 10px;   
     align-items: center; 
     margin-right: 20px;
+}
+
+/* Receipt ----------------------------------------------------------- */
+
+.receipt-button {
+    text-align: right; 
+    margin: 20px 15px; 
+}
+
+.receipt-button button {
+    background-color: #ff7b7b; 
+    color: white; 
+    padding: 10px 20px; 
+    border: none; 
+    border-radius: 5px; 
+    font-size: 20px; 
+    cursor: pointer; 
+    transition: background-color 0.3s; 
+}
+
+.receipt-button button:hover {
+    background-color: #ec4949; 
 }
 
 /* Flash Message ----------------------------------------------------------- */
