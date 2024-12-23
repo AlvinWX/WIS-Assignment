@@ -87,11 +87,6 @@ function is_money($value) {
     return preg_match('/^\-?\d+(\.\d{1,2})?$/', $value);
 }
 
-// Is email?
-function is_email($value) {
-    return filter_var($value, FILTER_VALIDATE_EMAIL) !== false;
-}
-
 // Return base url (host + port)
 function base($path = '') {
     return "http://$_SERVER[SERVER_NAME]:$_SERVER[SERVER_PORT]/$path";
@@ -241,6 +236,10 @@ function get_mail() {
     return $m;
 }
 
+// Is email?
+// function is_email($value) {
+//     return filter_var($value, FILTER_VALIDATE_EMAIL) !== false;
+// }
 
 // ============================================================================
 // Error Handlings
@@ -259,6 +258,35 @@ function err($key) {
         echo '<span></span>';
     }
 }
+
+// ============================================================================
+// Email Functions
+// ============================================================================
+
+// Demo Accounts:
+// --------------
+// AACS3173@gmail.com           npsg gzfd pnio aylm
+// BAIT2173.email@gmail.com     ytwo bbon lrvw wclr
+// liaw.casual@gmail.com        wtpa kjxr dfcb xkhg
+// liawcv1@gmail.com            obyj shnv prpa kzvj
+
+// Initialize and return mail object
+// function get_mail() {
+//     require_once 'lib/PHPMailer.php';
+//     require_once 'lib/SMTP.php';
+
+//     $m = new PHPMailer(true);
+//     $m->isSMTP();
+//     $m->SMTPAuth = true;
+//     $m->Host = 'smtp.gmail.com';
+//     $m->Port = 587;
+//     $m->Username = 'aacs3173@gmail.com';
+//     $m->Password = 'xxna ftdu plga hzxl';
+//     $m->CharSet = 'utf-8';
+//     $m->setFrom($m->Username, '😺 Admin');
+
+//     return $m;
+// }
 
 
 // ============================================================================

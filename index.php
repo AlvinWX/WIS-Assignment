@@ -2,6 +2,8 @@
 require '_base.php';
 include '_head.php';
 
+
+
 auth('member');
 $success = $_SESSION['flash_success'] ?? '';
 $error = $_SESSION['flash_error'] ?? '';
@@ -14,19 +16,19 @@ $lowest_price_arr = $_db->query('SELECT * FROM product p JOIN category c ON p.ca
 unset($_SESSION['flash_success'], $_SESSION['flash_error']);
 
 //CART
-$member_id = 'MB00001'; //HERE NEED TO CHANGE AFTERWARDS
+$member_id = $user->memberID; 
 
 $check_cart_exists_stm = $_db -> prepare('SELECT COUNT(*) FROM cart c JOIN member m ON m.memberID = c.member_id WHERE c.member_id = ?');
-$check_cart_exists_stm -> execute([$member_id]); //HERE NEED TO CHANGE AFTERWARDS
+$check_cart_exists_stm -> execute([$member_id]); 
 
 if($check_cart_exists_stm -> fetchColumn() == 0){
     /* If the member first time go into the cart page (The member don't have the cart before) */
     $create_cart_stm = $_db -> prepare('INSERT INTO cart (subtotal, member_id) VALUES (0, ?)');
-    $create_cart_stm  -> execute([$member_id]); //HERE NEED TO CHANGE AFTERWARDS
+    $create_cart_stm  -> execute([$member_id]); 
 } else{
     /* The member have the cart before */
     $get_cart_stm = $_db -> prepare('SELECT * FROM cart c JOIN member m ON m.memberID = c.member_id WHERE c.member_id = ?');
-    $get_cart_stm -> execute([$member_id]); //HERE NEED TO CHANGE AFTERWARDS
+    $get_cart_stm -> execute([$member_id]);
     $shoppingCart = $get_cart_stm -> fetch();
 }
 
@@ -149,7 +151,7 @@ $fullPath = $_SERVER['REQUEST_URI'];
         <div class="products-container">
         <?php foreach ($top_selling_arr as $s): ?>
             <div class="box">
-                <img src="images/<?= $s->product_cover ?>" data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>">
+                <img src="page/yongqiaorou/images/<?= $s->product_cover ?>" data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>">
                 <span data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>"><?= $s->category_name?></span>
                 <h2 class="product-name" data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>"><?= $s->product_name?></h2>
                 <?php 
@@ -178,7 +180,7 @@ $fullPath = $_SERVER['REQUEST_URI'];
         <div class="products-container">
         <?php foreach ($lowest_price_arr as $s): ?>
             <div class="box">
-                <img src="images/<?= $s->product_cover ?>" data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>">
+                <img src="page/yongqiaorou/images/<?= $s->product_cover ?>" data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>">
                 <span data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>"><?= $s->category_name?></span>
                 <h2 class="product-name" data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>"><?= $s->product_name?></h2>
                 <?php 

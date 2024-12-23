@@ -57,8 +57,10 @@ $p = new SimplePager($query, [], 10, $page);
 $arr = $p->result;
 
 //Retrieve member cart
+$member_id = $user->memberID; 
+
 $get_cart_stm = $_db -> prepare('SELECT * FROM cart c JOIN member m ON m.memberID = c.member_id WHERE c.member_id = ?');
-$get_cart_stm -> execute(["MB00001"]); //HERE NEED TO CHANGE AFTERWARDS
+$get_cart_stm -> execute([$member_id]);
 $shoppingCart = $get_cart_stm -> fetch();
 
 //If add to cart button is pressed
@@ -146,7 +148,7 @@ $fullPath = $_SERVER['REQUEST_URI'];
         <div class="products-container">
         <?php foreach ($arr as $s): ?>
             <div class="box">
-                <img src="images/<?= $s->product_cover ?>" data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>">
+                <img src="page/yongqiaorou/images/<?= $s->product_cover ?>" data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>">
                 <span data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>"><?= $s->category_name?></span>
                 <h2 class="product-name" data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>"><?= $s->product_name?></h2>
 

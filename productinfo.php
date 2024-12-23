@@ -15,8 +15,10 @@ if (!$s) {
 }
 
 //Retrieve member cart
+$member_id = $user->memberID; 
+
 $get_cart_stm = $_db -> prepare('SELECT * FROM cart c JOIN member m ON m.memberID = c.member_id WHERE c.member_id = ?');
-$get_cart_stm -> execute(["MB00001"]); //HERE NEED TO CHANGE AFTERWARDS
+$get_cart_stm -> execute([$member_id]);
 $shoppingCart = $get_cart_stm -> fetch();
 
 //Used to display quantity
@@ -86,7 +88,7 @@ window.onload = function() {
             <div class = "slide-container">
         
         <div class="slides">
-        <img src="images/<?= $s->product_cover ?>" alt="Resource <?= $index + 1 ?>" class="image active">
+        <img src="page/yongqiaorou/images/<?= $s->product_cover ?>" alt="Resource <?= $index + 1 ?>" class="image active">
         <?php foreach ($resources as $index => $resource):?>
                             <?php if (strpos(mime_content_type("uploads/$resource"), 'image/') !== false): ?>
                                 <img src="/uploads/<?= $resource ?>" alt="Resource <?= $index + 1 ?>" class="image">
@@ -104,7 +106,7 @@ window.onload = function() {
         </div>
 
         <div class="image-thumbnail">
-            <img class="img active" src="images/<?= $s->product_cover ?>" alt="Resource <?= $index + 1 ?>" attr='0' onclick="switchImage(this)">
+            <img class="img active" src="page/yongqiaorou/images/<?= $s->product_cover ?>" alt="Resource <?= $index + 1 ?>" attr='0' onclick="switchImage(this)">
             <?php for($i = 1; $i <= count($resources); $i++): $resource = $resources[$i-1] ?>
 			    
                 <?php if (strpos(mime_content_type("uploads/$resource"), 'image/') !== false): ?>
@@ -138,7 +140,7 @@ window.onload = function() {
                     <button class="remove" onclick="confirmDelete('<?= $s->product_id ?>', '<?= $check_result->cart_id ?>', '<?= $path ?>')">Remove</button>
                     <?php } ?>
                     <button class="decrease" onclick="decreaseValue()">-</button>
-                    <form method="post" id="quantitySelect"><input type="number" blur name="quantity" id="spinnerValue" value="<?= $currentQuantity ?>" min="1" max="<?= $s -> product_stock ?>" step="1"></form>
+                    <form method="post" id="quantitySelect"><input disabled type="number" blur name="quantity" id="spinnerValue" value="<?= $currentQuantity ?>" min="1" max="<?= $s -> product_stock ?>" step="1"></form>
                     <button class="increase" onclick="increaseValue()">+</button>
                     <input form="quantitySelect" hidden type="text" name="product_id" value="<?= $s->product_id ?>">
                     <input form="quantitySelect" type = "submit" name="add-to-cart" class="add-to-cart" value="Add to Cart">

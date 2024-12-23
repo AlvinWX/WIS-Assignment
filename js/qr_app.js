@@ -64,30 +64,82 @@ $(() => {
     });
 
     
-    // Photo preview for multiple files
-    $('label.upload input[type=file]').on('change', e => {
-        const files = e.target.files;
-        const previewContainer = $('#product_photo_previews');
-        previewContainer.empty();  // Clear previous previews
+// Photo preview for multiple files
+// Sanitize the file name (optional)
+function sanitizeFileName(fileName) {
+    return fileName.replace(/\s+/g, '_').replace(/[^\w.-]/g, '');
+}
+$('label.upload input[type=file]').on('change', function(e) {
+    const files = e.target.files;
+    const previewContainer = $('#product_photo_previews');
+    previewContainer.empty();  // Clear previous previews
 
-        Array.from(files).forEach(file => {
-            const imgOrVideo = document.createElement(file.type.startsWith('image/') ? 'img' : 'video');
-            
-            if (file.type.startsWith('image/')) {
-                imgOrVideo.src = URL.createObjectURL(file);
-                imgOrVideo.style.maxWidth = '200px';  // Adjust size as needed
-                imgOrVideo.style.margin = '5px';  // Add space between previews
-            } else if (file.type.startsWith('video/')) {
-                imgOrVideo.src = URL.createObjectURL(file);
-                imgOrVideo.controls = true;  // Add video controls (play, pause, etc.)
-                imgOrVideo.style.maxWidth = '200px';  // Adjust size as needed
-                imgOrVideo.style.margin = '5px';  // Add space between previews
-            }
+    Array.from(files).forEach(file => {
+        if (file.type.startsWith('image/')) {  // Only process image files
+            // Create the image element
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            img.style.maxWidth = '200px';  // Adjust size as needed
+            img.style.margin = '5px';  // Add space between previews
+            img.style.position = 'relative';  // Ensure positioning for checkbox
 
-            // Append to the preview container
-            previewContainer.append(imgOrVideo);
-        });
+            // Get the sanitized file name for product_cover input
+            const fileName = sanitizeFileName(file.name);
+
+            // Create the checkbox element
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.classList.add('cover-checkbox');
+            checkbox.style.position = 'absolute';
+            checkbox.style.top = '5px';
+            checkbox.style.right = '5px';
+            checkbox.style.zIndex = '1';
+
+            // Create a container div to hold both the image and the checkbox
+            const container = document.createElement('div');
+            container.style.position = 'relative';  // Make sure the checkbox stays within the image
+            container.style.display = 'inline-block';  // Ensure images are inline
+            container.appendChild(img);
+            container.appendChild(checkbox);
+
+            // Append the container with the image and checkbox to the preview container
+            previewContainer.append(container);
+
+            // Add an event listener to handle checkbox selection
+            checkbox.addEventListener('change', function() {
+                // Uncheck all checkboxes before checking the selected one
+                const checkboxes = document.querySelectorAll('.cover-checkbox');
+                checkboxes.forEach(cb => {
+                    if (cb !== checkbox) {
+                        cb.checked = false;  // Uncheck other checkboxes
+                    }
+                });
+
+                // Update the product_cover input value with the sanitized file name of the selected image
+                if (checkbox.checked) {
+                    // Set the default image when no checkbox is selected
+                    document.getElementById('preview').src = img.src;
+                    
+                    // Programmatically trigger the file input to accept the selected image
+                    const fileInput = document.getElementById('product_cover');
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    fileInput.files = dataTransfer.files;  // Set the files on the input element
+                } else {
+                    alert("You have not choose the cover picture yet");
+
+                }
+            });
+        }
     });
+});
+
+
+
+
+
+
+
 
     
 

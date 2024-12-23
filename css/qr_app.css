@@ -1,142 +1,402 @@
-/* Font -------------------------------------------------------------------- */
-
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-
-body, input, button, textarea, select {
-    font: 16px 'Roboto', sans-serif;
-}
-
-/* Layout ------------------------------------------------------------------ */
+/*wj*/
 
 body {
-    margin: 0;
-    height: 100vh;
-    display: grid;
-    grid: auto auto 1fr auto / auto;
+    font-family: 'Montserrat', sans-serif;
+    color: #333;
+    justify-content: center;
+    align-items: center;
+}
+/* =========================== */
+/* Header and Navigation        */
+/* =========================== */
+
+header {
+    width: 100%;
+    padding: 15px 40px;
+    color: #000; /* Black font */
+    background-color: #fff; /* White background */
+    position: fixed; /* Fix the header at the top */
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    display: flex; /* Flexbox for alignment */
+    align-items: center; /* Center items vertically */
+    justify-content: space-between; /* Space between logo and title */
+    transition: transform 0.3s ease; /* Smooth hide/show transition */
 }
 
-header, footer {
-    padding: 10px 50px;
-    background: #ccc;
-}
 
 header h1 {
     margin: 0;
     padding-left: 40px;
-    background: url(/images/favicon.png) no-repeat left / 36px;
+    background: url(/images/favicon.png) no-repeat left / 50px;
 }
 
-header a {
-    color: inherit;
-    text-decoration: none;
+.home-logo img {
+    max-width: 100px;
+    height: auto;
+    cursor: pointer;
 }
 
 nav {
-    padding: 0 50px;
-    background: #999;
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    position: relative;
 }
 
 nav a {
-    padding: 5px 10px;
-    color: #fff;
-    background: #666;
+    margin: 0 10px;
+    padding: 8px 15px;
     text-decoration: none;
-    white-space: nowrap;
+    color: #333;
+    font-size: 16px;
+    border-radius: 5px;
+    position: relative;
+    transition: color 0.3s ease;
 }
 
 nav a:hover {
-    background: #333;
+    color: #333;
 }
 
+nav a::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: #333;
+    transition: width 0.3s ease, left 0.3s ease;
+}
+
+nav a:hover::before {
+    width: 100%;
+    left: 0;
+}
+
+/* =========================== */
+/* Dropdown Menu Styles         */
+/* =========================== */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    top:25px;
+    z-index: 1;
+}
+
+nav ul li:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content a {
+    padding: 12px 16px;
+    color: black;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #f9f9f9;
+}
+
+
+/* =========================== */
+/* Main Content Styles          */
+/* =========================== */
 main {
     padding: 20px 50px;
+    text-align: center;
 }
 
 main h1 {
     margin-top: 0;
 }
 
-/* Pager */
-nav.pager {
-    padding: 0;
-    background: transparent;
+footer {
+    padding: 12px; /* Add padding for space around the footer */
+    background-color: #6c7ae0; /* Optional, for styling */
+    color: #f9f9f9;
+    text-align: center; /* Center the content in the footer */
 }
 
-nav.pager a {
-    outline: 1px solid #333;
+.search-container {
+    display: none;
+    position: absolute;
+    top: 95px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    padding: 10px 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    z-index: 1000;
 }
 
-nav.pager a.active {
-    background: #333;
+.search-bar {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    outline: none;
 }
 
+.search-bar:focus {
+    border-bottom: 2px solid red;
+}
+
+.search-container.show {
+    display: block;
+}
+
+.right-logo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding-right: 50px ;
+}
+
+.right-logo img{
+    max-width: 35px; /* Adjust logo size */
+    height: auto; /* Maintain aspect ratio */
+    cursor: pointer; /* Indicate clickability */
+    padding-right: 30px ;
+}
+
+.right-logo a {
+    text-decoration: none;
+}
+
+/*Search Form---------------------------*/
+.search-form {
+    margin-top: 50px !important;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 800px;
+    margin: auto;
+}
+
+.form-group {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+select, input[type="text"], input[type="number"] {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    width: 200px;
+    box-sizing: border-box;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn:hover {
+    background-color: #45a049;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.input-group input {
+    flex: 1;
+}
+
+#priceInputGroup {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+#textInputGroup, #priceInputGroup {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .search-form {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .form-group {
+        flex-direction: row;
+    }
+}
 /* Table ------------------------------------------------------------------- */
-
 .table-container {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     min-height: 80vh; /* Adjust based on your layout */
+    background-color: #f9f9f9; /* Light background for the whole container */
 }
 
 .table {
+    margin-left: auto;
+    margin-right: auto;
     border-collapse: collapse;
     margin: 20px 0;
     font-size: 18px;
     width: 80%; /* Adjust table width as needed */
+    background-color: #fff; /* White background for the table */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for a floating effect */
 }
 
 .table th, .table td {
-    border: 1px solid #333;
-    padding: 5px;
+    border: 1px solid #e1e1e1; /* Light border color */
+    padding: 12px 15px;
     text-align: center;
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
 }
 
 .table th {
     color: #fff;
-    background: #666;
+    background-color: #6c7ae0; /* Soft blue color for header */
+    font-weight: bold;
+    text-transform: uppercase; /* Make header text uppercase */
 }
 
 .table tr:hover td {
-    background: #ccc;
+    background-color: #f0f0f0; /* Light gray background on row hover */
+    cursor: pointer; /* Pointer cursor on hover */
 }
 
 .table td:last-child {
     position: relative;
 }
 
+/* Popup for action buttons */
 .table .popup {
     position: absolute;
     top: 50%;
     left: 100%;
-    translate: 5px -50%;
+    transform: translate(5px, -50%);
     z-index: 999;
-    border: 1px solid #333;
+    border: 1px solid #1683e2;
+    background-color: #fff;
     display: none;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }
 
 .table tr:hover .popup {
     display: block;
 }
 
-.detail th {
-    text-align: left;
+/* Hover effect on buttons inside table */
+.table button {
+    background-color: #82a4ec; /* Light blue */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-/* Sorting */
+.table button:hover {
+    background-color: #6c7ae0; /* Darker blue on hover */
+}
+
+/* Detail page styling for table */
+.detail th {
+    text-align: left;
+    background-color: #6c7ae0; /* Matching header color */
+    color: #fff;
+    padding: 12px 15px;
+}
+
+/* Sorting arrows */
 .table th a {
     color: inherit;
     display: block;
+    padding: 10px 0;
 }
 
 .table th a.asc::after {
     content: ' ▴';
+    color: #1683e2; /* Blue color for ascending arrow */
 }
 
 .table th a.desc::after {
     content: ' ▾';
+    color: #1683e2; /* Blue color for descending arrow */
+}
+
+/* Add responsiveness */
+@media (max-width: 768px) {
+    .table-container {
+        padding: 10px;
+    }
+
+    .table {
+        width: 100%;
+    }
+
+    .table th, .table td {
+        font-size: 16px;
+        padding: 10px;
+    }
+}
+
+/*Button------------*/
+.back_button {
+    float: left;
+    color: #6c7ae0; 
+    background-color: #f9f9f9;
+    border: 1px solid black; 
+    border-radius: 10%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+
+button {
+    margin: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #6c7ae0;
+    color: #f9f9f9;
+    cursor: pointer;
+    width: 80px;
+    height: 35px;
 }
 
 /* Flash Message ----------------------------------------------------------- */
@@ -144,14 +404,13 @@ nav.pager a.active {
 #info {
     position: fixed;
     color: #fff;
-    background: #666;
+    background: #6c7ae0;
     border: 1px solid #333;
     border-radius: 5px;
     padding: 10px 20px;
     left: 50%;
     translate: -50% 0;
     z-index: 999;
-
     top: -100px;
     opacity: 0;
 }
@@ -162,9 +421,114 @@ nav.pager a.active {
 
 @keyframes fade {
       0% { top: -100px; opacity: 0; }
-     10% { top:  100px; opacity: 1; }
-     90% { top:  100px; opacity: 1; }
+     10% { top:  150px; opacity: 1; }
+     90% { top:  150px; opacity: 1; }
     100% { top: -100px; opacity: 0; }
+}
+
+
+.err {
+    color: rgb(252, 3, 3);
+}
+
+
+.dot a:hover{
+    font-size: 18px;
+}
+
+#dot {
+    height: 50px;
+    width: 50px;
+    background-color: #6c7ae0;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    text-decoration: none;
+    position: fixed;
+    font-size: 30px;
+}
+
+#dot a {
+    color: #333;
+    text-decoration: none;
+}
+
+.dot_left{
+    bottom: 40px;
+    left: 50px; 
+}
+
+.dot_right{    
+    color: #fffdfd;
+    bottom: 40px;
+    right: 50px;
+}
+
+.custom-carousel {
+    position: relative;
+    width: 350px; /* Carousel width */
+    height: 250px; /* Carousel height */
+    overflow: hidden; /* Ensure only one image is visible at a time */
+    margin: 0 auto;
+}
+
+.carousel-inner {
+    display: flex;
+    transition: transform 0.5s ease-in-out; /* Smooth animation for sliding */
+    width: 100%;
+    height: 100%;
+}
+
+.carousel-item {
+    min-width: 100%; /* Each item takes the full width of the carousel */
+    height: 100%;
+    box-sizing: border-box;
+    display: flex; /* Center align the content */
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel-item img,
+.carousel-item video {
+    max-width: 100%; /* Ensure the image/video fits within the container */
+    max-height: 100%; /* Maintain aspect ratio */
+    object-fit: contain;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 10;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+.carousel-control-prev {
+    left: 10px;
+}
+
+.carousel-control-next {
+    right: 10px;
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
 }
 
 /* Form -------------------------------------------------------------------- */
@@ -192,70 +556,146 @@ label > * {
     grid-column: 1 / -1;
 }
 
-.err {
-    color: red;
+.form {
+    max-width: 50%;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(126, 168, 247, 0.1);
+    font-family: Arial, sans-serif;
 }
 
-
-.dot a:hover{
-    font-size: 18px;
-}
-
-#dot {
-    height: 50px;
-    width: 50px;
-    background-color: #bbb;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.form label {
+    display: block;
+    margin-bottom: 8px;
     font-weight: bold;
-    text-decoration: none;
-    position: fixed;
-    font-size: 30px;
+    color: #f9f9f9;
+    background-color: #6c7ae0;
 }
 
-#dot a {
+.form input, .form select, .form button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
     color: #333;
-    text-decoration: none;
 }
 
-.dot_left{
-    bottom: 20px;
-    left: 50px; 
+.form input[type="file"] {
+    padding: 0;
 }
 
-.dot_right{    
-    color: #666;
-    bottom: 20px;
-    right: 50px;
+.form input[type="number"] {
+    -moz-appearance: textfield;
 }
 
-/* Custom Carousel Styling */
-.custom-carousel {
-    width: 200px;
-    height: 200px;
-    overflow: hidden;
-    margin: 0 auto; /* Center the carousel */
+.form button {
+    background-color: #6c7ae0;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 250px;
 }
 
-/* For each carousel item (image/video) */
-.custom-carousel-item {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Ensure the content fills the space */
+.form button[type="reset"] {
+    background-color: #ccc;
+    margin-left: 10px;
 }
 
-.carousel-item img,
-.carousel-item video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* This makes sure images and videos cover the box without stretching */
+.form button:hover {
+    background-color: #5a66c0;
 }
 
-/* Optional: Fade effect for transitions */
-.carousel-item-next, .carousel-item-prev, .carousel-item.active {
-    transition: transform 0.5s ease;
+.form button[type="reset"]:hover {
+    background-color: #aaa;
 }
 
+.form .upload {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
 
+.form .upload:hover {
+    background-color: #e2e2e2;
+}
+
+#preview {
+    margin-top: 10px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+}
+
+#product_photo_previews img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    border-radius: 4px;
+}
+
+/* Error messages */
+.error {
+    color: #e74c3c;
+    font-size: 14px;
+}
+
+/* Additional hover and focus effects */
+.form input:focus, .form select:focus, .form button:focus {
+    outline: none;
+    box-shadow: 0 0 8px rgba(108, 122, 224, 0.6);
+}
+
+.form input, .form select {
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form input:focus, .form select:focus {
+    border-color: #6c7ae0;
+}
+
+/* Align submit and reset buttons in the center */
+.form section {
+    display: flex;
+    justify-content: center;  /* Center the buttons horizontally */
+    gap: 10px; /* Add space between buttons */
+}
+
+.form section button {
+    width: auto;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%; /* Position above the icon */
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+  }
