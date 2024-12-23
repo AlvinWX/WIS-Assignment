@@ -3,8 +3,10 @@ require '_base.php';
 include '_head.php';
 
 //Retrieve member cart
+$member_id = $user->memberID; 
+
 $get_cart_stm = $_db -> prepare('SELECT * FROM cart c JOIN member m ON m.memberID = c.member_id WHERE c.member_id = ?');
-$get_cart_stm -> execute(["MB00001"]); //HERE NEED TO CHANGE AFTERWARDS
+$get_cart_stm -> execute([$member_id]); 
 $shoppingCart = $get_cart_stm -> fetch();
 
 //Retrieve added to cart already items
@@ -62,7 +64,7 @@ window.onload = function() {
                     <div class="purchase-info">
                         <button class="remove" onclick="confirmDelete('<?= $s->product_id ?>', '<?= $a->cart_id ?>', 'cart')">Remove</button>
                         <button class="decrease" onclick="decreaseValue(<?= $i ?>); updatePrice(<?= $s->product_price ?>, <?= $i ?>)">-</button>
-                        <form method="post" id="quantitySelect"><input type="number" name="quantity" id="<?= $value_id ?>" value="<?= $a->quantity ?>" min="1" max="<?= $s -> product_stock ?>" step="1" data-product-id="<?= $s->product_id ?>" 
+                        <form method="post" id="quantitySelect"><input disabled type="number" name="quantity" id="<?= $value_id ?>" value="<?= $a->quantity ?>" min="1" max="<?= $s -> product_stock ?>" step="1" data-product-id="<?= $s->product_id ?>" 
                         data-cart-id="<?= $a->cart_id ?>"></form>
                         <button class="increase" onclick="increaseValue(<?= $i ?>); updatePrice(<?= $s->product_price ?>, <?= $i ?>)">+</button>
                         <input form="quantitySelect" hidden type="text" name="product_id" value="<?= $s->product_id ?>">
