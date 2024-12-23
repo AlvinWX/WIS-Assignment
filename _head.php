@@ -1,9 +1,10 @@
 <?php
     $user = $_SESSION['user'] ?? null; 
+    $member_id = $user->memberID; 
 
     //Retrieve member cart
     $get_cart_stm = $_db -> prepare('SELECT * FROM cart c JOIN member m ON m.memberID = c.member_id WHERE c.member_id = ?');
-    $get_cart_stm -> execute(["MB00001"]); //HERE NEED TO CHANGE AFTERWARDS
+    $get_cart_stm -> execute([$member_id]);
     $shoppingCart = $get_cart_stm -> fetch();
 
     //Retrieve added to cart already items
@@ -76,12 +77,21 @@
                 <?php else: ?>
                     <li><a href="/login.php">Login</a></li>
                 <?php endif ?>
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
                 <?php if ($user): ?>
                 <?php if ($user->userType == 'member'): ?>
                         <li><a href="/page/chanyijing/member/order_history/history_list.php">Order History</a></li>
                         <?php endif ?>
                         <?php endif ?>
 
+<<<<<<< Updated upstream
+=======
+>>>>>>> c79937dcd29e2448f711184ead1ccfe6f1f5b5e4
+>>>>>>> Stashed changes
             </ul>
         </nav>
         <div class="right-logo">

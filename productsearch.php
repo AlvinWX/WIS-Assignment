@@ -57,8 +57,10 @@ $p = new SimplePager($query, [], 10, $page);
 $arr = $p->result;
 
 //Retrieve member cart
+$member_id = $user->memberID; 
+
 $get_cart_stm = $_db -> prepare('SELECT * FROM cart c JOIN member m ON m.memberID = c.member_id WHERE c.member_id = ?');
-$get_cart_stm -> execute(["MB00001"]); //HERE NEED TO CHANGE AFTERWARDS
+$get_cart_stm -> execute([$member_id]);
 $shoppingCart = $get_cart_stm -> fetch();
 
 //If add to cart button is pressed

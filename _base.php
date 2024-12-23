@@ -239,6 +239,16 @@ function get_mail() {
     return $m;
 }
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+// // Is email?
+// function is_email($value) {
+//     return filter_var($value, FILTER_VALIDATE_EMAIL) !== false;
+// }
+=======
+>>>>>>> c79937dcd29e2448f711184ead1ccfe6f1f5b5e4
+>>>>>>> Stashed changes
 
 // ============================================================================
 // Error Handlings
@@ -258,6 +268,41 @@ function err($key) {
     }
 }
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+// ============================================================================
+// Email Functions
+// ============================================================================
+
+// Demo Accounts:
+// --------------
+// AACS3173@gmail.com           npsg gzfd pnio aylm
+// BAIT2173.email@gmail.com     ytwo bbon lrvw wclr
+// liaw.casual@gmail.com        wtpa kjxr dfcb xkhg
+// liawcv1@gmail.com            obyj shnv prpa kzvj
+
+// Initialize and return mail object
+// function get_mail() {
+//     require_once 'lib/PHPMailer.php';
+//     require_once 'lib/SMTP.php';
+
+//     $m = new PHPMailer(true);
+//     $m->isSMTP();
+//     $m->SMTPAuth = true;
+//     $m->Host = 'smtp.gmail.com';
+//     $m->Port = 587;
+//     $m->Username = 'aacs3173@gmail.com';
+//     $m->Password = 'xxna ftdu plga hzxl';
+//     $m->CharSet = 'utf-8';
+//     $m->setFrom($m->Username, '😺 Admin');
+
+//     return $m;
+// }
+
+=======
+>>>>>>> c79937dcd29e2448f711184ead1ccfe6f1f5b5e4
+>>>>>>> Stashed changes
 
 // ============================================================================
 // Database Setups and Functions

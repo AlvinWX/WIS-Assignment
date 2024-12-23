@@ -17,11 +17,12 @@ body{
     font-family: "Kanit", serif;
 }
 
-.cart-display{
+.cart-display, .voucher-apply, .shipping-address, .final-total{
     max-width: 1000px;
     margin-left: auto;
     margin-right: auto;
 }
+
 .cart-display .order-table {
     display: flex;
     flex-direction: column;
@@ -36,15 +37,15 @@ body{
 }
 
 .cart-display .table-header {
-    margin-bottom: 10px;
     font-weight: bold;
-    background-color: #f0f0f0;
+    background-color: #dedede;
     padding: 10px 0;
 }
 
 .cart-display .header-item, .cart-display .product-item, .cart-display .price-item, .cart-display .amount-item, .cart-display .total-item {
     padding: 8px;
     text-align: center;
+    color: black;
 }
 
 .cart-display .product-item {
@@ -85,6 +86,114 @@ body{
 
 .product-name {
     font-size: 20px; 
-    color: #333; 
+    color: black; 
+}
+
+.address-box {
+    display: grid;
+    grid-template-columns: min-content min-content 1fr; /* Adjust columns to fit content and expand address */
+    align-items: center;
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 3px 3px 5px rgba(0,0,0,0.2),
+                5px 5px 10px rgba(0,0,0,0.15),
+                10px 10px 20px rgba(0,0,0,0.1);
+    border-radius: 25px;
+    gap: 10px; /* Control spacing between grid items */
+}
+
+.address-box:hover {
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
+    background-color: #bcc2e3;
+}
+
+.sequence {
+    margin-right: 10px; /* Space between sequence and radio button */
+    font-weight: 900;
+}
+
+.sequence, .address-box input[type="radio"] {
+    justify-self: center; /* Center these elements in their grid cells */
+}
+
+.address-details {
+    overflow: hidden; /* Prevents overflow of text */
+    font-weight: 600;
+}
+
+.address-box label {
+    display: contents; /* Allows label to behave like a grid container */
+}
+
+.final-amount {
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* Adjust width as necessary */
+    margin-top: 20px; /* Space from the previous content */
+}
+
+.amount-row {
+    display: flex;
+    justify-content: space-between; /* Aligns items to the left and right */
+    padding: 8px 0; /* Adds vertical padding for spacing */
+    border-bottom: 1px solid #ccc; /* Optional: adds a line under each item */
+}
+
+.amount-row:last-child {
+    border-bottom: none; /* Removes the border from the last item */
+}
+
+.subtitle{
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.value{
+    font-size: 18px;
+    color: black;
+}
+
+.action-button {
+    display: flex;           
+    justify-content: center; 
+    align-items: center;     
+    padding-bottom: 20px;   
+    gap: 40px;
+}
+
+.action-button button{
+    border-radius: 70px;
+    border: none;
+    padding: 20px;
+    font-weight: 700;
+    font-size: 24px;
+    width: 250px;
+}
+
+.action-button input{
+    border-radius: 70px;
+    border: none;
+    padding: 20px;
+    font-weight: 700;
+    font-size: 24px;
+    width: 250px;
+}
+
+.action-button .fakecard{
+    cursor:pointer;
+    color: white;
+    background: #e5b80b;
+}
+
+.action-button .stripe{
+    cursor: pointer;
+    color: white;
+    background: #9966ff;
+}
+
+.action-button button:hover{
+    opacity: 0.9;
 }
 
