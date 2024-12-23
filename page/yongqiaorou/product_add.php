@@ -126,7 +126,7 @@ if (is_post()) {
 }
 
 // ----------------------------------------------------------------------------
-// $_title = 'Insert';
+$_title = 'Add Product';
 include '../../_admin_head.php';
 ?>
 <button data-get="/page/yongqiaorou/product.php"  class="back_button"><i class="fa fa-arrow-left" aria-hidden="true"></i>  Back</button>

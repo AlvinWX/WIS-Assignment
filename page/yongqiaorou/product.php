@@ -38,7 +38,7 @@ foreach ($bindValues as $param => $value) {
 $stmt->execute();
 $arr = $stmt->fetchAll();
 
-// $_title = 'Product List'; 
+$_title = 'Product List'; 
 include '../../_admin_head.php'; 
 ?>
 
