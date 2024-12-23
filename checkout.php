@@ -79,7 +79,7 @@ window.onload = function() {
         ?>
         <div class="table-row">
         <div class="product-item">
-            <img src="images/<?= $s->product_cover ?>" alt="<?= $s->product_name ?>">
+            <img src="page/yongqiaorou/images/<?= $s->product_cover ?>" alt="<?= $s->product_name ?>">
             <div class="product-text">
                 <span class="category-name"><?= $s->category_name ?></span>
                 <h2 class="product-name"><?= $s->product_name ?></h2>
@@ -97,20 +97,21 @@ window.onload = function() {
             <div class="header-item"></div>
             <div class="header-item"></div>
             <div class="header-item">RM <?= number_format($order_subtotal, 2) ?></div>
+            <div hidden><?= $subtotal += $order_subtotal?></div>
         </div>
         <div class="table-header">
-            <div class="header-item">SST (6%)</div>
+            <div class="header-item">SST (6 %)</div>
             <div class="header-item"></div>
             <div class="header-item"></div>
             <div class="header-item">RM <?= number_format($order_subtotal*0.06, 2) ?></div>
             <div hidden><?= $subtotal += ($order_subtotal*0.06)?></div>
         </div>
         <div class="table-header">
-            <div class="header-item">Delivery Fees</div>
+            <div class="header-item">Delivery Fees (3 %)</div>
             <div class="header-item"></div>
             <div class="header-item"></div>
-            <div class="header-item">RM <?= number_format(5, 2) ?></div>
-            <div hidden><?= $subtotal += $order_subtotal + 5?></div>
+            <div class="header-item">RM <?= number_format($order_subtotal*0.03, 2) ?></div>
+            <div hidden><?= $subtotal += ($order_subtotal*0.03)?></div>
         </div>
         <div class="table-header">
             <div class="header-item">Subtotal</div>

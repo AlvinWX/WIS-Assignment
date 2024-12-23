@@ -56,7 +56,7 @@ window.onload = function() {
                 $s = $get_product_detail_stm -> fetch();
             ?>
             <div class="box">
-                <div class="product-image"><img src="images/<?= $s->product_cover ?>"></div>
+                <div class="product-image"><img src="page/yongqiaorou/images/<?= $s->product_cover ?>"></div>
                 <div class="product-content">
                     <span><?= $s->category_name?></span>
                     <h2 class="product-name"><?= $s->product_name?></h2>
