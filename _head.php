@@ -1,4 +1,5 @@
 <?php
+    $user = $_SESSION['user'] ?? null; 
 
     //Retrieve member cart
     $get_cart_stm = $_db -> prepare('SELECT * FROM cart c JOIN member m ON m.memberID = c.member_id WHERE c.member_id = ?');
@@ -53,8 +54,6 @@
 </style>
 
 <body>
-    
-
     <header>
         <div class="home-logo">
             <a href="/">
@@ -64,45 +63,40 @@
         <nav>
             <ul>
                 <li><a href="/index.php">Home</a></li>
-                <li><a href="/login.php">Login</a></li>
-                <li><a href="/logout.php">Logout</a></li>
-                <!-- Dropdown Menu -->
-                <li>
-                    <a href="#">More</a>
-                    <div class="dropdown-content">
-                        <a href="#">XXXXX</a>
-                        <a href="/page/chanyijing/admin/member_management/member_list.php">Member Management</a>
-                        <a href="/page/chanyijing/admin/admin_management/admin_list.php">Admin Management</a>
-                    </div>
-                </li>
+                <!-- Show logout only if the user is logged in -->
+                <?php if ($user): ?>
+                    <li><a href="/logout.php">Logout</a></li>
+                    <?php if ($user->userType == 'admin'): ?>
+                        <li><a href="/product.php">Product Management</a></li>
+                        <li><a href="/page/chanyijing/admin/admin_management/admin_list.php">Admin Management</a></li>
+                        <li><a href="/page/chanyijing/admin/member_management/member_list.php">Member Management</a></li>
+                    <?php endif ?>
+                <?php else: ?>
+                    <li><a href="/login.php">Login</a></li>
+                <?php endif ?>
             </ul>
         </nav>
         <div class="right-logo">
-            
             <a href="/productsearch.php?product_name=&category_id=&minprice=&maxprice=&sort=product_name&dir=asc">
                 <img class="search" src="/images/search.png" alt="Search Icon" id="search-icon">
             </a>
-
-            <a href="/shoppingcart.php">
-                <img src="/images/shopping-cart.png" alt="Shopping Cart">
-                <span class="quantity"><?= count($cart_products) ?></span>
-            </a>
-
+            <?php if ($user && $user->userType == 'member'): ?>
+                <a href="/shoppingcart.php">
+                    <img src="/images/shopping-cart.png" alt="Shopping Cart">
+                    <span class="quantity"><?= count($cart_products) ?></span>
+                </a>
+            <?php endif ?>
             <a href="/login.php">
                 <img src="/images/user.png" alt="Clickable Image">
             </a>
             <div class="dropdown-content">
-                        <a href="/user/profile.php">Profile</a>
-                        <a href="#">Logout</a>
-                    </div>
+                <a href="/user/profile.php">Profile</a>
+                <a href="#">Logout</a>
+            </div>
         </div>
         <div class="search-container" id="search-container">
             <input type="text" class="search-bar" placeholder="Search...">
         </div>
     </header>
-
-    <!-- <main>
-        <h1><?= $_title ?? 'Untitled' ?></h1>
-    </main> -->
 </body>
 </html>

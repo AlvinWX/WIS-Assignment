@@ -128,18 +128,31 @@ if (!$state) {
     $currentDate = date('Y-m-d');
     $stm->execute([$newID, $name, $password, $email, $phone, $gender, $photo, $currentDate]);
 
-    // DB operation: Insert address
-$addressID = sprintf('AD%05d', (int)substr($lastID, 2) + 1);  // Generate a unique address ID
+// Generate a unique address ID
+$addressID = sprintf('AD%05d', (int)substr($lastID, 2) + 1);
 
+// Check if the addressID already exists in the database
+$checkStm = $_db->prepare('SELECT address_id FROM address WHERE address_id = ?');
+$checkStm->execute([$addressID]);
+
+// If the addressID exists, regenerate it
+while ($checkStm->fetch()) {
+    // Increment the address ID
+    $addressID = sprintf('AD%05d', (int)substr($addressID, 2) + 1);
+    // Re-run the check
+    $checkStm->execute([$addressID]);
+}
+
+// Now perform the insert
 $stm = $_db->prepare('
     INSERT INTO address (address_id, street, postcode, city, state, member_id)
     VALUES (?, ?, ?, ?, ?, ?)
 ');
 $stm->execute([$addressID, $address, $postcode, $city, $state, $newID]);
-    temp('info', 'Record inserted');
-    redirect('/login.php');
-    }
-}
+
+temp('info', 'Record inserted');
+redirect('/login.php');
+    }}
 
 // ----------------------------------------------------------------------------
 
