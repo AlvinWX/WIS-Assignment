@@ -189,6 +189,33 @@ function sort_buttons($productName, $productCategory, $minPrice, $maxPrice, $fie
 }
 
 // ============================================================================
+// Email Functions
+// ============================================================================           
+
+// Initialize and return mail object
+function get_mail() {
+    require_once 'lib/PHPMailer.php';
+    require_once 'lib/SMTP.php';
+
+    $m = new PHPMailer(true);
+    $m->isSMTP();
+    $m->SMTPAuth = true;
+    $m->Host = 'smtp.gmail.com';
+    $m->Port = 587;
+    $m->Username = 'targrocer@gmail.com';
+    $m->Password = 'targrocer!@#';
+    $m->CharSet = 'utf-8';
+    $m->setFrom($m->Username, 'TAR GROCER');
+
+    return $m;
+}
+
+// Is email?
+function is_email($value) {
+    return filter_var($value, FILTER_VALIDATE_EMAIL) !== false;
+}
+
+// ============================================================================
 // Error Handlings
 // ============================================================================
 

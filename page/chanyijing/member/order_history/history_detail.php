@@ -167,7 +167,7 @@ include '../../../../_head.php';
 <!-- Payment Details Table -->
 <table class="order-listing-table">
     <tr>
-        <th colspan="2"><h3>Payment Details</h3></th>
+        <th><h3>Payment Details</h3></th>
     </tr>
     <tr>
         <th>Payment Date</th>
@@ -183,7 +183,10 @@ include '../../../../_head.php';
     </tr>
 </table>
 
-<br>
+<br/>
+<button data-get="order_receipt.php?order_id=<?= $o->order_id ?>">Receipt</button>
+
+<br/>
 <button data-get="history_list.php">Back</button>
 
 <?php

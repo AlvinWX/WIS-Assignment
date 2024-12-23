@@ -93,11 +93,11 @@ include '../../../../_head.php';
             </tr>
             <tr>
                 <td colspan="7">
-                <td><button><a href="history_detail.php?order_id=<?= $o['order_id'] ?>">View More</a></button></td>
+                <td><button data-get="history_detail.php?order_id=<?= $o['order_id'] ?>">View More</button></td>
             </tr>
         </table>
-    <?php endforeach; ?>
-<?php endif; ?>
+    <?php endforeach ?>
+<?php endif ?>
 
 <button data-get="history_list.php">All Order(s)</button>
 
