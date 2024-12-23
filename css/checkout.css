@@ -1,0 +1,90 @@
+body{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    width: 100%;
+    min-height: 100vh;
+    justify-content: center;
+    background-color: whitesmoke;
+    margin-top: 20vh;
+}
+
+.heading h1{
+    font-style: bold; 
+    font-size: 2.1rem;
+    font-weight: 600;
+    font-family: "Kanit", serif;
+}
+
+.cart-display{
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.cart-display .order-table {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.cart-display .table-header, .cart-display .table-row {
+    display: grid;
+    grid-template-columns: 3fr 1fr 1fr 1fr;
+    gap: 10px;
+    align-items: center;
+}
+
+.cart-display .table-header {
+    margin-bottom: 10px;
+    font-weight: bold;
+    background-color: #f0f0f0;
+    padding: 10px 0;
+}
+
+.cart-display .header-item, .cart-display .product-item, .cart-display .price-item, .cart-display .amount-item, .cart-display .total-item {
+    padding: 8px;
+    text-align: center;
+}
+
+.cart-display .product-item {
+    display: flex;
+    align-items: center;
+    text-align: left;
+}
+
+.cart-display .product-item img {
+    width: 70px;
+    height: 70px;
+    margin-right: 10px;
+    border-radius: 10px;
+}
+
+.product-item {
+    display: flex;
+    align-items: center; 
+    text-align: left;
+    gap: 10px; 
+}
+
+.product-item img {
+    width: 50px; 
+    height: 50px;
+    border-radius: 5px;
+}
+
+.product-text {
+    display: flex;
+    flex-direction: column; 
+}
+
+.category-name {
+    font-size: 15px; 
+    color: #666; 
+}
+
+.product-name {
+    font-size: 20px; 
+    color: #333; 
+}
+

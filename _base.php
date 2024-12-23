@@ -87,6 +87,17 @@ function is_money($value) {
     return preg_match('/^\-?\d+(\.\d{1,2})?$/', $value);
 }
 
+// Is email?
+function is_email($value) {
+    return filter_var($value, FILTER_VALIDATE_EMAIL) !== false;
+}
+
+// Return base url (host + port)
+function base($path = '') {
+    return "http://$_SERVER[SERVER_NAME]:$_SERVER[SERVER_PORT]/$path";
+}
+
+
 // ============================================================================
 // HTML Helpers
 // ============================================================================
@@ -112,6 +123,12 @@ function html_number($key, $min = '', $max = '', $step = '', $attr = '') {
     $value = encode($GLOBALS[$key] ?? '');
     echo "<input type='number' id='$key' name='$key' value='$value'
                  min='$min' max='$max' step='$step' $attr>";
+}
+
+// Generate <input type='password'>
+function html_password($key, $attr = '') {
+    $value = encode($GLOBALS[$key] ?? '');
+    echo "<input type='password' id='$key' name='$key' value='$value' $attr>";
 }
 
 // Generate <input type='search'>
@@ -234,6 +251,36 @@ function err($key) {
 }
 
 // ============================================================================
+// Email Functions
+// ============================================================================
+
+// Demo Accounts:
+// --------------
+// AACS3173@gmail.com           npsg gzfd pnio aylm
+// BAIT2173.email@gmail.com     ytwo bbon lrvw wclr
+// liaw.casual@gmail.com        wtpa kjxr dfcb xkhg
+// liawcv1@gmail.com            obyj shnv prpa kzvj
+
+// Initialize and return mail object
+function get_mail() {
+    require_once 'lib/PHPMailer.php';
+    require_once 'lib/SMTP.php';
+
+    $m = new PHPMailer(true);
+    $m->isSMTP();
+    $m->SMTPAuth = true;
+    $m->Host = 'smtp.gmail.com';
+    $m->Port = 587;
+    $m->Username = 'aacs3173@gmail.com';
+    $m->Password = 'xxna ftdu plga hzxl';
+    $m->CharSet = 'utf-8';
+    $m->setFrom($m->Username, '😺 Admin');
+
+    return $m;
+}
+
+
+// ============================================================================
 // Database Setups and Functions
 // ============================================================================
 
@@ -258,6 +305,59 @@ function is_exists($value, $table, $field) {
     return $stm->fetchColumn() > 0;
 }
 
+// ============================================================================
+// Security
+// ============================================================================
+// Global user object
+$_user = $_SESSION['user'] ?? null;
+
+// Login user (with table type)
+function login($user, $type, $url = '/') {
+    if ($user) {
+        temp('info', 'Login successful as ' . $user->userType);
+        $_SESSION['user'] = $user;
+        $_SESSION['user_type'] = $user->userType;  // Store the user type ('member' or 'admin')
+    
+        // Redirect based on user type
+        if ($user->userType === 'admin') {
+
+            redirect('/page/chanyijing/admin/admin_management/admin_detail.php');
+        } else {
+            redirect('/index.php');
+        }
+        exit();
+    } else {
+        $_err['password'] = 'Incorrect email or password';
+    }
+}
+
+// Logout user
+function logout($url = '/') {
+    unset($_SESSION['user']);
+    unset($_SESSION['user_type']);
+    redirect($url);
+}
+
+
+// Authorization by user type (admin, member, etc.)
+function auth(...$types) {
+    global $_user;
+
+    // Check if the user is logged in
+    if ($_user) {
+        // If types are provided, check if the user's type matches one of the allowed types
+        if ($types) {
+            if (in_array($_SESSION['user_type'], $types)) {
+                return; // Authorized
+            }
+        } else {
+            return; // No types specified, just allow access
+        }
+    }
+    
+    // Redirect to login if the user is not authorized
+    redirect('/login.php');
+}
 // ============================================================================
 // Global Constants and Variables
 // ============================================================================
@@ -284,7 +384,7 @@ $_orderStatuses = [
 // $_members = $_db->query('SELECT memberID, memberName FROM member')
 //                   ->fetchAll(PDO::FETCH_KEY_PAIR);
                   
- $_products = $_db->query('SELECT product_id, product_name, product_img, product_desc, product_price, product_stock FROM product WHERE product_status=1;');
+ $_products = $_db->query('SELECT product_id, product_name, product_cover, product_resources,product_desc, product_price, product_stock FROM product WHERE product_status=1;');
                  //  ->fetchAll(PDO::FETCH_KEY_PAIR);
 
  $_categories = $_db->query('SELECT category_id, category_name FROM category')
