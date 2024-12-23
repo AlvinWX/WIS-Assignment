@@ -89,6 +89,10 @@ $fullPath = $_SERVER['REQUEST_URI'];
     <script src="js/imageslider.js" defer></script>
     <script src="js/app.js" defer></script>
     <style>
+        .empty-box{
+            margin: 35px;
+            padding: 35px;
+        }
         .flash-message {
             padding: 15px;
             border-radius: 5px;       
@@ -121,6 +125,9 @@ $fullPath = $_SERVER['REQUEST_URI'];
 <?php if ($error): ?>
     <div class="flash-message flash-error"><?= htmlspecialchars($error) ?></div>
 <?php endif; ?>
+
+<div class="empty-box">
+</div>
 
 <div class = "slide-container">
         
