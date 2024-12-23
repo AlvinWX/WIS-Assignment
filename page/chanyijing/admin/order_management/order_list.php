@@ -27,14 +27,14 @@ $order_id = $order_id ?: '';
 $order_status = $order_status ?: '';
 
 // SQL query with filters and sorting
-$stm = $_db->prepare('SELECT * FROM `order`
+$o_stm = $_db->prepare('SELECT * FROM `order`
                       WHERE (order_id LIKE ? OR ? = "")
                       AND (order_status = ? OR ? = "")
                       ORDER BY ' . $sort . ' ' . $dir);
 
-$stm->execute([$order_id, $order_id, $order_status, $order_status]);
+$o_stm->execute([$order_id, $order_id, $order_status, $order_status]);
 
-$arr= $stm->fetchAll();
+$orders= $o_stm->fetchAll();
 
 //-----------------------------------------------------------------------------
 
@@ -55,28 +55,32 @@ include '../../../../_head.php';
     <h2>Order List</h2>
 </div>
 
-<table class="table">
-    <tr>
-        <td><?= count($arr) ?> order(s)</td>
-    </tr>
-    <tr>
-        <?= table_headers($fields, $sort, $dir) ?>
-        <th>
-    </tr>
+<?php if (empty($orders)): ?>
+    <p>No order(s) found.</p>
+    <?php else: ?>
+        <table class="table">
+            <tr>
+                <td><?= count($orders) ?> order(s)</td>
+            </tr>
+            <tr>
+                <?= table_headers($fields, $sort, $dir) ?>
+                <th>
+            </tr>
 
-    <?php foreach ($arr as $o): ?>
-        <tr>
-            <td><?= $o->order_id ?></td>
-            <td><?= $o->order_date ?></td>
-            <td><?= $o->order_total ?></td>
-            <td><?= $o->order_status ?></td>
-            <td>
-            <button data-get="order_detail.php?order_id=<?= $o->order_id ?>">Order Detail</button>
-            <button data-post="order_delete.php?order_id=<?= $o->order_id ?>"data-confirm class="delete-btn">Delete</button>
-            </td>
-        </tr>
-    <?php endforeach ?>
-</table>
+            <?php foreach ($orders as $o): ?>
+                <tr>
+                    <td><?= $o->order_id ?></td>
+                    <td><?= $o->order_date ?></td>
+                    <td><?= $o->order_total ?></td>
+                    <td><?= $o->order_status ?></td>
+                    <td>
+                    <button data-get="order_detail.php?order_id=<?= $o->order_id ?>">Order Detail</button>
+                    <button data-post="order_delete.php?order_id=<?= $o->order_id ?>"data-confirm class="delete-btn">Delete</button>
+                    </td>
+                </tr>
+            <?php endforeach ?>
+        </table>
+<?php endif ?>
 
 <button data-get="order_list.php">All Order(s)</button>
 

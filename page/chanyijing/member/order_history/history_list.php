@@ -48,7 +48,7 @@ include '../../../../_head.php';
 </div>
 
 <?php if (empty($orders)): ?>
-    <p>No orders found.</p>
+    <p>No order(s) found.</p>
 <?php else: ?>
     <?php foreach ($orders as $o): ?>
         <table class="table">

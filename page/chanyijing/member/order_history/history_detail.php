@@ -4,8 +4,8 @@
 require '../../../../_base.php';
 
 //-----------------------------------------------------------------------------
-// Member ID
-$memberID = "MB00002";
+$user = $_SESSION['user'] ?? null;
+$memberID = $user->memberID;
 
 // Fetch order details 
 $order_id = req('order_id');
@@ -167,7 +167,7 @@ include '../../../../_head.php';
 <!-- Payment Details Table -->
 <table class="order-listing-table">
     <tr>
-        <th><h3>Payment Details</h3></th>
+        <th colspan="2"><h3>Payment Details</h3></th>
     </tr>
     <tr>
         <th>Payment Date</th>
@@ -187,7 +187,7 @@ include '../../../../_head.php';
 <button data-get="order_receipt.php?order_id=<?= $o->order_id ?>">Receipt</button>
 
 <br/>
-<button data-get="history_list.php">Back</button>
+<button data-get="history_list.php?memberID=<?= $m->memberID ?>">Back</button>
 
 <?php
 include '../../../../_foot.php';

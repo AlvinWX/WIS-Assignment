@@ -136,17 +136,22 @@ a.desc::after {
 /* Card ----------------------------------------------------------- */
 
 .order-card {
-    width: 92%;  
-    margin: 20px;  
-    padding: 20px;
-    background-color: #b0c4de; 
+    width: 90%;  
+    margin: 30px;  
+    padding: 30px;
+    background-color: #a2c5f3; 
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
+.order-card p{
+    font-size: 16px;
+    margin: 20px;  
+}
+
 .order-status {
     font-size: 35px;
-    color: #ededed;  
+    color: #ffffff;  
     margin-bottom: 10px;
     text-align: center;
 }
@@ -171,8 +176,8 @@ a.desc::after {
 }
 
 .text-box {
-    max-width: 60%; 
-    width: 50%; 
+    max-width: 100%; 
+    width: 80%; 
     padding: 8px;
     margin-top: 5px;
 }
@@ -185,7 +190,7 @@ a.desc::after {
 
 .button-group button {
     padding: 10px 20px;
-    background-color: #007bff;
+    background-color: #469fff;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -361,7 +366,6 @@ button {
     cursor: pointer;
     transition: background 0.3s ease;
 }
-
 
 button.delete-btn {
     background-color: #fa836e; 

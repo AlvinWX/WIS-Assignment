@@ -20,27 +20,34 @@ if (is_post()) {
     }
 
     if (!$_err) {
+        // Check if the user is a member
         $stm = $_db->prepare('
             SELECT *, "member" AS userType FROM member
             WHERE memberEmail = ? AND memberPassword = SHA1(?)
-            UNION
-            SELECT *, "admin" AS userType FROM admin
-            WHERE adminEmail = ? AND adminPassword = SHA1(?)
         ');
-
-        $stm->execute([$email, $password, $email, $password]);
+        $stm->execute([$email, $password]);
         $user = $stm->fetch();
 
+        if (!$user) {
+            // Check if the user is an admin if not found as a member
+            $stm = $_db->prepare('
+                SELECT *, "admin" AS userType FROM admin
+            WHERE adminEmail = ? AND adminPassword = SHA1(?)
+            ');
+            $stm->execute([$email, $password]);
+            $user = $stm->fetch();
+        }
+
         if ($user) {
-//             var_dump($user);
-// exit;
+            // var_dump($user);
+            // exit;
             temp('info', 'Login successful as ' . $user->userType);
             $_SESSION['user'] = $user;
-            $_SESSION['user_type'] = $user->userType;
+            $_SESSION['user_type'] = $user->userType;  // Store the user type ('member' or 'admin')
 
-            // Ensure Redirect
+            // Redirect based on user type
             if ($user->userType === 'admin') {
-                
+                $_SESSION['adminTier'] = $user->adminTier;
                 redirect('/page/chanyijing/admin/admin_management/admin_detail.php');
             } else {
                 redirect('/index.php');

@@ -170,6 +170,19 @@ function html_file($key, $accept = '', $attr = '') {
     echo "<input type='file' id='$key' name='$key' accept='$accept' $attr>";
 }
 
+// Generate <textarea>
+function html_textarea($key, $attr = '') {
+    $value = encode($GLOBALS[$key] ?? '');
+    echo "<textarea id='$key' name='$key' $attr>$value</textarea>";
+}
+
+// Generate SINGLE <input type='checkbox'>
+function html_checkbox($key, $label = '', $attr = '') {
+    $value = encode($GLOBALS[$key] ?? '');
+    $status = $value == 1 ? 'checked' : '';
+    echo "<label><input type='checkbox' id='$key' name='$key' value='1' $status $attr>$label</label>";
+}
+
 // Generate table headers <th>
 function table_headers($fields, $sort, $dir, $href = '') {
     foreach ($fields as $k => $v) {
@@ -209,7 +222,6 @@ function sort_buttons($productName, $productCategory, $minPrice, $maxPrice, $fie
 // Email Functions
 // ============================================================================           
 
-// Initialize and return mail object
 function get_mail() {
     require_once 'lib/PHPMailer.php';
     require_once 'lib/SMTP.php';
@@ -219,18 +231,14 @@ function get_mail() {
     $m->SMTPAuth = true;
     $m->Host = 'smtp.gmail.com';
     $m->Port = 587;
-    $m->Username = 'targrocer@gmail.com';
-    $m->Password = 'targrocer!@#';
+    $m->Username = 'liawcv1@gmail.com';
+    $m->Password = 'pztq znli gpjg tooe';
     $m->CharSet = 'utf-8';
-    $m->setFrom($m->Username, 'TAR GROCER');
+    $m->setFrom($m->Username, 'TAR GROCER Admin');
 
     return $m;
 }
 
-// Is email?
-function is_email($value) {
-    return filter_var($value, FILTER_VALIDATE_EMAIL) !== false;
-}
 
 // ============================================================================
 // Error Handlings
@@ -249,35 +257,6 @@ function err($key) {
         echo '<span></span>';
     }
 }
-
-// ============================================================================
-// Email Functions
-// ============================================================================
-
-// Demo Accounts:
-// --------------
-// AACS3173@gmail.com           npsg gzfd pnio aylm
-// BAIT2173.email@gmail.com     ytwo bbon lrvw wclr
-// liaw.casual@gmail.com        wtpa kjxr dfcb xkhg
-// liawcv1@gmail.com            obyj shnv prpa kzvj
-
-// // Initialize and return mail object
-// function get_mail() {
-//     require_once 'lib/PHPMailer.php';
-//     require_once 'lib/SMTP.php';
-
-//     $m = new PHPMailer(true);
-//     $m->isSMTP();
-//     $m->SMTPAuth = true;
-//     $m->Host = 'smtp.gmail.com';
-//     $m->Port = 587;
-//     $m->Username = 'aacs3173@gmail.com';
-//     $m->Password = 'xxna ftdu plga hzxl';
-//     $m->CharSet = 'utf-8';
-//     $m->setFrom($m->Username, '😺 Admin');
-
-//     return $m;
-// }
 
 
 // ============================================================================
