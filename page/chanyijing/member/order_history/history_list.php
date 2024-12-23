@@ -4,8 +4,8 @@
 require '../../../../_base.php';
 
 //-----------------------------------------------------------------------------
-// Member ID
-$memberID = "MB00002";
+$user = $_SESSION['user'] ?? null;
+$memberID = $user->memberID;
 
 // Retrieve search and filter parameters
 $order_id = req('order_id');

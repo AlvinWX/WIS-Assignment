@@ -76,7 +76,7 @@
                 <?php else: ?>
                     <li><a href="/login.php">Login</a></li>
                 <?php endif ?>
->>>>>>> 5f14917485a8f7780ac848de6cbefe163fcac6c6
+
             </ul>
         </nav>
         <div class="right-logo">

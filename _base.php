@@ -227,10 +227,10 @@ function get_mail() {
     return $m;
 }
 
-// Is email?
-function is_email($value) {
-    return filter_var($value, FILTER_VALIDATE_EMAIL) !== false;
-}
+// // Is email?
+// function is_email($value) {
+//     return filter_var($value, FILTER_VALIDATE_EMAIL) !== false;
+// }
 
 // ============================================================================
 // Error Handlings
@@ -261,23 +261,23 @@ function err($key) {
 // liaw.casual@gmail.com        wtpa kjxr dfcb xkhg
 // liawcv1@gmail.com            obyj shnv prpa kzvj
 
-// Initialize and return mail object
-function get_mail() {
-    require_once 'lib/PHPMailer.php';
-    require_once 'lib/SMTP.php';
+// // Initialize and return mail object
+// function get_mail() {
+//     require_once 'lib/PHPMailer.php';
+//     require_once 'lib/SMTP.php';
 
-    $m = new PHPMailer(true);
-    $m->isSMTP();
-    $m->SMTPAuth = true;
-    $m->Host = 'smtp.gmail.com';
-    $m->Port = 587;
-    $m->Username = 'aacs3173@gmail.com';
-    $m->Password = 'xxna ftdu plga hzxl';
-    $m->CharSet = 'utf-8';
-    $m->setFrom($m->Username, '😺 Admin');
+//     $m = new PHPMailer(true);
+//     $m->isSMTP();
+//     $m->SMTPAuth = true;
+//     $m->Host = 'smtp.gmail.com';
+//     $m->Port = 587;
+//     $m->Username = 'aacs3173@gmail.com';
+//     $m->Password = 'xxna ftdu plga hzxl';
+//     $m->CharSet = 'utf-8';
+//     $m->setFrom($m->Username, '😺 Admin');
 
-    return $m;
-}
+//     return $m;
+// }
 
 
 // ============================================================================
@@ -381,11 +381,11 @@ $_orderStatuses = [
     'Cancelled' => 'Cancelled'
 ];
 
-// $_members = $_db->query('SELECT memberID, memberName FROM member')
-//                   ->fetchAll(PDO::FETCH_KEY_PAIR);
+$_members = $_db->query('SELECT memberID, memberName FROM member')
+                  ->fetchAll(PDO::FETCH_KEY_PAIR);
                   
- $_products = $_db->query('SELECT product_id, product_name, product_cover, product_resources,product_desc, product_price, product_stock FROM product WHERE product_status=1;');
-                 //  ->fetchAll(PDO::FETCH_KEY_PAIR);
+//  $_products = $_db->query('SELECT product_id, product_name, product_cover, product_resources,product_desc, product_price, product_stock FROM product WHERE product_status=1;');
+//                  //  ->fetchAll(PDO::FETCH_KEY_PAIR);
 
  $_categories = $_db->query('SELECT category_id, category_name FROM category')
                   ->fetchAll(PDO::FETCH_KEY_PAIR);

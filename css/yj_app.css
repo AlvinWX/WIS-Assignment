@@ -271,13 +271,13 @@ label > * {
     gap: 10px;
     place-content: start;
     place-items: center start;
-    margin-top: 20px; 
-    margin-left: 40px;
+    margin-top: 20px;
+    margin-left: 40px; 
 }
 
 .update-form > label:not(:has(*)) {
     place-self: stretch;
-    background: #ffccd5;
+    background: #b0c4de;
     font-weight: bold;
     padding: 10px;
     border-radius: 5px;
@@ -285,6 +285,37 @@ label > * {
 
 .update-form > section {
     grid-column: 1 / -1;
+}
+
+.update-form input[type="text"],
+.update-form input[type="email"],
+.update-form input[type="tel"] {
+    margin-left: 0; 
+    padding: 10px;
+    width: 100%; 
+    border: 1px solid #007BFF;
+    border-radius: 4px;
+    background-color: #e9f4fe;
+}
+
+.update-form button {
+    margin-left: 0; 
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.update-form button:hover {
+    background-color: #0056b3;
+}
+
+.update-form .error {
+    color: red;
+    font-size: 12px;
+    margin-left: 40px; 
 }
 
 form select {
@@ -329,6 +360,16 @@ button {
     color: white;
     cursor: pointer;
     transition: background 0.3s ease;
+}
+
+
+button.delete-btn {
+    background-color: #fa836e; 
+    color: white;
+}
+
+button.delete-btn:hover {
+    background-color: #f74e4e; 
 }
 
 

@@ -68,8 +68,8 @@ include '../../../../_head.php';
             <td><?= $s->memberGender ?></td>
             <td>
             <button data-get="member_detail.php?memberID=<?= $s->memberID ?>">View Detail</button>
-            <button data-get="member_update.php?memberID=<?= $s->memberID ?>">Update</button>
-            <button data-post="member_delete.php?memberID=<?= $s->memberID ?>"data-confirm>Delete</button>
+            <button data-get="member_update.php?memberID=<?= $s->memberID ?>">Update Info</button>
+            <button data-post="member_delete.php?memberID=<?= $s->memberID ?>" data-confirm class="delete-btn">Delete Member</button>
             </td>
         </tr>
     <?php endforeach ?>
