@@ -65,8 +65,8 @@ include '../../../../_head.php';
             <td><?= $s->adminTier ?></td>
             <td>
             <button data-get="admin_detail.php?adminID=<?= $s->adminID ?>">View Detail</button>
-            <button data-get="admin_update.php?adminID=<?= $s->adminID ?>">Update</button>
-            <button data-post="admin_delete.php?adminID=<?= $s->adminID ?>"data-confirm>Delete</button>
+            <button data-get="admin_update.php?adminID=<?= $s->adminID ?>">Update Info</button>
+            <button data-post="admin_delete.php?adminID=<?= $s->adminID ?>"data-confirm class="delete-btn">Delete Admin</button>
             </td>
         </tr>
     <?php endforeach ?>
