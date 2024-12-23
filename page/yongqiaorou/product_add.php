@@ -73,7 +73,7 @@ if (is_post()) {
         $img = new SimpleImage();
         $img->fromFile($cover_file['tmp_name'])
             ->thumbnail(200, 200)
-            ->toFile("../../images/$product_cover", 'image/jpeg');
+            ->toFile("images/$product_cover", 'image/jpeg');
     } else {
         $_err['product_cover'] = 'Cover Picture is required';
     }
@@ -126,7 +126,7 @@ if (is_post()) {
 }
 
 // ----------------------------------------------------------------------------
-$_title = 'Insert';
+// $_title = 'Insert';
 include '../../_admin_head.php';
 ?>
 <button data-get="/page/yongqiaorou/product.php"  class="back_button"><i class="fa fa-arrow-left" aria-hidden="true"></i>  Back</button>

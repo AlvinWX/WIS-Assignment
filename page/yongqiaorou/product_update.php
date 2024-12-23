@@ -65,7 +65,7 @@ if (is_post()) {
         $img = new SimpleImage();
         $img->fromFile($cover_file['tmp_name'])
             ->thumbnail(200, 200)
-            ->toFile("../../images/$product_cover", 'image/jpeg');
+            ->toFile("images/$product_cover", 'image/jpeg');
     }
 
     // Handle product_photo (multiple images)
@@ -122,7 +122,7 @@ if (is_post()) {
 }
 
 // ----------------------------------------------------------------------------
-$_title = 'Update';
+// $_title = 'Update';
 include '../../_admin_head.php';
 ?>
 
@@ -156,7 +156,7 @@ include '../../_admin_head.php';
     <label for="product_cover">Cover Picture</label>
     <div>
         <?= html_file('product_cover', 'image/*', 'hidden id="product_cover"') ?>
-        <img id="preview" src="/images/<?= $product_cover ?>" style="width: 200px; height: 200px;">
+        <img id="preview" src="images/<?= $product_cover ?>" style="width: 200px; height: 200px;">
     </div>
     <?= err('product_cover') ?>
 

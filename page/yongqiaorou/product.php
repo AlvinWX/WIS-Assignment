@@ -38,9 +38,9 @@ foreach ($bindValues as $param => $value) {
 $stmt->execute();
 $arr = $stmt->fetchAll();
 
+// $_title = 'Product List'; 
+include '../../_admin_head.php'; 
 ?>
-
-<?php $_title = 'Product List'; include '../../_admin_head.php'; ?>
 
 <form method="GET" action="" class="search-form" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
     <!-- Category Dropdown -->
@@ -104,6 +104,8 @@ if ($search_field == 'product_price') {
 ?>
 
 <?php
+
+$stock_alert = [];
 if(count($arr)) { ?>
     <p><?= count($arr) ?> record(s)</p>
 
@@ -125,7 +127,7 @@ if(count($arr)) { ?>
             <tr>
                 <td><?= $s->product_id ?></td>
                 <td><?= $s->product_name ?></td>
-                <td><img src="/images/<?= $s->product_cover ?>"></td>
+                <td><img src="images/<?= $s->product_cover ?>"></td>
                 <td>
                     <?php if (!empty($s->product_resources)): ?>
                         <?php
@@ -167,6 +169,7 @@ if(count($arr)) { ?>
                     <?php
                     if($s->product_stock <= 2){ 
                         echo "<span style='color:red;'> Low Stock!!</span>";
+                        $stock_alert[] = $s->product_name;
                     } else {
                         echo "<span style='color:green;'> Good </span>";
                     }

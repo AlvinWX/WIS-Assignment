@@ -5,7 +5,7 @@ require '../../_base.php';
 $arr = $_db->query('SELECT * FROM category c WHERE c.category_status = 1;')->fetchAll();
 
 // ----------------------------------------------------------------------------
-$_title = 'Category List';
+// $_title = 'Category List';
 include '../../_admin_head.php';
 ?>
 <form method="GET" action="" class="search-form"  style="text-align: right; margin-bottom: 20px;">
