@@ -1,102 +1,108 @@
 <?php
-require '_base.php';
+include '_base.php';
 
-session_start(); // Start the session
+// ----------------------------------------------------------------------------
 
-// Initialize success message variable
-$success = '';
-$error = '';
+if (is_post()) {
+    $email = req('email');
+    $password = req('password');
 
-// Handle login form submission
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = trim($_POST['email'] ?? '');
-    $password = $_POST['password'] ?? '';
+    $_err = [];
 
-    if (!empty($email) && !empty($password)) {
-        try {
-            // Check if the user exists
-            $stmt = $_db->prepare("SELECT memberPassword FROM member WHERE memberEmail = ?");
-            $stmt->execute([$email]);
-            $user = $stmt->fetch(PDO::FETCH_OBJ);
-
-            if ($user) {
-                if (password_verify($password, $user->memberPassword)) {
-                    $_SESSION['user'] = $email;
-                    $_SESSION['flash_success'] = "Login successful!";
-                    header("Location: /index.php");
-                    exit;
-                } else {
-                    $_SESSION['flash_error'] = "Invalid email or password.";
-                }
-            } else {
-                $_SESSION['flash_error'] = "Email does not exist.";
-            }
-        } catch (Exception $e) {
-            $_SESSION['flash_error'] = "An error occurred. Please try again.";
-        }
-    } else {
-        $_SESSION['flash_error'] = "Please fill in both email and password.";
+    if ($email == '') {
+        $_err['email'] = 'Required';
+    } elseif (!is_email($email)) {
+        $_err['email'] = 'Invalid email';
     }
-    header("Location: login.php");
-    exit;
+
+    if ($password == '') {
+        $_err['password'] = 'Required';
+    }
+
+    if (!$_err) {
+        // Check if the user is a member
+        $stm = $_db->prepare('
+            SELECT *, "member" AS userType FROM member
+            WHERE memberEmail = ? AND memberPassword = SHA1(?)
+        ');
+        $stm->execute([$email, $password]);
+        $user = $stm->fetch();
+
+        if (!$user) {
+            // Check if the user is an admin if not found as a member
+            $stm = $_db->prepare('
+                SELECT *, "admin" AS userType FROM admin
+            WHERE adminEmail = ? AND adminPassword = SHA1(?)
+            ');
+            $stm->execute([$email, $password]);
+            $user = $stm->fetch();
+        }
+
+        if ($user) {
+            // var_dump($user);
+            // exit;
+            temp('info', 'Login successful as ' . $user->userType);
+            $_SESSION['user'] = $user;
+            $_SESSION['user_type'] = $user->userType;  // Store the user type ('member' or 'admin')
+
+            // Redirect based on user type
+            if ($user->userType === 'admin') {
+                $_SESSION['adminTier'] = $user->adminTier;
+                redirect('/page/chanyijing/admin/admin_management/admin_detail.php');
+            } else {
+                redirect('/index.php');
+            }
+            exit();
+        } else {
+            $_err['password'] = 'Incorrect email or password';
+        }
+    }
 }
+
+// ----------------------------------------------------------------------------
 
 $_title = 'Login';
 include '_head.php';
 ?>
-<br>
-<body>
-    <div class="login-container">
-        <h2>Login to Your Account</h2>
 
-        <!-- Display success message -->
-        <?php if (!empty($success)): ?>
-            <div class="message success"><?= htmlspecialchars($success) ?></div>
-        <?php endif; ?>
-
-        <!-- Display error message -->
-        <?php if (!empty($error)): ?>
-            <div class="message error"><?= htmlspecialchars($error) ?></div>
-        <?php endif; ?>
-
-        <form method="POST" class="login-form">
-            <div class="input-group">
-                <label for="email">Email:</label>
-                <input type="email" name="email" id="email" required>
-            </div>
-
-            <div class="input-group password-container">
-                <label for="password">Password:</label>
-                <div class="password-field-container">
-                <input type="password" name="password" id="password" required>
-                <!-- Eye icon inside the password field -->
-                <img src="/images/closed-eyes.png" alt="Show Password" id="togglePassword" class="eye-icon">
-            </div>
+<div class="login-container">
+    <h2>Login</h2>
+    <form method="post" class="form">
+        <div>
+            <label for="email">Email</label>
+            <?= html_text('email', 'maxlength="100" class="input-field"') ?>
+            <?= err('email') ?>
         </div>
 
-            <button type="submit" class="login-btn">Login</button>
-        </form>
-
-        <div class="login-links">
-            <p><a href="/page/forgot-password.php">Forgot Password?</a></p>
-            <p>Don't have an account? <a href="register.php">Sign Up</a></p>
+        <div style="position: relative;">
+            <label for="password">Password</label>
+            <?= html_password('password', 'maxlength="100" class="input-field" style="padding-right: 40px;"') ?>
+            <img src="/images/closed-eyes.png" alt="Show Password" id="togglePassword" class="eye-icon">
+            <?= err('password') ?>
         </div>
-    </div>
 
-    <script>
-        // Toggle password visibility when eye icon is clicked
-        document.getElementById('togglePassword').addEventListener('click', function() {
-            const passwordInput = document.getElementById('password');
-            const eyeIcon = document.getElementById('togglePassword');
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text'; // Show password
-                eyeIcon.src = '/images/opened-eye.png'; // Change icon to opened-eye
-            } else {
-                passwordInput.type = 'password'; // Hide password
-                eyeIcon.src = '/images/closed-eyes.png'; // Change icon to closed-eye
-            }
-        });
-    </script>
+        <section>
+            <button class="login-btn">Login</button>
+            <button type="reset" class="login-btn">Reset</button>
+        </section>
+    </form>
+    <a href="/user/registerMember.php">Register</a>
+</div>
+
+<script>
+document.getElementById('togglePassword').addEventListener('click', function() {
+    const passwordInput = document.getElementById('password');
+    const eyeIcon = document.getElementById('togglePassword');
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text'; 
+        eyeIcon.src = '/images/opened-eye.png'; 
+    } else {
+        passwordInput.type = 'password'; 
+        eyeIcon.src = '/images/closed-eyes.png'; 
+    }
+});
+</script>
+
 </body>
 </html>
 

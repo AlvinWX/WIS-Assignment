@@ -179,8 +179,7 @@ main h1 {
 /* =========================== */
 /* Form Styles (Login/Register) */
 /* =========================== */
-.login-container,
-.register-container {
+.login-container {
     background-color: #fff;
     padding: 3rem;
     border-radius: 8px;
@@ -189,6 +188,20 @@ main h1 {
     max-width: 400px;
     text-align: center;
     margin: auto;
+    margin-top: 150px;
+    margin-bottom: 50px;
+}
+.register-container {
+    background-color: #fff;
+    padding: 3rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 550px;
+    text-align: center;
+    margin: auto;
+    margin-top: 150px;
+    margin-bottom: 50px;
 }
 
 h2 {
@@ -252,7 +265,7 @@ input:focus {
 /* =========================== */
 .login-btn,
 .register-btn {
-    padding: 1rem;
+    padding: 12px;
     background-color: #007bff;
     color: white;
     font-size: 1.1rem;
@@ -260,6 +273,7 @@ input:focus {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin-right: 10px;
 }
 
 .login-btn:hover,
@@ -298,15 +312,26 @@ input:focus {
     padding-right: 30px; /* Space for the eye icon */
 }
 
-/* Style for the eye icon */
+.input-field {
+    width: 100%;
+    max-width: 400px; /* Optional: Set a maximum width */
+    padding: 8px; /* Adjust padding as needed */
+    font-size: 16px; /* Ensure text size matches */
+    box-sizing: border-box; /* Include padding in width */
+}
+
+.input-container {
+    position: relative;
+}
+
 .eye-icon {
     position: absolute;
-    right: 10px; /* Position icon to the right side of the input */
-    top: 50%;
+    top: 65%;
+    right: 10px;
     transform: translateY(-50%);
     cursor: pointer;
-    width: 20px; /* Make the eye icon smaller */
-    height: 20px; /* Maintain a square shape */
+    width: 20px; /* Adjust width */
+    height: 20px; /* Adjust height */
 }
 
 /* =========================== */
@@ -419,18 +444,6 @@ footer {
     float: right;
     padding-right: 20px;
   }
-  
-  /* General styling for the register page */
-.register-container {
-    background-color: #fff;
-    padding: 3rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
-    text-align: center;
-}
 
 h2 {
     font-size: 2rem;
@@ -494,4 +507,49 @@ button.register-btn {
 
 button.register-btn:hover {
     background-color: #0056b3;
+}
+
+/*photo uploads*/
+.upload img{
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 180px;
+    border: 1px solid gray;
+}
+
+/* Modal style */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4); 
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; 
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }

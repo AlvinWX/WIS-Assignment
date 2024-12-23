@@ -109,6 +109,10 @@ $_title = 'Update Member';
 include '../../../../_head.php';
 ?>
 
+<div class="top-heading-space">
+    <h3>Update Member Details</h3>
+</div>
+
 <form method="post" class="update-form">
     <label for="memberID">Member ID</label>
     <b><?= $memberID ?></b>

@@ -1,0 +1,23 @@
+#info {
+    position: fixed;
+    color: #fff;
+    background: #5874f1;
+    border-radius: 5px;
+    padding: 10px 20px;
+    left: 50%;
+    translate: -50% 0;
+    z-index: 999;
+    top: -150px;
+    opacity: 0;
+}
+
+#info:not(:empty) {
+    animation: fade 5s;
+}
+
+@keyframes fade {
+      0% { top: -150px; opacity: 0; }
+     10% { top:  150px; opacity: 1; }
+     90% { top:  150px; opacity: 1; }
+    100% { top: -150px; opacity: 0; }
+}

@@ -3,6 +3,7 @@
 <?php
 require '../../../../_base.php';
 
+auth('admin');
 $adminID = req('adminID');
 $stm = $_db->prepare('SELECT * FROM admin WHERE adminID = ?');
 $stm->execute([$adminID]);
@@ -16,7 +17,11 @@ $_title = 'Admin Detail';
 include '../../../../_head.php';
 ?>
 
-<table class="table detail">
+<div class="top-heading-space">
+    <h3>Admin Detail</h3>
+</div>
+
+<table class="table">
     <tr>
         <th>Profile Picture</th>
         <td class="profile-pic-container">
@@ -37,11 +42,11 @@ include '../../../../_head.php';
     </tr>
     <tr>
         <th>Email</th>
-        <td><?= $s->adminEmail ?></td>
+        <td><a href="mailto:<?= $s->adminEmail ?>"><?= $s->adminEmail ?></a></td>
     </tr>
     <tr>
         <th>Phone</th>
-        <td><?= $s->adminPhone ?></td>
+        <td><a href="tel:<?= $s->adminPhone ?>"><?= $s->adminPhone ?></a></td>
     </tr>
     <tr>
         <th>Gender</th>

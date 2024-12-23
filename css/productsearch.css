@@ -16,7 +16,7 @@ body{
     align-items: center; 
     gap: 10px; 
     margin-top: 20vh;
-    flex: 0 1 auto; /* Items won't shrink unnecessarily */
+    flex: 0 1 auto; 
 }
 
 .searchmenu div{

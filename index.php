@@ -1,7 +1,8 @@
 <?php
 require '_base.php';
+include '_head.php';
 
-session_start();
+auth('member');
 $success = $_SESSION['flash_success'] ?? '';
 $error = $_SESSION['flash_error'] ?? '';
 
@@ -11,8 +12,61 @@ $lowest_price_arr = $_db->query('SELECT * FROM product p JOIN category c ON p.ca
 
 // Clear flash messages after displaying them
 unset($_SESSION['flash_success'], $_SESSION['flash_error']);
-include '_head.php';
 
+//CART
+$member_id = 'MB00001'; //HERE NEED TO CHANGE AFTERWARDS
+
+$check_cart_exists_stm = $_db -> prepare('SELECT COUNT(*) FROM cart c JOIN member m ON m.memberID = c.member_id WHERE c.member_id = ?');
+$check_cart_exists_stm -> execute([$member_id]); //HERE NEED TO CHANGE AFTERWARDS
+
+if($check_cart_exists_stm -> fetchColumn() == 0){
+    /* If the member first time go into the cart page (The member don't have the cart before) */
+    $create_cart_stm = $_db -> prepare('INSERT INTO cart (subtotal, member_id) VALUES (0, ?)');
+    $create_cart_stm  -> execute([$member_id]); //HERE NEED TO CHANGE AFTERWARDS
+} else{
+    /* The member have the cart before */
+    $get_cart_stm = $_db -> prepare('SELECT * FROM cart c JOIN member m ON m.memberID = c.member_id WHERE c.member_id = ?');
+    $get_cart_stm -> execute([$member_id]); //HERE NEED TO CHANGE AFTERWARDS
+    $shoppingCart = $get_cart_stm -> fetch();
+}
+
+//If add to cart button is pressed
+if(isset($_POST['add-to-cart'], $_POST['product_id'])){
+    
+    $productID = $_POST['product_id'];
+
+    //Retrieve product details
+    $find_product_stm = $_db -> prepare('SELECT * FROM product WHERE product_id = ?');
+    $find_product_stm -> execute([$productID]);
+    $productFound = $find_product_stm -> fetch();
+
+    //Check the product is add to cart before
+    $check_record_stm = $_db -> prepare('SELECT * FROM cart_product WHERE product_id = ? AND cart_id = ?');
+    $check_record_stm -> execute([$productID, $shoppingCart->cart_id]);
+    $check_result = $check_record_stm -> fetch();
+
+    if($check_result == null){
+        //If no entry before
+        $add_product_stm = $_db -> prepare('INSERT INTO cart_product (cart_id, product_id, price, quantity) VALUES (?, ?, ?, ?)');
+        $add_product_stm -> execute([$shoppingCart->cart_id, $productID, $productFound-> product_price, 1]); //HERE NEED TO CHANGE AFTERWARDS
+        temp('info', 'Item added to cart.');
+        redirect("index.php");
+    } else if($check_result->quantity >= $productFound->product_stock) {
+        //If the product is add to cart before (but the selected quantity >= stock)
+        temp('info', 'The product quantity cannot greater than the current product stock.');
+        redirect("index.php");
+    } else{
+        //If the product is add to cart before
+        $update_quantity_stm = $_db -> prepare('UPDATE cart_product SET quantity = ? WHERE cart_id = ? AND product_id = ?');
+        $update_quantity_stm -> execute([$check_result->quantity + 1, $shoppingCart->cart_id, $productID]);
+        temp('info', 'Item added to cart.');
+        redirect("index.php");
+    }
+    
+}
+
+
+$fullPath = $_SERVER['REQUEST_URI'];
 
 ?>
 
@@ -25,6 +79,7 @@ include '_head.php';
     <link rel="stylesheet" href="css/imageslider.css">
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="css/productbox.css">
+    <link rel="stylesheet" href="css/flash.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -55,6 +110,8 @@ include '_head.php';
 </head>
 <body>
 
+    <div id="info"><?= temp('info')?></div>
+
 <?php if ($success): ?>
     <div class="flash-message flash-success"><?= htmlspecialchars($success) ?></div>
 <?php endif; ?>
@@ -83,7 +140,7 @@ include '_head.php';
         </div>
 
     </div>
-
+    
     <section class="products" id="products">
         <div class="heading">
             <h1>Top Selling Products</h1>
@@ -91,14 +148,25 @@ include '_head.php';
 
         <div class="products-container">
         <?php foreach ($top_selling_arr as $s): ?>
-            <div class="box" data-get="productinfo.php?id=<?= $s->product_id ?>">
-                <img src="images/<?= $s->product_img ?>" data-get="productinfo.php?id=<?= $s->product_id ?>">
-                <span data-get="productinfo.php?id=<?= $s->product_id ?>"><?= $s->category_name?></span>
-                <h2 data-get="productinfo.php?id=<?= $s->product_id ?>"><?= $s->product_name?></h2>
-                <h3 class="price" data-get="productinfo.php?id=<?= $s->product_id ?>">RM <?= sprintf('%.2f', $s->product_price)?></h3>
-                <i class='bx bx-cart-alt' onclick="" ></i>
-                <i class='bx bx-heart' ></i>
-                <span class="sold" data-get="productinfo.php?id=<?= $s->product_id ?>"><?= $s->product_sold?> sold || <?= $s->product_stock?> left</span>
+            <div class="box">
+                <img src="images/<?= $s->product_cover ?>" data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>">
+                <span data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>"><?= $s->category_name?></span>
+                <h2 class="product-name" data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>"><?= $s->product_name?></h2>
+                <?php 
+                    $get_cart_product = $_db->prepare('SELECT * FROM cart_product WHERE product_id = ? AND cart_id = ?');
+                    $get_cart_product -> execute([$s->product_id, $shoppingCart->cart_id]);
+                    $cartProductFound = $get_cart_product -> fetch();
+                    if($cartProductFound != null){ ?>
+                        <h2 class="selected" data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>">Selected: <?= $cartProductFound->quantity?></h2>
+                <?php  } else { ?>
+                        <h2 class="selected"></h2>
+                    <?php  }  ?>
+                <h3 class="price" data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>">RM <?= sprintf('%.2f', $s->product_price)?></h3>
+                <form method="post">
+                    <input hidden type="text" name="product_id" value="<?= $s->product_id ?>">
+                    <input type="submit" name="add-to-cart" class= "add-to-cart" value="+">
+                <i class='bx bx-heart' ></i></form>
+                <span class="sold" data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>"><?= $s->product_sold?> sold || <?= $s->product_stock?> left</span>
             </div>
             <?php endforeach ?>
         </div>
@@ -109,14 +177,25 @@ include '_head.php';
 
         <div class="products-container">
         <?php foreach ($lowest_price_arr as $s): ?>
-            <div class="box" data-get="productinfo.php?id=<?= $s->product_id ?>">
-                <img src="images/<?= $s->product_img ?>" data-get="productinfo.php?id=<?= $s->product_id ?>">
-                <span data-get="productinfo.php?id=<?= $s->product_id ?>"><?= $s->category_name?></span>
-                <h2 data-get="productinfo.php?id=<?= $s->product_id ?>"><?= $s->product_name?></h2>
-                <h3 class="price" data-get="productinfo.php?id=<?= $s->product_id ?>">RM <?= sprintf('%.2f', $s->product_price)?></h3>
-                <i class='bx bx-cart-alt' onclick="" ></i>
-                <i class='bx bx-heart' ></i>
-                <span class="sold" data-get="productinfo.php?id=<?= $s->product_id ?>"><?= $s->product_sold?> sold || <?= $s->product_stock?> left</span>
+            <div class="box">
+                <img src="images/<?= $s->product_cover ?>" data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>">
+                <span data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>"><?= $s->category_name?></span>
+                <h2 class="product-name" data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>"><?= $s->product_name?></h2>
+                <?php 
+                    $get_cart_product = $_db->prepare('SELECT * FROM cart_product WHERE product_id = ? AND cart_id = ?');
+                    $get_cart_product -> execute([$s->product_id, $shoppingCart->cart_id]);
+                    $cartProductFound = $get_cart_product -> fetch();
+                    if($cartProductFound != null){ ?>
+                        <h2 class="selected" data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>">Selected: <?= $cartProductFound->quantity?></h2>
+                    <?php  } else { ?>
+                        <h2 class="selected"></h2>
+                <?php  }  ?>
+                <h3 class="price" data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>">RM <?= sprintf('%.2f', $s->product_price)?></h3>
+                <form method="post">
+                    <input hidden type="text" name="product_id" value="<?= $s->product_id ?>">
+                    <input type="submit" name="add-to-cart" class= "add-to-cart" value="+">
+                <i class='bx bx-heart' ></i></form>
+                <span class="sold" data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>"><?= $s->product_sold?> sold || <?= $s->product_stock?> left</span>
             </div>
             <?php endforeach ?>
         </div>

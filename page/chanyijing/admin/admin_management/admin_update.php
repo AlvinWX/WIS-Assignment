@@ -58,8 +58,12 @@ $_title = 'Update admin';
 include '../../../../_head.php';
 ?>
 
+<div class="top-heading-space">
+    <h3>Update Admin Details</h3>
+</div>
+
 <form method="post" class="update-form">
-    <label for="adminID">admin ID</label>
+    <label for="adminID">Admin ID</label>
     <b><?= $adminID ?></b>
     <?= err('adminID') ?>
 
