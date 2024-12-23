@@ -1,5 +1,5 @@
 <?php
-require '_base.php';
+require '../../_base.php';
 // ----------------------------------------------------------------------------
 
 if (is_post()) {
@@ -11,4 +11,4 @@ if (is_post()) {
     temp('info', 'Product deleted');
 }
 
-redirect('/product.php');
+redirect('/page/yongqiaorou/product.php');

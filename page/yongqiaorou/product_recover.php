@@ -1,5 +1,5 @@
 <?php
-require '_base.php';
+require '../../_base.php';
 //-----------------------------------------------------------------------------
 if (is_post()) {
     $id         = req('id');
@@ -8,16 +8,17 @@ if (is_post()) {
 
     temp('info', 'Product recovered');
 
-    redirect('/product.php');
+    redirect('/page/yongqiaorou/product.php');
 }
 // // TODO
 $arr = $_db->query('SELECT * FROM product WHERE product_status=0')->fetchAll();
 
 // ----------------------------------------------------------------------------
 $_title = 'Product List';
-include '_admin_head.php';
+include '../../_admin_head.php';
 ?>
 
+<?php if(count($arr)) {?>
 <p><?= count($arr) ?> record(s)</p>
 <table class="table">
     <tr>
@@ -42,5 +43,8 @@ include '_admin_head.php';
     </tr>
     <?php endforeach ?>
 </table>
+<?php }else{?>
+    <p style="color:red;">No record deleted.</p>
+<?php }?>
 <?php
-include '_admin_foot.php';
+include '../../_admin_foot.php';

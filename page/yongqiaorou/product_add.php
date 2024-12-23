@@ -1,5 +1,5 @@
 <?php
-require '_base.php';
+require '../../_base.php';
 // ----------------------------------------------------------------------------
 
 if (is_post()) {
@@ -10,6 +10,7 @@ if (is_post()) {
     $product_price = req('product_price');
     $product_stock = req('product_stock');
     $category_id = req('category_id');
+
     // $product_cover = req('product_cover');
     
     // $product_cover = basename($product_cover);
@@ -63,32 +64,27 @@ if (is_post()) {
     }
 
     
-    // $f = get_file('product_cover');
-
-    // // Validate: photo (file)
-    // if ($f == null) {
-    //     $_err['product_cover'] = 'Required';
-    // }
-    // else if (!str_starts_with($f->type, 'image/')) {
-    //     $_err['product_cover'] = 'Must be image';
-    // }
-    // else if ($f->size > 1 * 1024 * 1024) {
-    //     $_err['product_cover'] = 'Maximum 1MB';
-    // }
     // Handle product_cover (single image)
     $cover_file = isset($_FILES['product_cover']) ? $_FILES['product_cover'] : null;
-    if ($cover_file == null || $cover_file['error'] != UPLOAD_ERR_OK) {
-        $_err['product_cover'] = 'Required';
-    } else if (!str_starts_with(mime_content_type($cover_file['tmp_name']), 'image/')) {
-        $_err['product_cover'] = 'Must be an image';
-    } else if ($cover_file['size'] > 1 * 1024 * 1024) {
-        $_err['product_cover'] = 'Maximum 1MB';
+    if ($cover_file && $cover_file['error'] == UPLOAD_ERR_OK) {
+        $product_cover = uniqid() . '.jpg';  // Generate a unique file name
+
+        require_once '../../lib/SimpleImage.php';
+        $img = new SimpleImage();
+        $img->fromFile($cover_file['tmp_name'])
+            ->thumbnail(200, 200)
+            ->toFile("../../images/$product_cover", 'image/jpeg');
+    } else {
+        $_err['product_cover'] = 'Cover Picture is required';
     }
 
     // Handle product_photo (multiple images)
     $photo_files = isset($_FILES['product_photo']) ? $_FILES['product_photo'] : null;
     $photo_resources = [];
-    if ($photo_files && is_array($photo_files['name'])) {
+    
+    if (empty($photo_files)) {
+        $_err['product_photo'] = 'At least one extra photo is required';
+    }else if ($photo_files && is_array($photo_files['name'])) {
         foreach ($photo_files['name'] as $index => $name) {
             $tmp_name = $photo_files['tmp_name'][$index];$type = mime_content_type($tmp_name);
             $size = $photo_files['size'][$index];
@@ -100,22 +96,15 @@ if (is_post()) {
                 $_err['product_photo'] = 'Each image must be under 1MB';
             } else {
                 $unique_name = uniqid() . '.' . pathinfo($name, PATHINFO_EXTENSION);
-                move_uploaded_file($tmp_name, "uploads/$unique_name");             
+                move_uploaded_file($tmp_name, "../../uploads/$unique_name");             
                 $photo_resources[] = $unique_name;
             }
         }
     }
 
+
     // Output
-    if (!$_err) {
-        $product_cover = uniqid() . '.jpg';
-
-        require_once 'lib/SimpleImage.php';
-        $img = new SimpleImage();
-        $img->fromFile($cover_file['tmp_name'])
-            ->thumbnail(200, 200)
-            ->toFile("images/$product_cover", 'image/jpeg');
-
+    if (!$_err) {      
         $arr = $_db->query('SELECT * FROM product ORDER BY product_id DESC LIMIT 1')->fetchAll(PDO::FETCH_ASSOC);
         if (!empty($arr)) {
             $product_id = $arr[0]['product_id'];
@@ -138,8 +127,9 @@ if (is_post()) {
 
 // ----------------------------------------------------------------------------
 $_title = 'Insert';
-include '_admin_head.php';
+include '../../_admin_head.php';
 ?>
+<button data-get="/page/yongqiaorou/product.php"  class="back_button"><i class="fa fa-arrow-left" aria-hidden="true"></i>  Back</button>
 
 <form method="post" class="form" enctype="multipart/form-data">
     <label for="id">Id</label>
@@ -178,20 +168,24 @@ include '_admin_head.php';
     <?= html_select('category_id', $_categories) ?>
     <?= err('category_id') ?>
 
-    <label for="product_cover">Cover Picture</label>
-    <label class="upload" tabindex="0">
-        <?= html_file('product_cover', 'image/*', 'hidden') ?>
-        <img src="/images/photo.jpg" style="width: 200px; height: 200px;">
+    <label for="product_cover" style="height:180px; width:150px; padding:10px; margin-top:auto">Cover Picture
+    <div class="tooltip">
+        <i class="fa fa-question-circle" aria-hidden="true"></i>
+        <span class="tooltiptext">Tick ✔️ at Extra Resources to Have Cover Picture</span>
+    </div>
     </label>
+    <div>
+        <?= html_file('product_cover', 'image/*', 'hidden id="product_cover"') ?>
+        <img id="preview" src="/images/photo.jpg" style="width: 200px; height: 200px;">
+    </div>
     <?= err('product_cover') ?>
 
     <label for="product_photo">Extra Resources</label>
     <label class="upload" tabindex="0">
         <?= html_file('product_photo[]', 'image/*', 'multiple') ?>
-        <div id="product_photo_previews"></div>
     </label>
-    <?= err('product_photo') ?>
-
+    <div id="product_photo_previews">
+    <?= err('product_photo') ?></div>
     <section>
         <button>Submit</button>
         <button type="reset">Reset</button>
@@ -204,7 +198,7 @@ include '_admin_head.php';
         const ext = resource.split('.').pop().toLowerCase();
         const previewElement = document.createElement(ext === 'mp4' || ext === 'avi' ? 'video' : 'img');
 
-        previewElement.src = `uploads/${resource}`;
+        previewElement.src = `../..uploads/${resource}`;
         previewElement.style.maxWidth = '200px'; 
         previewElement.style.margin = '5px'; 
         
@@ -217,4 +211,4 @@ include '_admin_head.php';
 
 </script>
 <?php
-include '_admin_foot.php';
+include '../../_admin_foot.php';

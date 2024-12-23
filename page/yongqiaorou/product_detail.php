@@ -1,5 +1,5 @@
 <?php
-require '_base.php';
+require '../../_base.php';
 //-----------------------------------------------------------------------------
 
 $id = req('id');
@@ -14,10 +14,10 @@ if (!$s) {
 
 // ----------------------------------------------------------------------------
 $_title = 'Detail';
-include '_admin_head.php';
+include '../../_admin_head.php';
 ?>
 
-<table class="table detail">
+<table class="table detail" style="margin-top: 100px">
     <tr>
         <th>Id</th>
         <td><?= $s->product_id ?></td>
@@ -42,7 +42,7 @@ include '_admin_head.php';
 
 <br>
 
-<button data-get="/product.php"><i class="fa fa-arrow-left" aria-hidden="true"></i>  Back</button>
+<button data-get="/page/yongqiaorou/product.php"  class="back_button"><i class="fa fa-arrow-left" aria-hidden="true"></i>  Back</button>
 
 <?php
-include '_admin_foot.php';
+include '../../_admin_foot.php';
