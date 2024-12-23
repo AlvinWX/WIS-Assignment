@@ -2,7 +2,7 @@
 require '_base.php';
 include '_head.php';
 
-session_start();
+auth('member');
 $success = $_SESSION['flash_success'] ?? '';
 $error = $_SESSION['flash_error'] ?? '';
 
@@ -140,7 +140,7 @@ $fullPath = $_SERVER['REQUEST_URI'];
         </div>
 
     </div>
-
+    
     <section class="products" id="products">
         <div class="heading">
             <h1>Top Selling Products</h1>

@@ -21,6 +21,7 @@
     <link rel="shortcut icon" href="/images/favicon.png">
     <link rel="stylesheet" href="/css/wj_css.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="/js/wj_app.js"></script>
     <script src="/js/app.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -89,6 +90,10 @@
             <a href="/login.php">
                 <img src="/images/user.png" alt="Clickable Image">
             </a>
+            <div class="dropdown-content">
+                        <a href="/user/profile.php">Profile</a>
+                        <a href="#">Logout</a>
+                    </div>
         </div>
         <div class="search-container" id="search-container">
             <input type="text" class="search-bar" placeholder="Search...">

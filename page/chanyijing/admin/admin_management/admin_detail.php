@@ -3,6 +3,7 @@
 <?php
 require '../../../../_base.php';
 
+auth('admin');
 $adminID = req('adminID');
 $stm = $_db->prepare('SELECT * FROM admin WHERE adminID = ?');
 $stm->execute([$adminID]);
