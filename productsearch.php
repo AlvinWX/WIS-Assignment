@@ -148,7 +148,7 @@ $fullPath = $_SERVER['REQUEST_URI'];
         <div class="products-container">
         <?php foreach ($arr as $s): ?>
             <div class="box">
-                <img src="images/<?= $s->product_cover ?>" data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>">
+                <img src="page/yongqiaorou/images/<?= $s->product_cover ?>" data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>">
                 <span data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>"><?= $s->category_name?></span>
                 <h2 class="product-name" data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>"><?= $s->product_name?></h2>
 

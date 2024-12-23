@@ -88,7 +88,7 @@ window.onload = function() {
             <div class = "slide-container">
         
         <div class="slides">
-        <img src="images/<?= $s->product_cover ?>" alt="Resource <?= $index + 1 ?>" class="image active">
+        <img src="page/yongqiaorou/images/<?= $s->product_cover ?>" alt="Resource <?= $index + 1 ?>" class="image active">
         <?php foreach ($resources as $index => $resource):?>
                             <?php if (strpos(mime_content_type("uploads/$resource"), 'image/') !== false): ?>
                                 <img src="/uploads/<?= $resource ?>" alt="Resource <?= $index + 1 ?>" class="image">
@@ -106,7 +106,7 @@ window.onload = function() {
         </div>
 
         <div class="image-thumbnail">
-            <img class="img active" src="images/<?= $s->product_cover ?>" alt="Resource <?= $index + 1 ?>" attr='0' onclick="switchImage(this)">
+            <img class="img active" src="page/yongqiaorou/images/<?= $s->product_cover ?>" alt="Resource <?= $index + 1 ?>" attr='0' onclick="switchImage(this)">
             <?php for($i = 1; $i <= count($resources); $i++): $resource = $resources[$i-1] ?>
 			    
                 <?php if (strpos(mime_content_type("uploads/$resource"), 'image/') !== false): ?>
