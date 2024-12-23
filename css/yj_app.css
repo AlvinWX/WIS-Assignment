@@ -367,13 +367,31 @@ button {
     transition: background 0.3s ease;
 }
 
-button.delete-btn {
+button.red-btn {
     background-color: #fa836e; 
     color: white;
 }
 
-button.delete-btn:hover {
+button.red-btn:hover {
     background-color: #f74e4e; 
+}
+
+button.green-btn {
+    background-color: #86ec74; 
+    color: white;
+}
+
+button.green-btn:hover {
+    background-color: #16ce02; 
+}
+
+button.pink-btn {
+    background-color: #f986b4; 
+    color: white;
+}
+
+button.pink-btn:hover {
+    background-color: #d757a0; 
 }
 
 
@@ -389,4 +407,108 @@ button.delete-btn:hover {
     border-radius: 10px;
     border: 2px solid #ddd;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Feedback Form Container -------------------------------------------- */
+.feedback-form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 50px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.feedback-form-container img {
+    width: 100px;             
+    display: block;          
+    margin: 0 auto;           
+}
+
+.feedback-form-container h2 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.feedback-form-container p {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.feedback-form-container .form-group {
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+.feedback-form-container .form-group label {
+    display: block;
+    margin-top: 50px;
+    margin-bottom: 10px;
+}
+
+.feedback-form-container input[type="range"] {
+    width: 100%;
+}
+
+.feedback-form-container .slider-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #555;
+}
+
+.feedback-form-container textarea {
+    width: 100%;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    resize: vertical;
+}
+
+.feedback-form-container button {
+    display: block;
+    width: 40%;         
+    padding: 10px;
+    background-color: #569de9;
+    color: white;
+    border: none;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 auto;  
+}
+
+.feedback-form-container button:hover {
+    background-color: #52a2f8;
+}
+
+/* Feedback thank -------------------------------------------- */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+.thank-you-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+    padding: 20px;
+}
+
+.thank-you-message h2 {
+    font-size: 2.5rem;
+    color: #f0629b;
+    margin-bottom: 10px;
+    margin-top: 150px;
+}
+
+.thank-you-message p {
+    font-size: 1.2rem;
+    color: #fe81d7;
+    margin-bottom: 30px;
 }

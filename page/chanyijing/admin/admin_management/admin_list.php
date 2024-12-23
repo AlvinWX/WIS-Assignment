@@ -32,6 +32,7 @@ $a_stm = $_db->prepare('SELECT * FROM admin
                       WHERE adminName LIKE ?
                       AND (adminTier = ? OR ?)
                       ORDER BY ' . $sort . ' ' . $dir);
+                      
 $a_stm->execute(["%$adminName%", $adminTier, $adminTier == null]);
 $admins= $a_stm->fetchAll();
 
@@ -52,7 +53,6 @@ include '../../../../_head.php';
 
 <div class="top-heading-space">
     <h2>Admin List</h2>
-    <p>tier: <?= htmlspecialchars($loggedInAdminTier) ?></p>
 </div>
 
 <?php if (empty($admins)): ?>
@@ -74,9 +74,9 @@ include '../../../../_head.php';
                     <td><?= $a->adminTier ?></td>
                     <td>
                     <button data-get="admin_detail.php?adminID=<?= $a->adminID ?>">View Detail</button>
-                    <button data-get="admin_update.php?adminID=<?= $a->adminID ?>">Update Info</button>
+                    <button data-get="admin_update.php?adminID=<?= $a->adminID ?>" class="green-btn">Update Info</button>
                     <?php if ($loggedInAdminTier === 'High'): ?>
-                        <button data-post="admin_delete.php?adminID=<?= $a->adminID ?>" data-confirm class="delete-btn">Delete Admin</button>
+                        <button data-post="admin_delete.php?adminID=<?= $a->adminID ?>" data-confirm class="red-btn">Delete Admin</button>
                     <?php endif ?>
 
                     </td>

@@ -86,6 +86,8 @@ if (is_post()) {
         <b><p>Order Total    :RM <?= number_format($o->order_total, 2) ?></p></b>
 
         <br/><p>Best Regards,<br/><br/><strong>TAR GROCER Team</strong></p><br/>
+
+        <br/><p>Need help? Contact us : targrocer@gmail.com </p><br/>
     
     <?php
     $body = ob_get_clean(); 
@@ -115,7 +117,7 @@ if (is_post()) {
 
 // ----------------------------------------------------------------------------
 
-$_title = 'Send Receipt';
+$_title = 'Order Receipt';
 include '../../../../_head.php';
 ?>
 

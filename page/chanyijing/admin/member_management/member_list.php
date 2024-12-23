@@ -38,6 +38,7 @@ $_title = 'Member List';
 include '../../../../_head.php';
 ?>
 
+<!-- Seach Bar -->
 <div class="search-bar">
     <form>
         <?= html_search('memberName', 'placeholder="Enter name to search"') ?>
@@ -50,10 +51,9 @@ include '../../../../_head.php';
     <h2>Member List</h2>
 </div>
 
-
 <?php if (empty($members)): ?>
     <p>No member(s) found.</p>
-    <?php else: ?>
+<?php else: ?>
         <table class="table">
             <tr>
                 <td><?= count($members) ?> member(s)</td>
@@ -72,8 +72,8 @@ include '../../../../_head.php';
                     <td><?= $m->memberGender ?></td>
                     <td>
                     <button data-get="member_detail.php?memberID=<?= $m->memberID ?>">View Detail</button>
-                    <button data-get="member_update.php?memberID=<?= $m->memberID ?>">Update Info</button>
-                    <button data-post="member_delete.php?memberID=<?= $m->memberID ?>" data-confirm class="delete-btn">Delete Member</button>
+                    <button data-get="member_update.php?memberID=<?= $m->memberID ?>" class="green-btn">Update Info</button>
+                    <button data-post="member_delete.php?memberID=<?= $m->memberID ?>" data-confirm class="red-btn">Delete Member</button>
                     </td>
                 </tr>
             <?php endforeach ?>

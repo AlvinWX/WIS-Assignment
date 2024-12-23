@@ -72,12 +72,10 @@ if(is_post()){
                 $stm = $_db->prepare('UPDATE `order` SET order_ship_date = NULL, order_received_date = NULL WHERE order_id = ?');
                 $stm->execute([$order_id]);
             }
-
             temp('info', 'Order status updated successfully.');
         } else {
             temp('info', 'No change in order status.');
         }
-
         redirect('order_detail.php?order_id=' . $order_id);
     }
 }
@@ -168,7 +166,7 @@ include '../../../../_head.php';
         <tr>
             <td><?= html_select('order_status', $_orderStatuses, $o->order_status); ?></td>
             <td><?= err('order_status') ?></td>
-            <td><button type="submit">Update Status</button></td>
+            <td><button type="submit" class="green-btn">Update Status</button></td>
         </tr>
     </table>
 </form>

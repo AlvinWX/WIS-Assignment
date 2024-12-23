@@ -50,7 +50,7 @@ $icon = $image_path . $order_status . '.png';
 
 //-----------------------------------------------------------------------------
 
-$_title = 'Order Detail';
+$_title = 'Order History Detail';
 include '../../../../_head.php';
 ?>
 
@@ -183,8 +183,11 @@ include '../../../../_head.php';
     </tr>
 </table>
 
-<br/>
-<button data-get="order_receipt.php?order_id=<?= $o->order_id ?>">Receipt</button>
+<?php if ($order_status == 'Delivered'): ?>
+    <br/>
+    <button data-get="order_receipt.php?order_id=<?= $o->order_id ?>" class="green-btn">Receipt</button>
+    <button data-get="feedback_order.php?order_id=<?= $m->memberID ?>" class="pink-btn">Feedback</button>
+<?php endif ?>
 
 <br/>
 <button data-get="history_list.php?memberID=<?= $m->memberID ?>">Back</button>

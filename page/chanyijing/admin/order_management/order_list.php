@@ -75,7 +75,7 @@ include '../../../../_head.php';
                     <td><?= $o->order_status ?></td>
                     <td>
                     <button data-get="order_detail.php?order_id=<?= $o->order_id ?>">Order Detail</button>
-                    <button data-post="order_delete.php?order_id=<?= $o->order_id ?>"data-confirm class="delete-btn">Delete</button>
+                    <button data-post="order_delete.php?order_id=<?= $o->order_id ?>"data-confirm class="red-btn">Delete</button>
                     </td>
                 </tr>
             <?php endforeach ?>
