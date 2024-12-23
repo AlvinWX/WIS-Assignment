@@ -14,7 +14,7 @@ if (is_post()) {
 $arr = $_db->query('SELECT * FROM category WHERE category_status=0')->fetchAll();
 
 // ----------------------------------------------------------------------------
-// $_title = 'Product List';
+$_title = 'Category Recover';
 include '../../_admin_head.php';
 ?>
 
