@@ -163,13 +163,27 @@ include '../_head.php';
 <h2>Register as Member</h2>
 <form method="post" class="form" enctype="multipart/form-data">
     
-    <label for="photo">Photo</label>
-    <label class="upload" tabindex="0">
-        <?= html_file('photo', 'image/*', 'hidden') ?>
-        <img src="/images/photo.jpg">
-    </label>
-    <?= err('photo') ?> 
+<label for="photo">Photo</label>
+<label class="upload" tabindex="0" onclick="openModal()">
+    <img id="photo-preview" src="/images/photo.jpg" alt="Profile Photo" width="200">
+</label>
+<?= err('photo') ?>
 
+<!-- Hidden file input for folder selection -->
+<input type="file" id="photo" name="photo" accept="image/*" style="display:none" onchange="previewImage(event)">
+<!-- Modal for selecting either file or webcam -->
+<div id="modal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <button onclick="selectFromFolder()">Select from Folder</button>
+        <button onclick="startWebcam()">Capture from Webcam</button>
+    </div>
+</div>
+
+<!-- Hidden webcam capture section for PC -->
+<video id="webcam" width="300" height="200" autoplay style="display:none"></video>
+<button id="capture-btn" onclick="capturePhoto()" style="display:none">Capture</button>
+<canvas id="canvas" width="300" height="200" style="display:none"></canvas>
     <label for="email">Email</label>
     <?= html_text('email', 'maxlength="100"') ?>
     <?= err('email') ?>

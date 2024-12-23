@@ -76,7 +76,12 @@
                 <?php else: ?>
                     <li><a href="/login.php">Login</a></li>
                 <?php endif ?>
->>>>>>> 5f14917485a8f7780ac848de6cbefe163fcac6c6
+                <?php if ($user): ?>
+                <?php if ($user->userType == 'member'): ?>
+                        <li><a href="/page/chanyijing/member/order_history/history_list.php">Order History</a></li>
+                        <?php endif ?>
+                        <?php endif ?>
+
             </ul>
         </nav>
         <div class="right-logo">

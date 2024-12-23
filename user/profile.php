@@ -4,7 +4,7 @@ include '../_base.php';
 // ----------------------------------------------------------------------------
 
 // Authenticated users
-auth();
+auth('member','admin');
 
 if (is_get()) {
     $stm = $_db->prepare('SELECT * FROM user WHERE id = ?');
