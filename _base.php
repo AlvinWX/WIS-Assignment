@@ -87,11 +87,6 @@ function is_money($value) {
     return preg_match('/^\-?\d+(\.\d{1,2})?$/', $value);
 }
 
-// Is email?
-function is_email($value) {
-    return filter_var($value, FILTER_VALIDATE_EMAIL) !== false;
-}
-
 // Return base url (host + port)
 function base($path = '') {
     return "http://$_SERVER[SERVER_NAME]:$_SERVER[SERVER_PORT]/$path";
@@ -239,16 +234,10 @@ function get_mail() {
     return $m;
 }
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-// // Is email?
+// Is email?
 // function is_email($value) {
 //     return filter_var($value, FILTER_VALIDATE_EMAIL) !== false;
 // }
-=======
->>>>>>> c79937dcd29e2448f711184ead1ccfe6f1f5b5e4
->>>>>>> Stashed changes
 
 // ============================================================================
 // Error Handlings
@@ -268,9 +257,6 @@ function err($key) {
     }
 }
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
 // ============================================================================
 // Email Functions
 // ============================================================================
@@ -300,9 +286,6 @@ function err($key) {
 //     return $m;
 // }
 
-=======
->>>>>>> c79937dcd29e2448f711184ead1ccfe6f1f5b5e4
->>>>>>> Stashed changes
 
 // ============================================================================
 // Database Setups and Functions
