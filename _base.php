@@ -236,10 +236,10 @@ function get_mail() {
     return $m;
 }
 
-// Is email?
-// function is_email($value) {
-//     return filter_var($value, FILTER_VALIDATE_EMAIL) !== false;
-// }
+//Is email?
+function is_email($value) {
+    return filter_var($value, FILTER_VALIDATE_EMAIL) !== false;
+}
 
 // ============================================================================
 // Error Handlings
@@ -390,11 +390,11 @@ $_orderStatuses = [
     'Cancelled' => 'Cancelled'
 ];
 
-$_members = $_db->query('SELECT memberID, memberName FROM member')
+$_members = $_db->query('SELECT member_id, member_name FROM member')
                   ->fetchAll(PDO::FETCH_KEY_PAIR);
                   
 //  $_products = $_db->query('SELECT product_id, product_name, product_cover, product_resources,product_desc, product_price, product_stock FROM product WHERE product_status=1;');
-//                  //  ->fetchAll(PDO::FETCH_KEY_PAIR);
+//                    ->fetchAll(PDO::FETCH_KEY_PAIR);
 
  $_categories = $_db->query('SELECT category_id, category_name FROM category')
                   ->fetchAll(PDO::FETCH_KEY_PAIR);

@@ -3,17 +3,17 @@
 <?php
 require '../../../../_base.php';
 
-$memberID = req('memberID');
-$stm = $_db->prepare('SELECT * FROM member WHERE memberID = ?');
-$stm->execute([$memberID]);
+$member_id = req('member_id');
+$stm = $_db->prepare('SELECT * FROM member WHERE member_id = ?');
+$stm->execute([$member_id]);
 $s = $stm->fetch();
 
 if(!$s){
     redirect('member_list.php');
 }
 
-$addr_stm = $_db->prepare('SELECT * FROM address WHERE memberID = ?');
-$addr_stm->execute([$memberID]);
+$addr_stm = $_db->prepare('SELECT * FROM address WHERE member_id = ?');
+$addr_stm->execute([$member_id]);
 $address = $addr_stm->fetch();
 
 $_title = 'Member Detail';
@@ -32,33 +32,33 @@ include '../../../../_head.php';
         <td>
     <tr>
         <th>Member ID</th>
-        <td><?= $s->memberID ?></td>
+        <td><?= $s->member_id ?></td>
     </tr>
     <tr>
         <th>Name</th>
-        <td><?= $s->memberName ?></td>
+        <td><?= $s->member_name ?></td>
     </tr>
     <tr>
         <th>Email</th>
-        <td><a href="mailto:<?= $s->memberEmail ?>"><?= $s->memberEmail ?></a></td>
+        <td><a href="mailto:<?= $s->member_email ?>"><?= $s->member_email ?></a></td>
     </tr>
     <tr>
         <th>Phone</th>
-        <td><a href="tel:<?= $s->memberPhone ?>"><?= $s->memberPhone ?></a></td>
+        <td><a href="tel:<?= $s->member_phone ?>"><?= $s->member_phone ?></a></td>
     </tr>
     <tr>
         <th>Gender</th>
-        <td><?= $s->memberGender ?></td>
+        <td><?= $s->member_gender ?></td>
     </tr>
     <tr>
         <th>Date Joined</th>
-        <td><?= $s->memberDateJoined ?></td>
+        <td><?= $s->member_date_joined ?></td>
     </tr>
     <tr>
     <th>Address</th>
     <td>
-        <a href="https://www.google.com/maps/search/<?= urlencode($address->addressStreet . ', ' . $address->addressPostcode . ', ' . $address->addressCity . ', ' . $address->addressState) ?>" target="_blank">
-            <?= $address->addressStreet . ', ' . $address->addressPostcode . ', ' . $address->addressCity . ', ' . $address->addressState ?>
+        <a href="https://www.google.com/maps/search/<?= urlencode($address->address_street . ', ' . $address->address_postcode . ', ' . $address->address_city . ', ' . $address->address_state) ?>" target="_blank">
+            <?= $address->address_street . ', ' . $address->address_postcode . ', ' . $address->address_city . ', ' . $address->address_state ?>
         </a>
     </td>
 </tr>

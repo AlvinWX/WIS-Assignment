@@ -5,7 +5,7 @@ require '../../../../_base.php';
 
 //-----------------------------------------------------------------------------
 $user = $_SESSION['user'] ?? null;
-$memberID = $user->memberID;
+$member_id = $user->member_id;
 
 // Retrieve search and filter parameters
 $order_id = req('order_id');
@@ -13,10 +13,10 @@ $order_status = req('order_status');
 
 // SQL query with filters and sorting
 $o_stm = $_db->prepare('SELECT * FROM `order`
-                      WHERE memberID = ?
+                      WHERE member_id = ?
                       AND (order_id = ? OR ? = "")
                       AND (order_status = ? OR ? = "")');
-$o_stm->execute([$memberID, $order_id, $order_id, $order_status, $order_status]);
+$o_stm->execute([$member_id, $order_id, $order_id, $order_status, $order_status]);
 
 // Fetch all orders
 $orders = $o_stm->fetchAll(PDO::FETCH_ASSOC);

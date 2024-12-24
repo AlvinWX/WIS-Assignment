@@ -6,7 +6,7 @@ require '../../../../_base.php';
 //-----------------------------------------------------------------------------
 
 $user = $_SESSION['user'] ?? null;
-$memberID = $user->memberID;
+$member_id = $user->member_id;
 
 //----------------------------------------------------------------------------- 
 
@@ -29,9 +29,9 @@ if (is_post()) {
     // Output
     if (!$_err) {
         $stm = $_db->prepare('INSERT INTO feedback 
-                              (product_satisfaction, service_satisfaction, team_satisfaction, improvement_suggestions, submit_time, memberID) 
+                              (product_satisfaction, service_satisfaction, team_satisfaction, improvement_suggestions, submit_time, member_id) 
                               VALUES (?, ?, ?, ?, NOW(), ?)');
-        $stm->execute([$productSatisfaction, $serviceSatisfaction, $teamSatisfaction, $improvementSuggestions, $memberID]);
+        $stm->execute([$productSatisfaction, $serviceSatisfaction, $teamSatisfaction, $improvementSuggestions, $member_id]);
 
         temp('info', 'Thank you for your feedback!');
         redirect('feedback_thank.php');
@@ -98,7 +98,7 @@ include '../../../../_head.php';
 </div>
 
 <br/>
-<button data-get="history_list.php?memberID=<?= $memberID ?>">Back</button>
+<button data-get="history_list.php?member_id=<?= $member_id ?>">Back</button>
 
 <?php
 include '../../../../_foot.php';

@@ -16,8 +16,8 @@ if (!$o) {
 }
 
 // Fetch member details
-$m_stm = $_db->prepare('SELECT * FROM member WHERE memberID = ?');
-$m_stm->execute([$o->memberID]);
+$m_stm = $_db->prepare('SELECT * FROM member WHERE member_id = ?');
+$m_stm->execute([$o->member_id]);
 $m = $m_stm->fetch();
 
 // Fetch shipping address
@@ -97,25 +97,25 @@ include '../../../../_head.php';
     </tr>
     <tr>
         <th>Member ID</th>
-        <td><a href="../member_management/member_detail.php?id=<?= $m->memberID ?>"><?= $m->memberID ?></a></td>
+        <td><a href="../member_management/member_detail.php?id=<?= $m->member_id ?>"><?= $m->member_id ?></a></td>
     </tr>
     <tr>
         <th>Name</th>
-        <td><?= $m->memberName ?></td>
+        <td><?= $m->member_name ?></td>
     </tr>
     <tr>
         <th>Email</th>
-        <td><a href="mailto:<?= $m->memberEmail ?>"><?= $m->memberEmail ?></a></td>
+        <td><a href="mailto:<?= $m->member_email ?>"><?= $m->member_email ?></a></td>
     </tr>
     <tr>
         <th>Phone</th>
-        <td><a href="tel:<?= $m->memberPhone ?>"><?= $m->memberPhone ?></a></td>
+        <td><a href="tel:<?= $m->member_phone ?>"><?= $m->member_phone ?></a></td>
     </tr>
     <tr>
     <th>Shipping Address</th>
     <td>
-        <a href="https://www.google.com/maps/search/<?= urlencode($sa->shipping_address_street . ', ' . $sa->shipping_address_postcode . ', ' . $sa->shipping_address_city . ', ' . $sa->shipping_address_state) ?>" target="_blank">
-            <?= $sa->shipping_address_street . ', ' . $sa->shipping_address_postcode . ', ' . $sa->shipping_address_city . ', ' . $sa->shipping_address_state ?>
+        <a href="https://www.google.com/maps/search/<?= urlencode($sa->street . ', ' . $sa->postcode . ', ' . $sa->city . ', ' . $sa->state) ?>" target="_blank">
+            <?= $sa->street . ', ' . $sa->postcode . ', ' . $sa->city . ', ' . $sa->state ?>
         </a>
     </td>
 </tr>
