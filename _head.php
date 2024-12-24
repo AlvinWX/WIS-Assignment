@@ -63,6 +63,7 @@
         <nav>
             <ul>
                 <li><a href="/index.php">Home</a></li>
+                <li><a href="/user/profile.php">Profile</a></li>
                 <!-- Show logout only if the user is logged in -->
                 <?php if ($user): ?>
                     <li><a href="/logout.php">Logout</a></li>

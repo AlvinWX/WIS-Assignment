@@ -306,14 +306,22 @@ function is_unique($value, $table, $field) {
     return $stm->fetchColumn() == 0;
 }
 
-// Is exists?
+// Check if email exists in either the member or admin tables
 function is_exists($value, $table, $field) {
     global $_db;
-    $stm = $_db->prepare("SELECT COUNT(*) FROM $table WHERE $field = ?");
+    
+    // Check in member table
+    $stm = $_db->prepare("SELECT COUNT(*) FROM member WHERE $field = ?");
+    $stm->execute([$value]);
+    if ($stm->fetchColumn() > 0) {
+        return true;
+    }
+
+    // Check in admin table
+    $stm = $_db->prepare("SELECT COUNT(*) FROM admin WHERE $field = ?");
     $stm->execute([$value]);
     return $stm->fetchColumn() > 0;
 }
-
 // ============================================================================
 // Security
 // ============================================================================
