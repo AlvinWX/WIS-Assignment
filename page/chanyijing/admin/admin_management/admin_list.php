@@ -40,6 +40,7 @@ $admins= $a_stm->fetchAll();
 
 $_title = 'Admin List';
 include '../../../../_head.php';
+
 ?>
 
 <!-- Seach Bar -->
@@ -53,6 +54,7 @@ include '../../../../_head.php';
 
 <div class="top-heading-space">
     <h2>Admin List</h2>
+    <h1><?= htmlspecialchars($loggedInAdminTier, ENT_QUOTES, 'UTF-8') ?></h1>
 </div>
 
 <?php if (empty($admins)): ?>
