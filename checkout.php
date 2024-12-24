@@ -118,6 +118,7 @@ window.onload = function() {
 };
 </script>
 <body>
+    <div id="info"><?= temp('info')?></div>    
     <section class="cart-display">
     <div class="heading">
         <h1>Products Ordered</h1>
