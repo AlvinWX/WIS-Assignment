@@ -226,10 +226,8 @@ function get_mail() {
     $m->SMTPAuth = true;
     $m->Host = 'smtp.gmail.com';
     $m->Port = 587;
-    $m->Username = 'liawcv1@gmail.com';
-    $m->Password = 'pztq znli gpjg tooe';
-    // $m->Username = 'targrocer@outlook.com';
-    // $m->Password = 'tar123grocer';
+    $m->Username = 'targrocer@outlook.com';
+    $m->Password = 'tar123grocer';
     $m->CharSet = 'utf-8';
     $m->setFrom($m->Username, 'TAR GROCER Admin');
 

@@ -126,8 +126,7 @@ $fullPath = $_SERVER['REQUEST_URI'];
     <div class="flash-message flash-error"><?= htmlspecialchars($error) ?></div>
 <?php endif; ?>
 
-<div class="empty-box">
-</div>
+<div class="empty-box"></div>
 
 <div class = "slide-container">
         

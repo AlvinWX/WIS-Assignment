@@ -20,81 +20,81 @@ $get_address_stm -> execute([$member_id]);
 $addresses = $get_address_stm -> fetchAll();
 
 //One of the payment method is pressed
-if(isset($_POST['submit'], $_POST['address'], $_POST['order_subtotal'], $_POST['tax'], $_POST['delivery_fee'], $_POST['subtotal'], $_POST['discount'], $_POST['total'], $_POST['points'])){
+// if(isset($_POST['submit'], $_POST['address'], $_POST['order_subtotal'], $_POST['tax'], $_POST['delivery_fee'], $_POST['subtotal'], $_POST['discount'], $_POST['total'], $_POST['points'])){
 
-    //Get address value
-    $paymentMethod = $_POST['submit'];
-    $addressID = (int)$_POST['address'];
-    $shippingAddress = $addresses[$addressID];
+//     //Get address value
+//     $paymentMethod = $_POST['submit'];
+//     $addressID = (int)$_POST['address'];
+//     $shippingAddress = $addresses[$addressID];
 
-    $order_subtotal = (double)$_POST['order_subtotal'];
-    $tax = (double)$_POST['tax'];
-    $delivery_fee = (double)$_POST['delivery_fee'];
-    $subtotal = (double)$_POST['subtotal'];
-    $discount = (double)$_POST['discount'];
-    $total = (double)$_POST['total'];
-    $points = (int)$_POST['points'];
+//     $order_subtotal = (double)$_POST['order_subtotal'];
+//     $tax = (double)$_POST['tax'];
+//     $delivery_fee = (double)$_POST['delivery_fee'];
+//     $subtotal = (double)$_POST['subtotal'];
+//     $discount = (double)$_POST['discount'];
+//     $total = (double)$_POST['total'];
+//     $points = (int)$_POST['points'];
 
 
-    //Insert new record into the shipping address table
-    $create_shipping_address_stm = $_db -> prepare('INSERT INTO shipping_address
-    (street, postcode, city, `state`) 
-    VALUES (?, ?, ?, ?)');
-    $create_shipping_address_stm -> execute([$shippingAddress->address_street, $shippingAddress->address_postcode, $shippingAddress->address_city, $shippingAddress->address_state]); 
+//     //Insert new record into the shipping address table
+//     $create_shipping_address_stm = $_db -> prepare('INSERT INTO shipping_address
+//     (street, postcode, city, `state`) 
+//     VALUES (?, ?, ?, ?)');
+//     $create_shipping_address_stm -> execute([$shippingAddress->address_street, $shippingAddress->address_postcode, $shippingAddress->address_city, $shippingAddress->address_state]); 
 
-    //Get the shipping address id
-    $get_shipping_address_stm = $_db -> prepare('SELECT * FROM shipping_address
-    WHERE street = ? AND postcode = ? AND city = ? AND `state` = ? ');
-    $get_shipping_address_stm -> execute([$shippingAddress->address_street, $shippingAddress->address_postcode, $shippingAddress->address_city, $shippingAddress->address_state]); 
-    $ad = $get_shipping_address_stm -> fetch();
+//     //Get the shipping address id
+//     $get_shipping_address_stm = $_db -> prepare('SELECT * FROM shipping_address
+//     WHERE street = ? AND postcode = ? AND city = ? AND `state` = ? ');
+//     $get_shipping_address_stm -> execute([$shippingAddress->address_street, $shippingAddress->address_postcode, $shippingAddress->address_city, $shippingAddress->address_state]); 
+//     $ad = $get_shipping_address_stm -> fetch();
 
-    //Insert new record into the order table
-    $create_order_stm = $_db -> prepare('INSERT INTO `order`
-    (order_subtotal, tax, delivery_fee, subtotal, 
-    voucher, discount_price, total, points, 
-    order_date, ship_date, received_date, 
-    order_status, shipping_address_id, member_id) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
-    // Create DateTime objects and format them to SQL datetime format
-    $orderDate = (new DateTime())->format('Y-m-d H:i:s');
-    $shipDate = (new DateTime('+1 day'))->format('Y-m-d 0:0:0');
-    $receivedDate = (new DateTime('+3 days'))->format('Y-m-d 0:0:0');
+//     //Insert new record into the order table
+//     $create_order_stm = $_db -> prepare('INSERT INTO `order`
+//     (order_subtotal, tax, delivery_fee, subtotal, 
+//     voucher, discount_price, total, points, 
+//     order_date, ship_date, received_date, 
+//     order_status, shipping_address_id, member_id) 
+//     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+//     // Create DateTime objects and format them to SQL datetime format
+//     $orderDate = (new DateTime())->format('Y-m-d H:i:s');
+//     $shipDate = (new DateTime('+1 day'))->format('Y-m-d 0:0:0');
+//     $receivedDate = (new DateTime('+3 days'))->format('Y-m-d 0:0:0');
 
-    $create_order_stm->execute([
-        $order_subtotal, $tax, $delivery_fee, $subtotal,
-        'Voucher', $discount, $total, $points,
-        $orderDate, $shipDate, $receivedDate,
-        'Pending', $ad->shipping_address_id, $user->member_id
-    ]);
+//     $create_order_stm->execute([
+//         $order_subtotal, $tax, $delivery_fee, $subtotal,
+//         'Voucher', $discount, $total, $points,
+//         $orderDate, $shipDate, $receivedDate,
+//         'Pending', $ad->shipping_address_id, $user->member_id
+//     ]);
 
-    //Get the order id
-    $get_order_stm = $_db -> prepare('SELECT * FROM `order` WHERE member_id = ? AND order_date = ?');
-    $get_order_stm -> execute([$user->member_id, $orderDate]); 
-    $id = $get_order_stm -> fetch();
+//     //Get the order id
+//     $get_order_stm = $_db -> prepare('SELECT * FROM `order` WHERE member_id = ? AND order_date = ?');
+//     $get_order_stm -> execute([$user->member_id, $orderDate]); 
+//     $id = $get_order_stm -> fetch();
 
-    //Insert new record into the order_product table
-    foreach ($cart_products as $a){
-        $create_order_product_stm = $_db -> prepare('INSERT INTO order_product 
-        (order_id, product_id, price, quantity) VALUES (?, ?, ?, ?)');
-        $create_order_product_stm -> execute([$id->order_id, $a-> product_id, $a->price, $a->quantity]);
-    }
+//     //Insert new record into the order_product table
+//     foreach ($cart_products as $a){
+//         $create_order_product_stm = $_db -> prepare('INSERT INTO order_product 
+//         (order_id, product_id, price, quantity) VALUES (?, ?, ?, ?)');
+//         $create_order_product_stm -> execute([$id->order_id, $a-> product_id, $a->price, $a->quantity]);
+//     }
 
-    //Clear shopping cart
-    $clear_order_cart = $_db -> prepare('DELETE FROM cart_product WHERE cart_id = ?');
-    $clear_order_cart -> execute([$shoppingCart-> cart_id]); 
+//     //Clear shopping cart
+//     $clear_order_cart = $_db -> prepare('DELETE FROM cart_product WHERE cart_id = ?');
+//     $clear_order_cart -> execute([$shoppingCart-> cart_id]); 
 
-    //If the payment method is card
-    if($paymentMethod == 'Payment Card'){
+//     //If the payment method is card
+//     if($paymentMethod == 'Payment Card'){
 
-    } else{//If the payment method is Stripe
+//     } else{//If the payment method is Stripe
         
-    }
+//     }
 
-    redirect('index.php');
+//     redirect('index.php');
 
-} else if(isset($_POST['submit'], $_POST['order_subtotal'], $_POST['tax'], $_POST['delivery_fee'], $_POST['subtotal'], $_POST['discount'], $_POST['total'], $_POST['points'])) {
-    temp('info', 'Please select a shipping address.');
-}
+// } else if(isset($_POST['submit'], $_POST['order_subtotal'], $_POST['tax'], $_POST['delivery_fee'], $_POST['subtotal'], $_POST['discount'], $_POST['total'], $_POST['points'])) {
+//     temp('info', 'Please select a shipping address.');
+// }
 
 ?>
 
@@ -116,6 +116,13 @@ if(isset($_POST['submit'], $_POST['address'], $_POST['order_subtotal'], $_POST['
 window.onload = function() {
     document.getElementById('spinnerValue0').blur();
 };
+document.getElementById('payment').addEventListener('submit', function(event) {
+    var addressSelected = document.querySelector('input[name="address"]:checked');
+    if (!addressSelected) {
+        alert('Please select a shipping address.');
+        event.preventDefault(); 
+    }
+});
 </script>
 <body>
     <div id="info"><?= temp('info')?></div>    
@@ -128,7 +135,7 @@ window.onload = function() {
             <div class="header-item">Product</div>
             <div class="header-item">Unit Price</div>
             <div class="header-item">Amount</div>
-            <div class="header-item">Total</div>
+            <div class="header-item">Subtotal</div>
         </div>
         <?php $order_subtotal=0;foreach ($cart_products as $a): 
             $get_product_detail_stm = $_db->prepare('SELECT * FROM product p JOIN category c ON p.category_id = c.category_id WHERE product_id = ?');
@@ -195,7 +202,7 @@ window.onload = function() {
             <div class="address-box">
                 <label for="<?= $id ?>">
                     <span class="sequence"><?= $id + 1 ?></span>
-                    <input type="radio" id="<?= $id ?>" name="address" form="payment" value="<?= $id ?>">
+                    <input type="radio" class="address-select" id="<?= $id ?>" name="address" form="payment" value="<?= $id ?>">
                     <div class="address-details">
                         <?= $s->address_street ?>, <?= $s->address_postcode ?>, <?= $s->address_city ?>, <?= $s->address_state ?>
                     </div>
@@ -237,7 +244,7 @@ window.onload = function() {
     </div>
 
     <div class="action-button">
-        <form method="post" id="payment"></form>
+        <form method="post" id="payment" action="payment.php"></form>
         <input hidden type="number" form="payment" step="0.01" value="<?= $order_subtotal ?>" name="order_subtotal">
         <input hidden type="number" form="payment" step="0.01" value="<?= $tax ?>" name="tax">
         <input hidden type="number" form="payment" step="0.01" value="<?= $delivery_fee ?>" name="delivery_fee">
