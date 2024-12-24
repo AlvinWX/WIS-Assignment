@@ -40,12 +40,12 @@ if(isset($_POST['submit'], $_POST['address'], $_POST['order_subtotal'], $_POST['
     $create_shipping_address_stm = $_db -> prepare('INSERT INTO shipping_address
     (street, postcode, city, `state`) 
     VALUES (?, ?, ?, ?)');
-    $create_shipping_address_stm -> execute([$shippingAddress->street, $shippingAddress->postcode, $shippingAddress->city, $shippingAddress->state]); 
+    $create_shipping_address_stm -> execute([$shippingAddress->address_street, $shippingAddress->address_postcode, $shippingAddress->address_city, $shippingAddress->address_state]); 
 
     //Get the shipping address id
     $get_shipping_address_stm = $_db -> prepare('SELECT * FROM shipping_address
     WHERE street = ? AND postcode = ? AND city = ? AND `state` = ? ');
-    $get_shipping_address_stm -> execute([$shippingAddress->street, $shippingAddress->postcode, $shippingAddress->city, $shippingAddress->state]); 
+    $get_shipping_address_stm -> execute([$shippingAddress->address_street, $shippingAddress->address_postcode, $shippingAddress->address_city, $shippingAddress->address_state]); 
     $ad = $get_shipping_address_stm -> fetch();
 
     //Insert new record into the order table
@@ -64,12 +64,12 @@ if(isset($_POST['submit'], $_POST['address'], $_POST['order_subtotal'], $_POST['
         $order_subtotal, $tax, $delivery_fee, $subtotal,
         'Voucher', $discount, $total, $points,
         $orderDate, $shipDate, $receivedDate,
-        'Pending', $ad->shipping_address_id, $user->memberID
+        'Pending', $ad->shipping_address_id, $user->member_id
     ]);
 
     //Get the order id
     $get_order_stm = $_db -> prepare('SELECT * FROM `order` WHERE member_id = ? AND order_date = ?');
-    $get_order_stm -> execute([$user->memberID, $orderDate]); 
+    $get_order_stm -> execute([$user->member_id, $orderDate]); 
     $id = $get_order_stm -> fetch();
 
     //Insert new record into the order_product table
@@ -196,7 +196,7 @@ window.onload = function() {
                     <span class="sequence"><?= $id + 1 ?></span>
                     <input type="radio" id="<?= $id ?>" name="address" form="payment" value="<?= $id ?>">
                     <div class="address-details">
-                        <?= $s->street ?>, <?= $s->postcode ?>, <?= $s->city ?>, <?= $s->state ?>
+                        <?= $s->address_street ?>, <?= $s->address_postcode ?>, <?= $s->address_city ?>, <?= $s->address_state ?>
                     </div>
                     <div hidden><?= $id++ ?></div>
                 </label>

@@ -1,67 +1,58 @@
-// Function to open the modal with options
-function openModal() {
-    document.getElementById('modal').style.display = 'block';
-}
+// $(() => {
+//     // Initialize webcam
+//     const video = document.getElementById('webcam');
+//     const canvas = document.getElementById('canvas');
+//     const captureButton = document.getElementById('captureButton');
+//     const photoPreview = document.getElementById('photoPreview');
 
-// Function to close the modal
-function closeModal() {
-    document.getElementById('modal').style.display = 'none';
-}
+//     // Get webcam stream
+//     navigator.mediaDevices.getUserMedia({ video: true })
+//         .then((stream) => {
+//             video.srcObject = stream;
+//         })
+//         .catch((error) => {
+//             console.error("Error accessing webcam:", error);
+//         });
 
-// Function to trigger file input (select from folder)
-function selectFromFolder() {
-    document.getElementById('photo').click(); // Trigger file input
-    closeModal(); // Close the modal after selecting
-}
+//     // Capture the image from the webcam feed
+//     captureButton.addEventListener('click', () => {
+//         const context = canvas.getContext('2d');
+//         context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-// Function to start the webcam (capture from webcam)
-function startWebcam() {
-    navigator.mediaDevices.getUserMedia({ video: true })
-        .then(stream => {
-            document.getElementById('webcam').style.display = 'block';
-            document.getElementById('capture-btn').style.display = 'block';
-            document.getElementById('webcam').srcObject = stream;
-            closeModal(); // Close the modal after starting the webcam
-        })
-        .catch(err => {
-            alert('Error accessing webcam: ' + err);
-        });
-}
+//         // Get the image data URL (base64 encoded) and set it as the preview image
+//         const dataURL = canvas.toDataURL('image/jpeg');
 
-// Function to capture the photo from the webcam
-function capturePhoto() {
-    const webcam = document.getElementById('webcam');
-    const canvas = document.getElementById('canvas');
-    const context = canvas.getContext('2d');
+//         // Display the captured image in the preview and hold it
+//         photoPreview.src = dataURL; // This sets the captured image to the img element with id "photoPreview"
+        
+//         // Disable the capture button to prevent re-capturing unless manually triggered
+//         captureButton.disabled = true;
 
-    // Draw the webcam image to the canvas
-    context.drawImage(webcam, 0, 0, canvas.width, canvas.height);
+//         // Optional: You can add further functionality to save or upload the photo
+//         console.log("Captured image URL:", dataURL); // For debugging purposes
+//     });
 
-    // Convert the canvas image to a data URL
-    const dataUrl = canvas.toDataURL('image/png');
+//     // Handle file input (as in your original code)
+//     $('label.upload input[type=file]').on('change', e => {
+//         const f = e.target.files[0];
+//         const img = $(e.target).siblings('img')[0];
 
-    // Set the captured image as the source for the image preview
-    const photoPreview = document.getElementById('photo-preview');
-    photoPreview.src = dataUrl;
+//         if (!img) return;
 
-    // Stop the webcam stream after capturing the photo
-    const stream = webcam.srcObject;
-    const tracks = stream.getTracks();
-    tracks.forEach(track => track.stop());
+//         img.dataset.src ??= img.src;
 
-    // Hide the webcam and capture button after capturing the image
-    document.getElementById('webcam').style.display = 'none';
-    document.getElementById('capture-btn').style.display = 'none';
-}
+//         if (f?.type.startsWith('image/')) {
+//             img.src = URL.createObjectURL(f);
+//         } else {
+//             img.src = img.dataset.src;
+//             e.target.value = '';
+//         }
+//     });
 
-// Function to preview the selected image from the file input
-function previewImage(event) {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById('photo-preview').src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
-}
+//     // Optionally, allow user to reset and recapture the photo
+//     captureButton.addEventListener('dblclick', () => {
+//         // Reset the preview and enable the capture button
+//         photoPreview.src = "/images/photo.jpg"; // Reset to initial image or placeholder
+//         captureButton.disabled = false;
+//     });
+// });

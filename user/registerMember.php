@@ -12,9 +12,9 @@ if (is_post()) {
     $gender = req('gender');
     $f = get_file('photo');
     $address  = req('address');
-$postcode = req('postcode');
-$city     = req('city');
-$state    = req('state');
+    $postcode = req('postcode');
+    $city     = req('city');
+    $state    = req('state');
     
 
     // Validate: email
@@ -27,7 +27,7 @@ $state    = req('state');
     else if (!is_email($email)) {
         $_err['email'] = 'Invalid email';
     }
-    else if (!is_unique($email, 'member', 'memberEmail')) {
+    else if (!is_unique($email, 'member', 'member_email')) {
         $_err['email'] = 'Duplicated';
     }
 
@@ -115,14 +115,14 @@ if (!$state) {
     $photo = save_photo($f, '../uploads/profiles');
 
     // (2) Generate memberID (Assuming memberID is a unique value, e.g., 'MB00001')
-    $stm = $_db->query('SELECT MAX(memberID) AS maxID FROM member');
+    $stm = $_db->query('SELECT MAX(member_id) AS maxID FROM member');
     $result = $stm->fetch(PDO::FETCH_ASSOC);
     $lastID = $result['maxID'] ?? 'MB00000';
     $newID = sprintf('MB%05d', (int)substr($lastID, 2) + 1);
 
     // (3) Insert user (member)
     $stm = $_db->prepare('
-        INSERT INTO member (memberID, memberName, memberPassword, memberEmail, memberPhone, memberGender, memberProfilePic, memberDateJoined)
+        INSERT INTO member (member_id, member_name, member_password, member_email, member_phone, member_gender, member_profile_pic, member_date_joined)
         VALUES (?, ?, SHA1(?), ?, ?, ?, ?, ?)
     ');
     $currentDate = date('Y-m-d');
@@ -162,29 +162,25 @@ include '../_head.php';
 <div class="register-container">
 <h2>Register as Member</h2>
 <form method="post" class="form" enctype="multipart/form-data">
-    
+
 <label for="photo">Photo</label>
-<label class="upload" tabindex="0" onclick="openModal()">
-    <img id="photo-preview" src="/images/photo.jpg" alt="Profile Photo" width="200">
+<label class="upload" tabindex="0">
+    <?= html_file('photo','image/*','hidden') ?>
+    <img src="/images/photo.jpg" id="photoPreview">
 </label>
+ 
+<!-- Start Webcam Button 
+<button id="startWebcamButton">Start Webcam</button>
+
+Webcam Section
+<video id="webcam" width="200" height="200" autoplay></video>
+<button id="captureButton">Capture Photo</button>
+
+Canvas for capturing the image
+<canvas id="canvas" width="200" height="200" style="display:none;"></canvas> -->
+
 <?= err('photo') ?>
-
-<!-- Hidden file input for folder selection -->
-<input type="file" id="photo" name="photo" accept="image/*" style="display:none" onchange="previewImage(event)">
-<!-- Modal for selecting either file or webcam -->
-<div id="modal" class="modal" style="display:none;">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <button onclick="selectFromFolder()">Select from Folder</button>
-        <button onclick="startWebcam()">Capture from Webcam</button>
-    </div>
-</div>
-
-<!-- Hidden webcam capture section for PC -->
-<video id="webcam" width="300" height="200" autoplay style="display:none"></video>
-<button id="capture-btn" onclick="capturePhoto()" style="display:none">Capture</button>
-<canvas id="canvas" width="300" height="200" style="display:none"></canvas>
-    <label for="email">Email</label>
+<label for="email">Email</label>
     <?= html_text('email', 'maxlength="100"') ?>
     <?= err('email') ?>
 
