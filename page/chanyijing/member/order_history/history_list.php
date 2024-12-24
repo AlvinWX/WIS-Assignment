@@ -75,7 +75,7 @@ include '../../../../_head.php';
                 $product_subtotal = $op['order_product_quantity'] * $op['order_product_price'];
             ?>
                 <tr>
-                    <td><img src="../../../../images/<?= $prod['product_img'] ?>" alt="<?= $prod['product_name'] ?>" style="width: 100px;"></td>
+                    <td><img src="../../../yongqiaorou/images/<?= $prod['product_cover'] ?>" alt="<?= $prod['product_name'] ?>" style="width: 100px;"></td>
                     <td><?= $prod['product_name'] ?></td>
                     <td>Quantity: </td>
                     <td><?= $op['order_product_quantity'] ?></td>
