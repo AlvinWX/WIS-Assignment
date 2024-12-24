@@ -58,7 +58,6 @@ if (is_post()) {
         }
     }
 }
-
 // ----------------------------------------------------------------------------
 
 $_title = 'Login';
@@ -87,6 +86,7 @@ include '_head.php';
         </section>
     </form>
     <a href="/user/registerMember.php">Register</a>
+    <a href="/user/reset.php">Reset Password</a>
 </div>
 
 <script>

@@ -4,7 +4,7 @@ include '../_base.php';
 // ----------------------------------------------------------------------------
 
 // Authenticated users
-auth();
+
 
 if (is_post()) {
     $password     = req('password');
@@ -69,6 +69,11 @@ if (is_post()) {
 $_title = 'User | Password';
 include '../_head.php';
 ?>
+<style>
+    form{
+        margin-top: 200px;
+    }
+</style>
 
 <form method="post" class="form">
     <label for="password">Password</label>
