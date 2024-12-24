@@ -71,7 +71,7 @@ include '../../../../_head.php';
                 <tr>
                     <td><?= $o->order_id ?></td>
                     <td><?= $o->order_date ?></td>
-                    <td><?= $o->order_total ?></td>
+                    <td><?= $o->total ?></td>
                     <td><?= $o->order_status ?></td>
                     <td>
                     <button data-get="order_detail.php?order_id=<?= $o->order_id ?>">Order Detail</button>

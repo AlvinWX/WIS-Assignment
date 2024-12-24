@@ -8,6 +8,8 @@ require '../../../../_base.php';
 $user = $_SESSION['user'] ?? null;
 $member_id = $user->member_id;
 
+$order_id = req('order_id');
+
 //----------------------------------------------------------------------------- 
 
 if (is_post()) {
@@ -29,9 +31,9 @@ if (is_post()) {
     // Output
     if (!$_err) {
         $stm = $_db->prepare('INSERT INTO feedback 
-                              (product_satisfaction, service_satisfaction, team_satisfaction, improvement_suggestions, submit_time, member_id) 
-                              VALUES (?, ?, ?, ?, NOW(), ?)');
-        $stm->execute([$productSatisfaction, $serviceSatisfaction, $teamSatisfaction, $improvementSuggestions, $member_id]);
+                              (product_satisfaction, service_satisfaction, team_satisfaction, improvement_suggestions, submit_time, member_id, order_id) 
+                              VALUES (?, ?, ?, ?, NOW(), ?, ?)');
+        $stm->execute([$productSatisfaction, $serviceSatisfaction, $teamSatisfaction, $improvementSuggestions, $member_id, $order_id]);
 
         temp('info', 'Thank you for your feedback!');
         redirect('feedback_thank.php');
@@ -54,6 +56,7 @@ include '../../../../_head.php';
     <p>Please complete the following form and help us improve our customer experience.</p><br/><hr/>
 
     <form method="POST" action="">
+        <p>Feedback for Order ID #<?= $order_id ?></p>
         <div class="form-group">
             <label for="product_satisfaction">How satisfied are you with our product?</label>
             <input type="range" id="product_satisfaction" name="product_satisfaction" min="1" max="5" step="1" value="3">

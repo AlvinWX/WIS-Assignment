@@ -28,7 +28,7 @@ include '../../../../_head.php';
     <tr>
         <th>Profile Picture</th>
         <td class="profile-pic-container">
-            <img src="../../../../images/profile_pic/<?=$s->memberProfilePic?>"></td>
+            <img src="../../../../images/profile_pic/<?=$s->member_profile_pic?>"></td>
         <td>
     <tr>
         <th>Member ID</th>
@@ -57,9 +57,13 @@ include '../../../../_head.php';
     <tr>
     <th>Address</th>
     <td>
-        <a href="https://www.google.com/maps/search/<?= urlencode($address->address_street . ', ' . $address->address_postcode . ', ' . $address->address_city . ', ' . $address->address_state) ?>" target="_blank">
-            <?= $address->address_street . ', ' . $address->address_postcode . ', ' . $address->address_city . ', ' . $address->address_state ?>
-        </a>
+        <?php if ($address): ?>
+            <a href="https://www.google.com/maps/search/<?= urlencode($address->address_street . ', ' . $address->address_postcode . ', ' . $address->address_city . ', ' . $address->address_state) ?>" target="_blank">
+                <?= htmlspecialchars($address->address_street . ', ' . $address->address_postcode . ', ' . $address->address_city . ', ' . $address->address_state) ?>
+            </a>
+        <?php else: ?>
+            Address not available
+        <?php endif ?>
     </td>
 </tr>
 </table>

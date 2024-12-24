@@ -63,27 +63,29 @@ if (is_post()) {
             $prod_stm->execute([$op['product_id']]);
             $prod = $prod_stm->fetch(PDO::FETCH_ASSOC);
 
-            $product_subtotal = $op['order_product_quantity'] * $op['order_product_price'];
+            $product_subtotal = $op['quantity'] * $op['price'];
             ?>
             <p><strong>Product Name :</strong> <?= $prod['product_name'] ?></p>
             
-            <p><strong>Quantity     :</strong> <?= $op['order_product_quantity'] ?></p>
-            <p><strong>Price        :</strong>RM <?= number_format($op['order_product_price'], 2) ?></p>
+            <p><strong>Quantity     :</strong> <?= $op['quantity'] ?></p>
+            <p><strong>Price        :</strong>RM <?= number_format($op['price'], 2) ?></p>
             <p><strong>Subtotal     :</strong>RM <?= number_format($product_subtotal, 2) ?></p>
             <br/><hr/>
         <?php endforeach ?>
 
         <h3>Payment Details</h3><hr/>
-        <p><strong>Payment Method :</strong> <?= $pm->payment_method_name ?></p>
-        <p><strong>Payment Date   :</strong> <?= $p->payment_date ?></p>
-        <b><p>Payment Amount :RM <?= number_format($p->payment_amount, 2) ?></p></b>
-
-        <hr/>
         <p><strong>Order Subtotal :</strong>RM <?= number_format($o->order_subtotal, 2) ?></p>
-        <p><strong>Delivery Fee   :</strong>RM <?= number_format($o->order_delivery_fee, 2) ?></p>
-        <p><strong>Tax            :</strong>RM <?= number_format($o->order_tax, 2) ?></p>
-        <p><strong>Discount       :</strong> - RM <?= number_format($o->order_discount_price, 2) ?></p>
-        <b><p>Order Total    :RM <?= number_format($o->order_total, 2) ?></p></b>
+        <p><strong>Tax            :</strong>RM <?= number_format($o->tax, 2) ?></p>
+        <p><strong>Delivery Fee   :</strong>RM <?= number_format($o->delivery_fee, 2) ?></p>
+        <p><strong>Subtotal       :</strong>RM <?= number_format($o->subtotal, 2) ?></p>
+
+        <p><strong>Voucher Applied:</strong><?= $o->voucher ?></p>
+        <p><strong>Discount       :</strong> - RM <?= number_format($o->discount_price, 2) ?></p>
+        <b><p>Order Total    :RM <?= number_format($o->total, 2) ?></p></b>
+        <hr/>
+        <p><strong>Payment Method :</strong> <?= $pm->name ?></p>
+        <p><strong>Payment Date   :</strong> <?= $p->date ?></p>
+        <b><p>Payment Amount :RM <?= number_format($p->amount, 2) ?></p></b>
 
         <br/><p>Best Regards,<br/><br/><strong>TAR GROCER Team</strong></p><br/>
 
@@ -130,7 +132,7 @@ include '../../../../_head.php';
         <div class="email-form">
             <label for="email"><h3>Email</h3></label>
             <p>Please input your email, we will send the receipt to your mailbox within 24 hours.</p>
-            <input type="email" name="email" maxlength="100" class="text-box" value="<?= ($m ? $m->memberEmail : '') ?>">
+            <input type="email" name="email" maxlength="100" class="text-box" value="<?= ($m ? $m->member_email : '') ?>">
             <?= err('email') ?>
         </div>
 

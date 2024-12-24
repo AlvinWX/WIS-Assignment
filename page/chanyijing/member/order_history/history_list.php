@@ -72,15 +72,15 @@ include '../../../../_head.php';
                 $prod_stm->execute([$op['product_id']]);
                 $prod = $prod_stm->fetch(PDO::FETCH_ASSOC);
 
-                $product_subtotal = $op['order_product_quantity'] * $op['order_product_price'];
+                $product_subtotal = $op['quantity'] * $op['price'];
             ?>
                 <tr>
                     <td><img src="../../../yongqiaorou/images/<?= $prod['product_cover'] ?>" alt="<?= $prod['product_name'] ?>" style="width: 100px;"></td>
                     <td><?= $prod['product_name'] ?></td>
                     <td>Quantity: </td>
-                    <td><?= $op['order_product_quantity'] ?></td>
+                    <td><?= $op['quantity'] ?></td>
                     <td>Price: </td>
-                    <td>RM <?= number_format($op['order_product_price'], 2) ?></td>
+                    <td>RM <?= number_format($op['price'], 2) ?></td>
                     <td>Subtotal: </td>
                     <td>RM <?= number_format($product_subtotal, 2) ?></td>
                 </tr>
@@ -89,7 +89,7 @@ include '../../../../_head.php';
             <tr>
                 <td colspan="6"></td>
                 <td>Order Total: </td>
-                <td>RM <?= number_format($o['order_total'], 2) ?></td>
+                <td>RM <?= number_format($o['total'], 2) ?></td>
             </tr>
             <tr>
                 <td colspan="7">

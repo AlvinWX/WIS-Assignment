@@ -47,7 +47,7 @@ if (is_post()) {
 
             // Redirect based on user type
             if ($user->userType === 'admin') {
-                $_SESSION['adminTier'] = $user->adminTier;
+                $_SESSION['admin_tier'] = $user->admin_tier;
                 redirect('/page/chanyijing/admin/admin_management/admin_detail.php');
             } else {
                 redirect('/index.php');
