@@ -2,6 +2,9 @@
 require '../../_base.php';
 //-----------------------------------------------------------------------------
 
+$user = $_SESSION['user'] ?? null;
+$admin_id = $user->admin_id;
+
 $id = req('id');
 
 $stm = $_db->prepare('SELECT * FROM category WHERE category_id = ?');

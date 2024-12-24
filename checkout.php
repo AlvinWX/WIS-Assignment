@@ -3,9 +3,9 @@ require '_base.php';
 include '_head.php';
 
 //Retrieve member cart
-$member_id = $user->memberID; 
+$member_id = $user->member_id; 
 
-$get_cart_stm = $_db -> prepare('SELECT * FROM cart c JOIN member m ON m.memberID = c.member_id WHERE c.member_id = ?');
+$get_cart_stm = $_db -> prepare('SELECT * FROM cart c JOIN member m ON m.member_id = c.member_id WHERE c.member_id = ?');
 $get_cart_stm -> execute([$member_id]); 
 $shoppingCart = $get_cart_stm -> fetch();
 

@@ -23,7 +23,7 @@ if (is_post()) {
         // Check if the user is a member
         $stm = $_db->prepare('
             SELECT *, "member" AS userType FROM member
-            WHERE memberEmail = ? AND memberPassword = SHA1(?)
+            WHERE member_email = ? AND member_password = SHA1(?)
         ');
         $stm->execute([$email, $password]);
         $user = $stm->fetch();
@@ -32,7 +32,7 @@ if (is_post()) {
             // Check if the user is an admin if not found as a member
             $stm = $_db->prepare('
                 SELECT *, "admin" AS userType FROM admin
-            WHERE adminEmail = ? AND adminPassword = SHA1(?)
+            WHERE admin_email = ? AND admin_password = SHA1(?)
             ');
             $stm->execute([$email, $password]);
             $user = $stm->fetch();
