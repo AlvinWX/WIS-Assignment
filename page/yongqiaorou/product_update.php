@@ -2,8 +2,8 @@
 require '../../_base.php';
 // ----------------------------------------------------------------------------
 
-$user = $_SESSION['user'] ?? null;
-$admin_id = $user->admin_id;
+// $user = $_SESSION['user'] ?? null;
+// $admin_id = $user->admin_id;
 if (is_get()) {
     $id = req('id');
 
@@ -106,7 +106,7 @@ if (is_post()) {
             $stm = $_db->prepare('UPDATE product
                                 SET product_name = ?, product_desc = ?, product_price = ?, product_stock = ?, product_cover = ?, product_resources = ?, admin_id = ?, product_last_update = ?, category_id = ?
                                 WHERE product_id = ?');
-            $stm->execute([$product_name, $product_desc, $product_price, $product_stock, $product_cover, json_encode($photo_resources), $admin_id, date("Y-m-d H:i:s"), $category_id, $id]);
+            $stm->execute([$product_name, $product_desc, $product_price, $product_stock, $product_cover, json_encode($photo_resources), 0, date("Y-m-d H:i:s"), $category_id, $id]);
 
             temp('info', 'Product updated');
             redirect('/page/yongqiaorou/product.php');

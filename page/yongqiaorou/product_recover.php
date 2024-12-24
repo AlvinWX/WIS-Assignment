@@ -2,12 +2,12 @@
 require '../../_base.php';
 //-----------------------------------------------------------------------------
 
-$user = $_SESSION['user'] ?? null;
-$admin_id = $user->admin_id;
+// $user = $_SESSION['user'] ?? null;
+// $admin_id = $user->admin_id;
 if (is_post()) {
     $id         = req('id');
     $stm = $_db->prepare('UPDATE product SET product_status=1, admin_id = ?, product_last_update = ? WHERE product_id = ? ');
-    $stm->execute([$admin_id, date("Y-m-d H:i:s"), $id]);
+    $stm->execute([0, date("Y-m-d H:i:s"), $id]);
 
     temp('info', 'Product recovered');
 
@@ -30,6 +30,7 @@ include '../../_admin_head.php';
         <th>Description</th>
         <th>Price</th>
         <th>Stock Left</th>
+        <th>Actions</th>
     </tr>
 
     <?php foreach ($arr as $s): ?>
@@ -41,7 +42,7 @@ include '../../_admin_head.php';
         <td><?= $s->product_stock ?></td>
         <td>
             <!-- TODO -->
-            <button  data-post="product_recover.php?id=<?= $s->product_id ?>">Recover Back</button>
+            <button  data-post="product_recover.php?id=<?= $s->product_id ?>" style="width:200px;">Recover Back</button>
         </td>
     </tr>
     <?php endforeach ?>
