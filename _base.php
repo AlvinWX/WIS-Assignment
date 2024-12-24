@@ -270,7 +270,7 @@ function err($key) {
 // liaw.casual@gmail.com        wtpa kjxr dfcb xkhg
 // liawcv1@gmail.com            obyj shnv prpa kzvj
 
-// Initialize and return mail object
+// // Initialize and return mail object
 // function get_mail() {
 //     require_once 'lib/PHPMailer.php';
 //     require_once 'lib/SMTP.php';
