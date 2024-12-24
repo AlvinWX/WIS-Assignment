@@ -4,10 +4,10 @@
 require '../../../../_base.php';
 
 if (is_post()) {
-    $memberID = req('memberID');
+    $member_id = req('member_id');
 
-    $stm = $_db->prepare('DELETE FROM member WHERE memberID = ?');
-    $stm->execute([$memberID]);
+    $stm = $_db->prepare('DELETE FROM member WHERE member_id = ?');
+    $stm->execute([$member_id]);
 
     temp('info', 'Member deleted');
 }

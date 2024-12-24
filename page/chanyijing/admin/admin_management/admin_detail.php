@@ -4,9 +4,9 @@
 require '../../../../_base.php';
 
 auth('admin');
-$adminID = req('adminID');
-$stm = $_db->prepare('SELECT * FROM admin WHERE adminID = ?');
-$stm->execute([$adminID]);
+$admin_id = req('admin_id');
+$stm = $_db->prepare('SELECT * FROM admin WHERE admin_id = ?');
+$stm->execute([$admin_id]);
 $s = $stm->fetch();
 
 if(!$s){
@@ -25,32 +25,32 @@ include '../../../../_head.php';
     <tr>
         <th>Profile Picture</th>
         <td class="profile-pic-container">
-            <img src="../../../../images/profile_pic/<?=$s->adminProfilePic?>"></td>
+            <img src="../../../../images/profile_pic/<?=$s->admin_profile_pic?>"></td>
         <td>
     </tr>
     <tr>
         <th>Admin ID</th>
-        <td><?= $s->adminID ?></td>
+        <td><?= $s->admin_id ?></td>
     </tr>
     <tr>
         <th>Name</th>
-        <td><?= $s->adminName ?></td>
+        <td><?= $s->admin_name ?></td>
     </tr>
     <tr>
         <th>Tier</th>
-        <td><?= $s->adminTier ?></td>
+        <td><?= $s->admin_tier ?></td>
     </tr>
     <tr>
         <th>Email</th>
-        <td><a href="mailto:<?= $s->adminEmail ?>"><?= $s->adminEmail ?></a></td>
+        <td><a href="mailto:<?= $s->admin_email ?>"><?= $s->admin_email ?></a></td>
     </tr>
     <tr>
         <th>Phone</th>
-        <td><a href="tel:<?= $s->adminPhone ?>"><?= $s->adminPhone ?></a></td>
+        <td><a href="tel:<?= $s->admin_phone ?>"><?= $s->admin_phone ?></a></td>
     </tr>
     <tr>
         <th>Gender</th>
-        <td><?= $s->adminGender ?></td>
+        <td><?= $s->admin_gender ?></td>
     </tr>
 </table>
 

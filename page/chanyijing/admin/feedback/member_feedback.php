@@ -7,7 +7,7 @@ require '../../../../_base.php';
 
 $fields = [
     'feedback_id' => 'Feedback ID',
-    'memberID' => 'Member ID',
+    'member_id' => 'Member ID',
     'product_satisfaction' => 'Product Satisfaction',
     'service_satisfaction' => 'Service Satisfaction',
     'team_satisfaction' => 'Team Satisfaction',
@@ -64,7 +64,7 @@ include '../../../../_head.php';
         <?php foreach ($fb as $f): ?>
             <tr>
                 <td><?= $f->feedback_id ?></td>
-                <td><?= $f->memberID ?></td>
+                <td><?= $f->member_id ?></td>
                 <td><?= $f->product_satisfaction ?></td>
                 <td><?= $f->service_satisfaction ?></td>
                 <td><?= $f->team_satisfaction ?></td>

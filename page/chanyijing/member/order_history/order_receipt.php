@@ -6,7 +6,7 @@ require '../../../../_base.php';
 //-----------------------------------------------------------------------------
 
 $user = $_SESSION['user'] ?? null;
-$memberID = $user->memberID;
+$member_id = $user->member_id;
 
 // Fetch order details 
 $order_id = req('order_id');
@@ -15,8 +15,8 @@ $o_stm->execute([$order_id]);
 $o = $o_stm->fetch();
 
 // Fetch member details
-$m_stm = $_db->prepare('SELECT * FROM member WHERE memberID = ?');
-$m_stm->execute([$o->memberID]);
+$m_stm = $_db->prepare('SELECT * FROM member WHERE member_id = ?');
+$m_stm->execute([$o->member_id]);
 $m = $m_stm->fetch();
 
 // Fetch shipping address
@@ -47,14 +47,14 @@ if (is_post()) {
     ob_start(); 
     ?>
         <h2>Order Receipt for Order ID #<?= $o->order_id ?></h2>
-        <p>Dear <?= $m->memberName ?>,</p><br/>
+        <p>Dear <?= $m->member_name ?>,</p><br/>
         <p>Thank you for your purchase. Below are the details of your order:</p><br/>
 
         <br/><hr/><h3>Order Details</h3><hr/>
         <p><strong>Order ID         :</strong> <?= $o->order_id ?></p>
         <p><strong>Order Date       :</strong> <?= $o->order_date ?></p>
-        <p><strong>Customer Name    :</strong> <?= $m->memberName ?></p>
-        <p><strong>Shipping Address :</strong> <?= $sa->shipping_address_street . ', ' . $sa->shipping_address_postcode . ', ' . $sa->shipping_address_city . ', ' . $sa->shipping_address_state ?></p>
+        <p><strong>Customer Name    :</strong> <?= $m->member_name ?></p>
+        <p><strong>Shipping Address :</strong> <?= $sa->street . ', ' . $sa->postcode . ', ' . $sa->city . ', ' . $sa->state ?></p>
 
         <br/><hr/><h3>Product(s)</h3><hr/>
         <?php foreach ($order_products as $op): ?>

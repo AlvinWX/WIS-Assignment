@@ -6,30 +6,30 @@ require '../../../../_base.php';
 //-----------------------------------------------------------------------------
 
 $fields = [
-    'memberID'   => 'Member ID',
-    'memberName' => 'Name',
-    'memberDateJoined' => 'Date Joined',
-    'memberGender' => 'Gender',
+    'member_id'   => 'Member ID',
+    'member_name' => 'Name',
+    'member_date_joined' => 'Date Joined',
+    'member_gender' => 'Gender',
 ];
 
 // Retrieve search and filter parameters
-$memberName = req('memberName');
-$memberGender = req('memberGender');
+$member_name = req('member_name');
+$member_gender = req('member_gender');
 
 // Retrieve sort parameters
 $sort = req('sort');
-key_exists($sort, $fields) || $sort = 'memberID';
+key_exists($sort, $fields) || $sort = 'member_id';
 
 $dir = req('dir');
 in_array($dir, ['asc', 'desc']) || $dir = 'asc';
 
 // SQL query with filters and sorting
 $m_stm = $_db->prepare('SELECT * FROM member 
-                      WHERE memberName LIKE ?
-                      AND (memberGender = ? OR ?)
+                      WHERE member_name LIKE ?
+                      AND (member_gender = ? OR ?)
                       ORDER BY ' . $sort . ' ' . $dir);
 
-$m_stm->execute(["%$memberName%", $memberGender, $memberGender == null]);
+$m_stm->execute(["%$member_name%", $member_gender, $member_gender == null]);
 $members= $m_stm->fetchAll();
 
 //-----------------------------------------------------------------------------
@@ -41,8 +41,8 @@ include '../../../../_head.php';
 <!-- Seach Bar -->
 <div class="search-bar">
     <form>
-        <?= html_search('memberName', 'placeholder="Enter name to search"') ?>
-        <?= html_select('memberGender', $_genders, 'All Genders') ?>
+        <?= html_search('member_name', 'placeholder="Enter name to search"') ?>
+        <?= html_select('member_gender', $_genders, 'All Genders') ?>
         <button>Search</button>
     </form>
 </div>
@@ -66,14 +66,14 @@ include '../../../../_head.php';
 
             <?php foreach ($members as $m): ?>
                 <tr>
-                    <td><?= $m->memberID ?></td>
-                    <td><?= $m->memberName ?></td>
-                    <td><?= $m->memberDateJoined ?></td>
-                    <td><?= $m->memberGender ?></td>
+                    <td><?= $m->member_id ?></td>
+                    <td><?= $m->member_name ?></td>
+                    <td><?= $m->member_date_joined ?></td>
+                    <td><?= $m->member_gender ?></td>
                     <td>
-                    <button data-get="member_detail.php?memberID=<?= $m->memberID ?>">View Detail</button>
-                    <button data-get="member_update.php?memberID=<?= $m->memberID ?>" class="green-btn">Update Info</button>
-                    <button data-post="member_delete.php?memberID=<?= $m->memberID ?>" data-confirm class="red-btn">Delete Member</button>
+                    <button data-get="member_detail.php?member_id=<?= $m->member_id ?>">View Detail</button>
+                    <button data-get="member_update.php?member_id=<?= $m->member_id ?>" class="green-btn">Update Info</button>
+                    <button data-post="member_delete.php?member_id=<?= $m->member_id ?>" data-confirm class="red-btn">Delete Member</button>
                     </td>
                 </tr>
             <?php endforeach ?>

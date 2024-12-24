@@ -4,10 +4,10 @@
 require '../../../../_base.php';
 
 if (is_post()) {
-    $adminID = req('adminID');
+    $admin_id = req('admin_id');
 
-    $stm = $_db->prepare('DELETE FROM admin WHERE adminID = ?');
-    $stm->execute([$adminID]);
+    $stm = $_db->prepare('DELETE FROM admin WHERE admin_id = ?');
+    $stm->execute([$admin_id]);
 
     temp('info', 'Admin deleted');
 }

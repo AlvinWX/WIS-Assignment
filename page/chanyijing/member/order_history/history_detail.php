@@ -5,7 +5,7 @@ require '../../../../_base.php';
 
 //-----------------------------------------------------------------------------
 $user = $_SESSION['user'] ?? null;
-$memberID = $user->memberID;
+$member_id = $user->member_id;
 
 // Fetch order details 
 $order_id = req('order_id');
@@ -18,8 +18,8 @@ if (!$o) {
 }
 
 // Fetch member details
-$m_stm = $_db->prepare('SELECT * FROM member WHERE memberID = ?');
-$m_stm->execute([$o->memberID]);
+$m_stm = $_db->prepare('SELECT * FROM member WHERE member_id = ?');
+$m_stm->execute([$o->member_id]);
 $m = $m_stm->fetch();
 
 // Fetch shipping address
@@ -75,7 +75,7 @@ include '../../../../_head.php';
         </tr>
         <tr>
             <th>Shipping Address</th>
-            <td colspan="2"><?= $sa->shipping_address_street . ', ' . $sa->shipping_address_postcode . ', ' . $sa->shipping_address_city . ', ' . $sa->shipping_address_state ?></td>
+            <td colspan="2"><?= $sa->street . ', ' . $sa->postcode . ', ' . $sa->city . ', ' . $sa->state ?></td>
         </tr>
     </table>
 </div>
@@ -186,11 +186,11 @@ include '../../../../_head.php';
 <?php if ($order_status == 'Delivered'): ?>
     <br/>
     <button data-get="order_receipt.php?order_id=<?= $o->order_id ?>" class="green-btn">Receipt</button>
-    <button data-get="feedback_order.php?order_id=<?= $m->memberID ?>" class="pink-btn">Feedback</button>
+    <button data-get="feedback_order.php?order_id=<?= $m->member_id ?>" class="pink-btn">Feedback</button>
 <?php endif ?>
 
 <br/>
-<button data-get="history_list.php?memberID=<?= $m->memberID ?>">Back</button>
+<button data-get="history_list.php?member_id=<?= $m->member_id ?>">Back</button>
 
 <?php
 include '../../../../_foot.php';

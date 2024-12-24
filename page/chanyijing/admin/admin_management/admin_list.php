@@ -6,34 +6,34 @@ session_start();
 require '../../../../_base.php';
 auth('admin');
 
-$loggedInAdminTier = $_SESSION['adminTier'] ?? 'Unknown'; 
+$loggedInAdminTier = $_SESSION['admin_tier'] ?? 'Unknown'; 
 
 //-----------------------------------------------------------------------------
 
 $fields = [
-    'adminID'   => 'Admin ID',
-    'adminName' => 'Name',
-    'adminTier' => 'Tier'
+    'admin_id'   => 'Admin ID',
+    'admin_name' => 'Name',
+    'admin_tier' => 'Tier'
 ];
 
 // Retrieve search and filter parameters
-$adminName = req('adminName');
-$adminTier = req('adminTier');
+$admin_name = req('admin_name');
+$admin_tier = req('admin_tier');
 
 // Retrieve sort parameters
 $sort = req('sort');
-key_exists($sort, $fields) || $sort = 'adminID';
+key_exists($sort, $fields) || $sort = 'admin_id';
 
 $dir = req('dir');
 in_array($dir, ['asc', 'desc']) || $dir = 'asc';
 
 // SQL query with filters and sorting
 $a_stm = $_db->prepare('SELECT * FROM admin 
-                      WHERE adminName LIKE ?
-                      AND (adminTier = ? OR ?)
+                      WHERE admin_name LIKE ?
+                      AND (admin_tier = ? OR ?)
                       ORDER BY ' . $sort . ' ' . $dir);
                       
-$a_stm->execute(["%$adminName%", $adminTier, $adminTier == null]);
+$a_stm->execute(["%$admin_name%", $admin_tier, $admin_tier == null]);
 $admins= $a_stm->fetchAll();
 
 //-----------------------------------------------------------------------------
@@ -45,8 +45,8 @@ include '../../../../_head.php';
 <!-- Seach Bar -->
 <div class="search-bar">
     <form>
-        <?= html_search('adminName', 'placeholder="Enter name to search"') ?>
-        <?= html_select('adminTier', $_adminTiers, 'All Tiers') ?>
+        <?= html_search('admin_name', 'placeholder="Enter name to search"') ?>
+        <?= html_select('admin_tier', $_adminTiers, 'All Tiers') ?>
     <button>Search</button>
     </form>
 </div>
@@ -69,14 +69,14 @@ include '../../../../_head.php';
 
             <?php foreach ($admins as $a): ?>
                 <tr>
-                    <td><?= $a->adminID ?></td>
-                    <td><?= $a->adminName ?></td>
-                    <td><?= $a->adminTier ?></td>
+                    <td><?= $a->admin_id ?></td>
+                    <td><?= $a->admin_name ?></td>
+                    <td><?= $a->admin_tier ?></td>
                     <td>
-                    <button data-get="admin_detail.php?adminID=<?= $a->adminID ?>">View Detail</button>
-                    <button data-get="admin_update.php?adminID=<?= $a->adminID ?>" class="green-btn">Update Info</button>
+                    <button data-get="admin_detail.php?admin_id=<?= $a->admin_id ?>">View Detail</button>
+                    <button data-get="admin_update.php?admin_id=<?= $a->admin_id ?>" class="green-btn">Update Info</button>
                     <?php if ($loggedInAdminTier === 'High'): ?>
-                        <button data-post="admin_delete.php?adminID=<?= $a->adminID ?>" data-confirm class="red-btn">Delete Admin</button>
+                        <button data-post="admin_delete.php?admin_id=<?= $a->admin_id ?>" data-confirm class="red-btn">Delete Admin</button>
                     <?php endif ?>
 
                     </td>

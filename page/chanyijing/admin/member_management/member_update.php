@@ -4,10 +4,10 @@
 require '../../../../_base.php';
 
 if (is_get()) {
-    $memberID = req('memberID');
+    $member_id = req('member_id');
 
-    $stm = $_db->prepare('SELECT * FROM member WHERE memberID = ?');
-    $stm->execute([$memberID]);
+    $stm = $_db->prepare('SELECT * FROM member WHERE member_id = ?');
+    $stm->execute([$member_id]);
     $s = $stm->fetch();
 
     if (!$s) {
@@ -15,16 +15,16 @@ if (is_get()) {
     }
 
     // Fetch address details
-    $stm = $_db->prepare('SELECT * FROM address WHERE memberID = ?');
-    $stm->execute([$memberID]);
+    $stm = $_db->prepare('SELECT * FROM address WHERE member_id = ?');
+    $stm->execute([$member_id]);
     $address = $stm->fetch();
 
     if (!$address) {
         $address = (object)[
-            'addressStreet' => '',
-            'addressPostcode' => '',
-            'addressCity' => '',
-            'addressState' => '',
+            'address_street' => '',
+            'address_postcode' => '',
+            'address_city' => '',
+            'address_state' => '',
         ];
     }
 
@@ -35,69 +35,69 @@ if (is_get()) {
 
 if (is_post()) {
     // Input
-    $memberID       = req('memberID'); // From hidden field or URL
-    $memberName     = req('memberName');
-    $memberGender   = req('memberGender');
-    $memberEmail    = req('memberEmail'); // Optional
-    $memberPhone    = req('memberPhone'); // Optional
-    $addressStreet  = req('addressStreet');
-    $addressPostcode= req('addressPostcode');
-    $addressCity    = req('addressCity');
-    $addressState   = req('addressState');
+    $member_id       = req('member_id'); // From hidden field or URL
+    $member_name     = req('member_name');
+    $member_email   = req('member_email');
+    $member_email    = req('member_email'); // Optional
+    $member_phone    = req('member_phone'); // Optional
+    $address_street  = req('address_street');
+    $address_postcode= req('address_postcode');
+    $address_city    = req('address_city');
+    $address_state   = req('address_state');
 
     // Validation errors array
     $_err = [];
 
-    // Validate memberName
-    if ($memberName == '') {
-        $_err['memberName'] = 'Required';
-    } elseif (strlen($memberName) > 100) {
-        $_err['memberName'] = 'Maximum length 100';
+    // Validate member_name
+    if ($member_name == '') {
+        $_err['member_name'] = 'Required';
+    } elseif (strlen($member_name) > 100) {
+        $_err['member_name'] = 'Maximum length 100';
     }
 
-    // Validate memberGender
-    if ($memberGender == '') {
-        $_err['memberGender'] = 'Required';
-    } else if (!array_key_exists($memberGender, $_genders)) {
+    // Validate member_email
+    if ($member_email == '') {
+        $_err['member_email'] = 'Required';
+    } else if (!array_key_exists($member_email, $_genders)) {
         $_err['name'] = 'Invalid value';
     }
 
     // Validate address fields
-    if ($addressStreet == '') {
-        $_err['addressStreet'] = 'Required';
-    } elseif (strlen($addressStreet) > 255) {
-        $_err['addressStreet'] = 'Maximum length 255';
+    if ($address_street == '') {
+        $_err['address_street'] = 'Required';
+    } elseif (strlen($address_street) > 255) {
+        $_err['address_street'] = 'Maximum length 255';
     }
 
-    if ($addressPostcode == '') {
-        $_err['addressPostcode'] = 'Required';
-    } elseif (strlen($addressPostcode) > 5) {
-        $_err['addressPostcode'] = 'Maximum length for postcode is 5';
+    if ($address_postcode == '') {
+        $_err['address_postcode'] = 'Required';
+    } elseif (strlen($address_postcode) > 5) {
+        $_err['address_postcode'] = 'Maximum length for postcode is 5';
     }
 
-    if ($addressCity == '') {
-        $_err['addressCity'] = 'Required';
-    } elseif (strlen($addressCity) > 100) {
-        $_err['addressCity'] = 'Maximum length 100';
+    if ($address_city == '') {
+        $_err['address_city'] = 'Required';
+    } elseif (strlen($address_city) > 100) {
+        $_err['address_city'] = 'Maximum length 100';
     }
 
-    if ($addressState == '') {
-        $_err['addressState'] = 'Required';
-    } elseif (strlen($memberName) > 100) {
-        $_err['addressState'] = 'Maximum length 100';
+    if ($address_state == '') {
+        $_err['address_state'] = 'Required';
+    } elseif (strlen($member_name) > 100) {
+        $_err['address_state'] = 'Maximum length 100';
     }
 
     // Output
     if (!$_err) {
         $stm = $_db->prepare('UPDATE member
-                              SET memberName = ?, memberGender = ?, memberEmail = ?, memberPhone = ?
-                              WHERE memberID = ?');
-        $stm->execute([$memberName, $memberGender, $memberEmail, $memberPhone, $memberID]);
+                              SET member_name = ?, member_email = ?, member_email = ?, member_phone = ?
+                              WHERE member_id = ?');
+        $stm->execute([$member_name, $member_email, $member_email, $member_phone, $member_id]);
 
         $stm = $_db->prepare('UPDATE address
-                              SET addressStreet = ?, addressPostcode = ?, addressCity = ?, addressState = ?
-                            WHERE memberID = ?');
-        $stm->execute([$addressStreet, $addressPostcode, $addressCity, $addressState, $memberID]);
+                              SET address_street = ?, address_postcode = ?, address_city = ?, address_state = ?
+                            WHERE member_id = ?');
+        $stm->execute([$address_street, $address_postcode, $address_city, $address_state, $member_id]);
 
         
         temp('info', 'Record updated successfully.');
@@ -114,40 +114,40 @@ include '../../../../_head.php';
 </div>
 
 <form method="post" class="update-form">
-    <label for="memberID">Member ID</label>
-    <b><?= $memberID ?></b>
-    <?= err('memberID') ?>
+    <label for="member_id">Member ID</label>
+    <b><?= $member_id ?></b>
+    <?= err('member_id') ?>
 
-    <label for="memberName">Name</label>
-    <?= html_text('memberName', 'maxlength="100"') ?>
-    <?= err('memberName') ?>
+    <label for="member_name">Name</label>
+    <?= html_text('member_name', 'maxlength="100"') ?>
+    <?= err('member_name') ?>
 
-    <label for="memberGender">Gender</label>
-    <?= html_radios('memberGender', $_genders, $memberGender) ?>
-    <?= err('memberGender') ?>
+    <label for="member_email">Gender</label>
+    <?= html_radios('member_email', $_genders, $member_email) ?>
+    <?= err('member_email') ?>
 
-    <label for="memberEmail">Email</label>
-    <?= html_text('memberEmail') ?>
-    <?= err('memberEmail') ?>
+    <label for="member_email">Email</label>
+    <?= html_text('member_email') ?>
+    <?= err('member_email') ?>
 
-    <label for="memberPhone">Phone</label>
-    <?= html_text('memberPhone') ?>
-    <?= err('memberPhone') ?>
+    <label for="member_phone">Phone</label>
+    <?= html_text('member_phone') ?>
+    <?= err('member_phone') ?>
 
-    <label for="addressStreet">Street</label>
-    <?= html_text('addressStreet', 'maxlength="255"', $addressStreet) ?>
+    <label for="address_street">Street</label>
+    <?= html_text('address_street', 'maxlength="255"', $address_street) ?>
     <?= err('address') ?>
 
-    <label for="addressPostcode">Postcode</label>
-    <?= html_text('addressPostcode', 'maxlength="5"', $addressPostcode) ?>
+    <label for="address_postcode">Postcode</label>
+    <?= html_text('address_postcode', 'maxlength="5"', $address_postcode) ?>
     <?= err('address') ?>
 
-    <label for="addressCity">City</label>
-    <?= html_text('addressCity', 'maxlength="100"', $addressCity) ?>
+    <label for="address_city">City</label>
+    <?= html_text('address_city', 'maxlength="100"', $address_city) ?>
     <?= err('address') ?>
 
-    <label for="addressState">State</label>
-    <?= html_text('addressState', 'maxlength="100"', $addressState) ?>
+    <label for="address_state">State</label>
+    <?= html_text('address_state', 'maxlength="100"', $address_state) ?>
     <?= err('address') ?>
 
     <section>

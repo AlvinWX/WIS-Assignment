@@ -5,7 +5,7 @@
 require '../../../../_base.php';
 
 $user = $_SESSION['user'] ?? null;
-$memberID = $user->memberID;
+$member_id = $user->member_id;
 
 $_title = 'Thank You for Your Feedback';
 include '../../../../_head.php';
@@ -18,7 +18,7 @@ include '../../../../_head.php';
         <br/><br/>
     </div>
     
-    <button data-get="history_list.php?memberID=<?= $memberID ?>" class="pink-btn">Back</button>
+    <button data-get="history_list.php?member_id=<?= $member_id ?>" class="pink-btn">Back</button>
 </div>
 
 <?php
