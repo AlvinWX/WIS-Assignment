@@ -39,8 +39,8 @@ if (is_post()) {
         }
 
         if ($user) {
-            // var_dump($user);
-            // exit;
+            var_dump($user);
+            exit;
             temp('info', 'Login successful as ' . $user->userType);
             $_SESSION['user'] = $user;
             $_SESSION['user_type'] = $user->userType;  // Store the user type ('member' or 'admin')
