@@ -3,6 +3,8 @@ require '_base.php';
 require 'lib/stripe-php-16.4.0/init.php';
 include '_head.php';
 
+$member_id = $user->member_id; 
+
 //Retrieve shipping address
 $get_address_stm = $_db -> prepare('SELECT * FROM `address` WHERE member_id = ?');
 $get_address_stm -> execute([$member_id]); 
@@ -34,7 +36,7 @@ if($paymentMethod == "Stripe"){
 
 $checkout_session = \Stripe\Checkout\Session::create([
     "mode" => "payment",
-    "success_url" => "http://localhost:8000/index.php",
+    "success_url" => "http://localhost:8000/processing.php",
     "cancel_url" => "http://localhost:8000/checkout.php",
     "line_items" => [
         [  
@@ -54,8 +56,6 @@ $checkout_session = \Stripe\Checkout\Session::create([
 http_response_code(303);
 header("Location: " . $checkout_session->url);
 }
-
-
 
 // //Retrieve member cart
 // $member_id = $user->member_id; 
@@ -87,20 +87,24 @@ header("Location: " . $checkout_session->url);
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <script src="js/payment.js" defer></script>
     <title>Payment</title>
 </head>
 <style>
 .empty-box{
-    margin: 30px;
-    padding: 30px;
+    margin: 0px;
+    padding: 35px;
 }
 </style>
+
+
+
 <body>
     <div id="info"><?= temp('info')?></div>    
     <div class="empty-box"></div>
     
     <div class="container">
-
+    <div class="empty-box"></div>
         <div class="card-container">
             <div class="front">
                 <div class="image">
@@ -124,20 +128,21 @@ header("Location: " . $checkout_session->url);
             </div>
         </div>
 
-        <form action="" id="payment">
+        <form method="post" action="processing.php" id="payment">
             <div class="heading"><h2>Enter Payment Card Details</h2></div>
             <div class="inputbox">
                 <span>Card Number</span>
-                <input class="top" type="text" maxlength="16" class="card-number-input" name="card_number">
+                <input class="top" id="card_number" type="text" maxlength="16" class="card-number-input" name="card_number" placeholder="Enter the 16-digits card">
+                <?= err('card_number') ?>
             </div>
             <div class="inputbox">
                 <span>Card Holder Name</span>
-                <input class="top" type="text" class="card-holder-input" name="card_holder_name">
+                <input class="top" id="card_holder_name" type="text" class="card-holder-input" name="card_holder_name" placeholder="Enter the card holder name">
             </div>
             <div class="flexbox">
                 <div class="inputbox">
                     <span>Expiry Month</span>
-                    <select name="" id="" class="month-input" name="expiry_month">
+                    <select class="month-input" id="expiry_month" name="expiry_month">
                         <option value="month" selected disabled>Month</option>
                         <option value="01">01</option>
                         <option value="02">02</option>
@@ -155,7 +160,7 @@ header("Location: " . $checkout_session->url);
                 </div>
                 <div class="inputbox">
                     <span>Expiry Year</span>
-                    <select name="" id="" class="year-input" name="expiry_year">
+                    <select class="year-input" id="expiry_year" name="expiry_year">
                         <option value="year" selected disabled>Year</option>
                         <option value="2025">2025</option>
                         <option value="2026">2026</option>
@@ -173,12 +178,21 @@ header("Location: " . $checkout_session->url);
                 </div>
                 <div class="inputbox">
                     <span>CVC</span>
-                    <input class="bottom" type="text" maxlength="3" class="cvc-input" name="card_cvc">
+                    <input class="bottom" type="text" maxlength="3" class="cvc-input" id="card_cvc" name="card_cvc" placeholder="Enter the 3-digits CVC">
                 </div>
             </div>
             <div class="checkbox">
-                    <label><input type="checkbox" id="true" name="save_card" value="1" checked>Save the above payment card for future payment use.</label>
+                    <label><input type="checkbox" id="save_card" name="save_card" value="1" checked>Save the above payment card for future payment use.</label>
             </div>
+            <input hidden type="number" step="0.01" value="<?= $order_subtotal ?>" name="order_subtotal">
+            <input hidden type="number" step="0.01" value="<?= $tax ?>" name="tax">
+            <input hidden type="number" step="0.01" value="<?= $delivery_fee ?>" name="delivery_fee">
+            <input hidden type="number" step="0.01" value="<?= $subtotal ?>" name="subtotal">
+            <input hidden type="number" step="0.01" value="<?= $discount?>" name="discount">
+            <input hidden type="number" step="0.01" value="<?= $total ?>" name="total">
+            <input hidden type="number" step ="1" value="<?= $points ?>" name="points">
+            <input hidden type="number" step ="1" value="<?= $addressID ?>" name="address">
+            <input hidden type="text" value="<?= $paymentMethod ?>" name="payment_method">
             <input type="submit" value="Pay: RM <?= sprintf('%.2f', $total) ?>" class="submit-btn">
         </form>
     </div>

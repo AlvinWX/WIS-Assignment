@@ -15,7 +15,7 @@ $order_status = req('order_status');
 $o_stm = $_db->prepare('SELECT * FROM `order`
                       WHERE member_id = ?
                       AND (order_id = ? OR ? = "")
-                      AND (order_status = ? OR ? = "")');
+                      AND (order_status = ? OR ? = "") ORDER BY order_date DESC');
 $o_stm->execute([$member_id, $order_id, $order_id, $order_status, $order_status]);
 
 // Fetch all orders
