@@ -6,14 +6,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const cardCVCInput = document.getElementById('card_cvc');
     const submitButton = document.querySelector('.submit-btn');
 
-    // Initially disable submit button
     submitButton.disabled = true;
 
     function validateCardDetails() {
         const cardNumber = cardNumberInput.value.trim();
         const cardHolderName = cardHolderNameInput.value.trim();
-        const expiryMonth = expiryMonthInput.value;
-        const expiryYear = expiryYearInput.value;
+        const expiryMonth = expiryMonthInput.value.trim();
+        const expiryYear = expiryYearInput.value.trim();
         const cardCVC = cardCVCInput.value.trim();
         const currentDate = new Date();
         const currentMonth = currentDate.getMonth() + 1;
@@ -21,38 +20,34 @@ document.addEventListener('DOMContentLoaded', function () {
 
         let isValid = true;
 
-        // Validate card number
         if (!/^\d{16}$/.test(cardNumber)) {
             isValid = false;
         }
 
-        // Validate card holder name
         if (cardHolderName === "") {
             isValid = false;
         }
 
-        // Validate expiry month and year
-        if (expiryMonth === "month" || expiryYear === "year") {
+        if (!/^(0[1-9]|1[0-2])$/.test(expiryMonth)) {
             isValid = false;
-        } else {
-            const expiryDate = new Date(expiryYear, expiryMonth - 1);
-            if (expiryDate < currentDate || expiryYear < currentYear || (expiryYear === currentYear && expiryMonth < currentMonth)) {
-                isValid = false;
-            }
         }
 
-        // Validate CVC
+        if (!/^\d{4}$/.test(expiryYear) || parseInt(expiryYear) < currentYear || (parseInt(expiryYear) === currentYear && parseInt(expiryMonth) < currentMonth)) {
+            isValid = false;
+        }
+
         if (!/^\d{3}$/.test(cardCVC)) {
             isValid = false;
         }
 
-        // Enable submit button if all validations pass
         submitButton.disabled = !isValid;
     }
 
     cardNumberInput.addEventListener('input', validateCardDetails);
     cardHolderNameInput.addEventListener('input', validateCardDetails);
-    expiryMonthInput.addEventListener('change', validateCardDetails);
-    expiryYearInput.addEventListener('change', validateCardDetails);
+    expiryMonthInput.addEventListener('input', validateCardDetails);
+    expiryYearInput.addEventListener('input', validateCardDetails);
     cardCVCInput.addEventListener('input', validateCardDetails);
+
+    validateCardDetails();
 });

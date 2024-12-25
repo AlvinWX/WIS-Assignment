@@ -19,37 +19,6 @@ $get_address_stm = $_db -> prepare('SELECT * FROM `address` WHERE member_id = ?'
 $get_address_stm -> execute([$member_id]); 
 $addresses = $get_address_stm -> fetchAll();
 
-//One of the payment method is pressed
-// if(isset($_POST['submit'], $_POST['address'], $_POST['order_subtotal'], $_POST['tax'], $_POST['delivery_fee'], $_POST['subtotal'], $_POST['discount'], $_POST['total'], $_POST['points'])){
-
-//     //Get address value
-//     $paymentMethod = $_POST['submit'];
-//     $addressID = (int)$_POST['address'];
-//     $shippingAddress = $addresses[$addressID];
-
-//     $order_subtotal = (double)$_POST['order_subtotal'];
-//     $tax = (double)$_POST['tax'];
-//     $delivery_fee = (double)$_POST['delivery_fee'];
-//     $subtotal = (double)$_POST['subtotal'];
-//     $discount = (double)$_POST['discount'];
-//     $total = (double)$_POST['total'];
-//     $points = (int)$_POST['points'];
-
-
-
-//     //If the payment method is card
-//     if($paymentMethod == 'Payment Card'){
-
-//     } else{//If the payment method is Stripe
-        
-//     }
-
-//     redirect('index.php');
-
-// } else if(isset($_POST['submit'], $_POST['order_subtotal'], $_POST['tax'], $_POST['delivery_fee'], $_POST['subtotal'], $_POST['discount'], $_POST['total'], $_POST['points'])) {
-//     temp('info', 'Please select a shipping address.');
-// }
-
 ?>
 
 <!DOCTYPE html>

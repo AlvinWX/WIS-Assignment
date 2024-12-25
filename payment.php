@@ -10,7 +10,6 @@ $get_address_stm = $_db -> prepare('SELECT * FROM `address` WHERE member_id = ?'
 $get_address_stm -> execute([$member_id]); 
 $addresses = $get_address_stm -> fetchAll();
 
-
 $paymentMethod = $_POST['submit'];
 $addressID = (int)$_POST['address'];
 $shippingAddress = $addresses[$addressID];
@@ -23,11 +22,29 @@ $discount = (double)$_POST['discount'];
 $total = (double)$_POST['total'];
 $points = (int)$_POST['points'];
 
+//Retrive payment card details
+$get_payment_card_stm = $_db -> prepare('SELECT * FROM payment_card WHERE member_id = ?');
+$get_payment_card_stm -> execute([$member_id]); 
+$payment_card = $get_payment_card_stm -> fetch();
+
 
 if($_POST['address']==null){
     temp('info', 'Please select a shipping address');
     redirect('/checkout.php');
 }
+
+$_SESSION['order_details'] = [
+    'payment_method' => $_POST['submit'],
+    'delivery_address' => $shippingAddress,
+    'order_subtotal' => (double)$_POST['order_subtotal'],
+    'tax' => (double)$_POST['tax'],
+    'delivery_fee' => (double)$_POST['delivery_fee'],
+    'subtotal' => (double)$_POST['subtotal'],
+    'discount' => (double)$_POST['discount'],
+    'total' => (double)$_POST['total'],
+    'points' => (int)$_POST['points']
+];
+
 
 if($paymentMethod == "Stripe"){
     $stripe_secret_key = "sk_test_51QZYpQIDBq49aYjk5CO6Bo5LgxCOTe2P3SgDC9VXXTxkarGPq6cwkSlQqIkdU2NpvjqnoDc3k0KIPxXmNaNkoI8000nlCU5nps";
@@ -56,23 +73,6 @@ $checkout_session = \Stripe\Checkout\Session::create([
 http_response_code(303);
 header("Location: " . $checkout_session->url);
 }
-
-// //Retrieve member cart
-// $member_id = $user->member_id; 
-
-// $get_cart_stm = $_db -> prepare('SELECT * FROM cart c JOIN member m ON m.member_id = c.member_id WHERE c.member_id = ?');
-// $get_cart_stm -> execute([$member_id]); 
-// $shoppingCart = $get_cart_stm -> fetch();
-
-// //Retrieve added to cart already items
-// $get_products_stm = $_db -> prepare('SELECT * FROM cart_product WHERE cart_id = ?');
-// $get_products_stm -> execute([$shoppingCart->cart_id]); 
-// $cart_products = $get_products_stm -> fetchAll();
-
-// //Retrieve shipping address
-// $get_address_stm = $_db -> prepare('SELECT * FROM `address` WHERE member_id = ?');
-// $get_address_stm -> execute([$member_id]); 
-// $addresses = $get_address_stm -> fetchAll();
 
 ?>
 
@@ -128,63 +128,52 @@ header("Location: " . $checkout_session->url);
             </div>
         </div>
 
+        <?php
+
+            $card_number_value = "";
+            $card_holder_name_value = "";
+            $expiry_month_value = "";
+            $expiry_year_value = "";
+            $card_cvc_value = "";
+
+            if($payment_card != null){
+                $card_number_value = $payment_card -> card_number;
+                $card_holder_name_value = $payment_card -> card_holder_name;
+                $expiry_month_value = $payment_card -> expiry_month;
+                $expiry_year_value = $payment_card -> expiry_year;
+                $card_cvc_value = $payment_card -> card_cvc;
+            }
+
+        ?>
+
         <form method="post" action="processing.php" id="payment">
             <div class="heading"><h2>Enter Payment Card Details</h2></div>
             <div class="inputbox">
                 <span>Card Number</span>
-                <input class="top" id="card_number" type="text" maxlength="16" class="card-number-input" name="card_number" placeholder="Enter the 16-digits card">
-                <?= err('card_number') ?>
+                <input class="top" id="card_number" type="text" maxlength="16" class="card-number-input" name="card_number" placeholder="Enter the 16-digits card" value="<?= $card_number_value ?>">
             </div>
             <div class="inputbox">
                 <span>Card Holder Name</span>
-                <input class="top" id="card_holder_name" type="text" class="card-holder-input" name="card_holder_name" placeholder="Enter the card holder name">
+                <input class="top" id="card_holder_name" type="text" class="card-holder-input" name="card_holder_name" placeholder="Enter the card holder name" value="<?= $card_holder_name_value ?>">
             </div>
             <div class="flexbox">
                 <div class="inputbox">
-                    <span>Expiry Month</span>
-                    <select class="month-input" id="expiry_month" name="expiry_month">
-                        <option value="month" selected disabled>Month</option>
-                        <option value="01">01</option>
-                        <option value="02">02</option>
-                        <option value="03">03</option>
-                        <option value="04">04</option>
-                        <option value="05">05</option>
-                        <option value="06">06</option>
-                        <option value="07">07</option>
-                        <option value="08">08</option>
-                        <option value="09">09</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                    </select>
+                    <span>Expiry Month (MM)</span>
+                    <input class="bottom" type="text" maxlength="2" class="month-input" id="expiry_month" name="expiry_month" placeholder="Enter month" value="<?= $expiry_month_value ?>">
                 </div>
                 <div class="inputbox">
-                    <span>Expiry Year</span>
-                    <select class="year-input" id="expiry_year" name="expiry_year">
-                        <option value="year" selected disabled>Year</option>
-                        <option value="2025">2025</option>
-                        <option value="2026">2026</option>
-                        <option value="2027">2027</option>
-                        <option value="2028">2028</option>
-                        <option value="2029">2029</option>
-                        <option value="2030">2030</option>
-                        <option value="2031">2031</option>
-                        <option value="2032">2032</option>
-                        <option value="2033">2033</option>
-                        <option value="2034">2034</option>
-                        <option value="2035">2035</option>
-                        <option value="2036">2036</option>
-                    </select>
+                    <span>Expiry Year (YYYY)</span>
+                    <input class="bottom" type="text" maxlength="4" class="year-input" id="expiry_year" name="expiry_year" placeholder="Enter year" value="<?= $expiry_year_value ?>">
                 </div>
                 <div class="inputbox">
                     <span>CVC</span>
-                    <input class="bottom" type="text" maxlength="3" class="cvc-input" id="card_cvc" name="card_cvc" placeholder="Enter the 3-digits CVC">
+                    <input class="bottom" type="text" maxlength="3" class="cvc-input" id="card_cvc" name="card_cvc" placeholder="Enter the 3-digits CVC" value="<?= $card_cvc_value ?>">
                 </div>
             </div>
             <div class="checkbox">
                     <label><input type="checkbox" id="save_card" name="save_card" value="1" checked>Save the above payment card for future payment use.</label>
             </div>
-            <input hidden type="number" step="0.01" value="<?= $order_subtotal ?>" name="order_subtotal">
+            <!-- <input hidden type="number" step="0.01" value="<?= $order_subtotal ?>" name="order_subtotal">
             <input hidden type="number" step="0.01" value="<?= $tax ?>" name="tax">
             <input hidden type="number" step="0.01" value="<?= $delivery_fee ?>" name="delivery_fee">
             <input hidden type="number" step="0.01" value="<?= $subtotal ?>" name="subtotal">
@@ -192,7 +181,7 @@ header("Location: " . $checkout_session->url);
             <input hidden type="number" step="0.01" value="<?= $total ?>" name="total">
             <input hidden type="number" step ="1" value="<?= $points ?>" name="points">
             <input hidden type="number" step ="1" value="<?= $addressID ?>" name="address">
-            <input hidden type="text" value="<?= $paymentMethod ?>" name="payment_method">
+            <input hidden type="text" value="<?= $paymentMethod ?>" name="payment_method"> -->
             <input type="submit" value="Pay: RM <?= sprintf('%.2f', $total) ?>" class="submit-btn">
         </form>
     </div>
