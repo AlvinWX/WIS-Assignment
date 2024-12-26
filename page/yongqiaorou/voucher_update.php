@@ -42,14 +42,32 @@ if (is_post()) {
         $_err['voucher_desc'] = 'Maximum length 1000';
     }
 
+    
+    $voucher_file = isset($_FILES['voucher_img']) ? $_FILES['voucher_img'] : null;
+    if ($voucher_file && $voucher_file['error'] == UPLOAD_ERR_OK) {
+        $voucher_img = uniqid() . '.jpg';
+
+        require_once '../../lib/SimpleImage.php';
+        $img = new SimpleImage();
+        $img->fromFile($voucher_file['tmp_name'])
+            ->thumbnail(200, 200)
+            ->toFile("images/$voucher_img", 'image/jpeg');
+    }
+
     // Output
     if (!$_err) {
-        $stm = $_db->prepare('UPDATE voucher
-                            SET voucher_name = ?, voucher_desc = ?, voucher_last_update, admin_id
-                            WHERE voucher_id = ?');
-        $stm->execute([$voucher_name, $voucher_desc, , date("Y-m-d H:i:s"), $admin_id, $id]);
-
-        temp('info', 'voucher updated');
+        if (!empty($voucher_img)) {
+            $stm = $_db->prepare('UPDATE voucher
+                                SET voucher_name = ?, voucher_desc = ?, voucher_img = ?, voucher_last_update = ?, admin_id = ?
+                                WHERE voucher_id = ?');
+            $stm->execute([$voucher_name, $voucher_desc, $voucher_img, date("Y-m-d H:i:s"), $admin_id, $id]);
+        } else {
+            $stm = $_db->prepare('UPDATE voucher
+                                SET voucher_name = ?, voucher_desc = ?, voucher_last_update = ?, admin_id = ?
+                                WHERE voucher_id = ?');
+            $stm->execute([$voucher_name, $voucher_desc, date("Y-m-d H:i:s"), $admin_id, $id]);
+        }
+        temp('info', 'Voucher updated');
         redirect('/page/yongqiaorou/voucher.php');
     }
 }
@@ -61,7 +79,7 @@ include '../../_admin_head.php';
 
 <button data-get="/page/yongqiaorou/voucher.php"  class="back_button"><i class="fa fa-arrow-left" aria-hidden="true"></i>  Back</button>
 
-<form method="post" class="form">
+<form method="post" class="form" enctype="multipart/form-data">
     <label for="voucher_id">Id</label>
     <b><?= $id ?></b>
     <?= err('id') ?>
@@ -73,6 +91,13 @@ include '../../_admin_head.php';
     <label>Description</label>
     <?= html_text('voucher_desc', 'maxlength="1000"') ?>
     <?= err('voucher_desc') ?>
+
+    <label for="voucher_img">Voucher Image</label>
+    <label class="upload" tabindex="0">
+        <?= html_file('voucher_img', 'image/*', 'hidden') ?>
+        <img src="images/<?= $voucher_img ?>" style="width: 200px; height: 200px;">
+    </label>
+    <?= err('voucher_img') ?>
 
     <section>
         <button>Submit</button>
