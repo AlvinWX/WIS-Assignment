@@ -42,6 +42,15 @@ if (is_post()) {
         $_err['name'] = 'Invalid value';
     }
 
+    // Validate admin_email
+    if ($admin_email == '') {
+        $_err['admin_email'] = 'Email is required.';
+    } elseif (!filter_var($admin_email, FILTER_VALIDATE_EMAIL)) {
+        $_err['admin_email'] = 'Invalid email format.';
+    } elseif (strlen($admin_email) > 320) {
+        $_err['admin_email'] = 'Maximum length 320 characters.';
+    }
+
     // Output
     if (!$_err) {
         $stm = $_db->prepare('UPDATE admin
@@ -85,7 +94,7 @@ include '../../../../_head.php';
 
     <section>
         <button data-get="admin_list.php">Cancel</button>
-        <button>Submit</button>
+        <button>Update</button>
         <button type="reset">Reset</button>
     </section>
 </form>

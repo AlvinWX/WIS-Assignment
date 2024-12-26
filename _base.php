@@ -248,8 +248,8 @@ function get_mail() {
     $m->Port = 587;
     // $m->Username = 'targrocer@outlook.com';
     // $m->Password = 'tar123grocer';
-    $m->Username = 'AACS3173@gmail.com';
-    $m->Password = 'npsg gzfd pnio aylm';
+    $m->Username = 'liaw.casual@gmail.com';
+    $m->Password = 'wtpa kjxr dfcb xkhg';
     $m->CharSet = 'utf-8';
     $m->setFrom($m->Username, 'TAR GROCER Admin');
 

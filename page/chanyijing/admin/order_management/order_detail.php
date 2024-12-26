@@ -163,7 +163,7 @@ include '../../../../_head.php';
         <tr>
             <td><?= $prod['product_id'] ?></td>
             <td><?= $prod['product_name'] ?></td>
-            <td><img src="../../../yongqiaorou/images/<?=  $prod['product_cover'] ?>" alt="<?= $prod['product_name'] ?>" style="width: 150px;"></td>
+            <td><img src="/images/product_pic/<?=  $prod['product_cover'] ?>" alt="<?= $prod['product_name'] ?>" style="width: 150px;"></td>
             <td><?= $op['quantity'] ?></td>
             <td><?= number_format($op['price'], 2) ?></td>
             <td><?= number_format($product_subtotal, 2) ?></td>
