@@ -2,6 +2,14 @@
 require '../../_base.php';
 //-----------------------------------------------------------------------------
 
+
+$user = $_SESSION['user'] ?? null;
+$admin_id = $user->admin_id;
+if(empty($admin_id)){
+    redirect('../../login.php');
+    temp('info',"Unauthourized Access");
+}
+
 $arr = $_db->query('SELECT * FROM category c WHERE c.category_status = 1;')->fetchAll();
 
 // ----------------------------------------------------------------------------
@@ -67,4 +75,4 @@ if(count($arr)) {?>
 <a href="category_add.php"><span id="dot" class="dot_right"><i class="fa fa-plus" aria-hidden="true"></i></span></a>
 
 <?php
-include '../../_admin_foot.php';
+include '../../_foot.php';

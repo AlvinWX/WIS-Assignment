@@ -2,8 +2,14 @@
 require '../../_base.php';
 // ----------------------------------------------------------------------------
 
-// $user = $_SESSION['user'] ?? null;
-// $admin_id = $user->admin_id;
+
+$user = $_SESSION['user'] ?? null;
+$admin_id = $user->admin_id;
+if(empty($admin_id)){
+    redirect('../../login.php');
+    temp('info',"Unauthourized Access");
+}
+
 if (is_get()) {
     $id = req('id');
 
@@ -23,6 +29,7 @@ if (is_post()) {
     $product_name = req('product_name');
     $product_cover = req('product_cover');
     $product_resources = req('product_resources');
+    $product_youtube_url = req('product_youtube_url');
     $product_desc = req('product_desc');
     $product_price = req('product_price');
     $product_stock = req('product_stock');
@@ -67,7 +74,7 @@ if (is_post()) {
         $img = new SimpleImage();
         $img->fromFile($cover_file['tmp_name'])
             ->thumbnail(200, 200)
-            ->toFile("images/$product_cover", 'image/jpeg');
+            ->toFile("../../images/product_pic/$product_cover", 'image/jpeg');
     }
 
     // Handle product_photo (multiple images)
@@ -104,18 +111,18 @@ if (is_post()) {
     if (!$_err) {
         if(json_encode($photo_resources) != "[]"){
             $stm = $_db->prepare('UPDATE product
-                                SET product_name = ?, product_desc = ?, product_price = ?, product_stock = ?, product_cover = ?, product_resources = ?, admin_id = ?, product_last_update = ?, category_id = ?
+                                SET product_name = ?, product_desc = ?, product_price = ?, product_stock = ?, product_cover = ?, product_resources = ?, product_youtube_url = ?, admin_id = ?, product_last_update = ?, category_id = ?
                                 WHERE product_id = ?');
-            $stm->execute([$product_name, $product_desc, $product_price, $product_stock, $product_cover, json_encode($photo_resources), 0, date("Y-m-d H:i:s"), $category_id, $id]);
+            $stm->execute([$product_name, $product_desc, $product_price, $product_stock, $product_cover, json_encode($photo_resources), $product_youtube_url, $admin_id, date("Y-m-d H:i:s"), $category_id, $id]);
 
             temp('info', 'Product updated');
             redirect('/page/yongqiaorou/product.php');
 
         }else{
             $stm = $_db->prepare('UPDATE product
-                                SET product_name = ?, product_desc = ?, product_price = ?, product_stock = ?,  category_id = ?
+                                SET product_name = ?, product_desc = ?, product_price = ?, product_stock = ?,  product_youtube_url =? , admin_id = ?, product_last_update = ?, category_id = ?
                                 WHERE product_id = ?');
-            $stm->execute([$product_name, $product_desc, $product_price, $product_stock, $category_id, $id]);
+            $stm->execute([$product_name, $product_desc, $product_price, $product_stock, $product_youtube_url, $admin_id, date("Y-m-d H:i:s"), $category_id, $id]);
 
             temp('info', 'Product updated');
             redirect('/page/yongqiaorou/product.php');
@@ -158,7 +165,7 @@ include '../../_admin_head.php';
     <label for="product_cover">Cover Picture</label>
     <div>
         <?= html_file('product_cover', 'image/*', 'hidden id="product_cover"') ?>
-        <img id="preview" src="images/<?= $product_cover ?>" style="width: 200px; height: 200px;">
+        <img id="preview" src="../../images/product_pic/<?= $product_cover ?>" style="width: 200px; height: 200px;">
     </div>
     <?= err('product_cover') ?>
 
@@ -166,8 +173,12 @@ include '../../_admin_head.php';
     <label class="upload" tabindex="0">
         <?= html_file('product_photo[]', 'image/*', 'multiple') ?>
     </label>
-    <div id="product_photo_previews"></div>
-    <?= err('product_photo') ?>
+    <div id="product_photo_previews">
+    <?= err('product_photo') ?></div>
+    
+    <label>Youtube URL</label>
+    <?= html_text('product_youtube_url',  'maxlength="1000"') ?>
+    <?= err('product_youtube_url') ?>
 
     <section>
         <button>Submit</button>
@@ -190,5 +201,5 @@ include '../../_admin_head.php';
 </script>
 
 <?php
-include '../../_admin_foot.php';
+include '../../_foot.php';
 ?>

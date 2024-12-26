@@ -21,7 +21,7 @@ $sort = req('sort');
 key_exists($sort, $fields) || $sort = 'order_id';
 
 $dir = req('dir');
-in_array($dir, ['asc', 'desc']) || $dir = 'asc';
+in_array($dir, ['asc', 'desc']) || $dir = 'desc';
 
 $order_id = $order_id ?: '';  
 $order_status = $order_status ?: '';

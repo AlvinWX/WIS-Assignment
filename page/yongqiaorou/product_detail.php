@@ -2,8 +2,12 @@
 require '../../_base.php';
 //-----------------------------------------------------------------------------
 
-// $user = $_SESSION['user'] ?? null;
-// $admin_id = $user->admin_id;
+$user = $_SESSION['user'] ?? null;
+$admin_id = $user->admin_id;
+if(empty($admin_id)){
+    redirect('../../login.php');
+    temp('info',"Unauthourized Access");
+}
 $id = req('id');
 
 $stm = $_db->prepare('SELECT * FROM product WHERE product_id = ?');
@@ -47,4 +51,4 @@ include '../../_admin_head.php';
 <button data-get="/page/yongqiaorou/product.php"  class="back_button"><i class="fa fa-arrow-left" aria-hidden="true"></i>  Back</button>
 
 <?php
-include '../../_admin_foot.php';
+include '../../_foot.php';

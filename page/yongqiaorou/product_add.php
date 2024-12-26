@@ -2,8 +2,12 @@
 require '../../_base.php';
 // ----------------------------------------------------------------------------
 
-// $user = $_SESSION['user'] ?? null;
-// $admin_id = $user->admin_id;
+$user = $_SESSION['user'] ?? null;
+$admin_id = $user->admin_id;
+if(empty($admin_id)){
+    redirect('../../login.php');
+    temp('info',"Unauthourized Access");
+}
 
 if (is_post()) {
     // Input
@@ -12,6 +16,7 @@ if (is_post()) {
     $product_desc     = req('product_desc');
     $product_price = req('product_price');
     $product_stock = req('product_stock');
+    $product_youtube_url = req('product_youtube_url');
     $category_id = req('category_id');
 
     // $product_cover = req('product_cover');
@@ -70,13 +75,13 @@ if (is_post()) {
     // Handle product_cover (single image)
     $cover_file = isset($_FILES['product_cover']) ? $_FILES['product_cover'] : null;
     if ($cover_file && $cover_file['error'] == UPLOAD_ERR_OK) {
-        $product_cover = uniqid() . '.jpg';  // Generate a unique file name
+        $product_cover = uniqid() . '.jpg'; 
 
         require_once '../../lib/SimpleImage.php';
         $img = new SimpleImage();
         $img->fromFile($cover_file['tmp_name'])
             ->thumbnail(200, 200)
-            ->toFile("images/$product_cover", 'image/jpeg');
+            ->toFile("../../images/product_pic/$product_cover", 'image/jpeg');
     } else {
         $_err['product_cover'] = 'Cover Picture is required';
     }
@@ -84,26 +89,36 @@ if (is_post()) {
     // Handle product_photo (multiple images)
     $photo_files = isset($_FILES['product_photo']) ? $_FILES['product_photo'] : null;
     $photo_resources = [];
-    
-    if (empty($photo_files)) {
+
+    if (empty($photo_files) || empty($photo_files['name'][0])) {
         $_err['product_photo'] = 'At least one extra photo is required';
-    }else if ($photo_files && is_array($photo_files['name'])) {
+    } else if (is_array($photo_files['name'])) {
         foreach ($photo_files['name'] as $index => $name) {
-            $tmp_name = $photo_files['tmp_name'][$index];$type = mime_content_type($tmp_name);
+            $tmp_name = $photo_files['tmp_name'][$index];
             $size = $photo_files['size'][$index];
-            
+            $error = $photo_files['error'][$index];
+
+            if ($error === UPLOAD_ERR_NO_FILE || empty($name)) {
+                $_err['product_photo'] = 'At least one extra photo is required';
+                break;
+            }
+
             $extension = pathinfo($name, PATHINFO_EXTENSION);
-            if (!in_array($extension, ['jpg', 'jpeg', 'png','webp'])) {
+            if (!in_array($extension, ['jpg', 'jpeg', 'png', 'webp'])) {
                 $_err['product_photo'] = 'All files must be images';
-            }else if ($size > 1 * 1024 * 1024) {
+            } else if ($size > 1 * 1024 * 1024) {
                 $_err['product_photo'] = 'Each image must be under 1MB';
             } else {
-                $unique_name = uniqid() . '.' . pathinfo($name, PATHINFO_EXTENSION);
-                move_uploaded_file($tmp_name, "../../uploads/$unique_name");             
-                $photo_resources[] = $unique_name;
+                $unique_name = uniqid() . '.' . $extension;
+                if (move_uploaded_file($tmp_name, "../../uploads/$unique_name")) {
+                    $photo_resources[] = $unique_name;
+                } else {
+                    $_err['product_photo'] = 'Failed to upload file';
+                }
             }
         }
     }
+
 
 
     // Output
@@ -119,9 +134,9 @@ if (is_post()) {
         }
 
         $stm = $_db->prepare('INSERT INTO product
-                              (product_id, product_name, product_cover, product_resources, product_desc, product_price, product_stock, product_last_update, admin_id, category_id)
-                              VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
-        $stm->execute([$product_id, $product_name, $product_cover, json_encode($photo_resources), $product_desc, $product_price, $product_stock, date("Y-m-d H:i:s"), 0, $category_id]);
+                              (product_id, product_name, product_cover, product_resources, product_youtube_url, product_desc, product_price, product_stock, product_last_update, admin_id, category_id)
+                              VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+        $stm->execute([$product_id, $product_name, $product_cover, json_encode($photo_resources), $product_youtube_url, $product_desc, $product_price, $product_stock, date("Y-m-d H:i:s"), $admin_id, $category_id]);
 
         temp('info', 'Product added.');
         redirect('product.php');
@@ -179,7 +194,7 @@ include '../../_admin_head.php';
     </label>
     <div>
         <?= html_file('product_cover', 'image/*', 'hidden id="product_cover"') ?>
-        <img id="preview" src="/images/photo.jpg" style="width: 200px; height: 200px;">
+        <img id="preview" src="../../images/photo.jpg" style="width: 200px; height: 200px;">
     </div>
     <?= err('product_cover') ?>
 
@@ -189,13 +204,18 @@ include '../../_admin_head.php';
     </label>
     <div id="product_photo_previews">
     <?= err('product_photo') ?></div>
+
+    <label>Youtube URL</label>
+    <?= html_text('product_youtube_url',  'maxlength="1000"') ?>
+    <?= err('product_youtube_url') ?>
+
     <section>
         <button>Submit</button>
         <button type="reset">Reset</button>
     </section>
 </form>
 <script>
-    const existingResources = <?php echo json_encode($product_resources); ?>;  // PHP to JS array conversion
+    const existingResources = <?php echo json_encode($product_resources); ?>;
 
     existingResources.forEach(resource => {
         const ext = resource.split('.').pop().toLowerCase();

@@ -213,23 +213,43 @@ function sort_buttons($productName, $productCategory, $minPrice, $maxPrice, $fie
     }
 }
 
+function sort_buttons2($fields, $sort, $dir, $href = '') {
+    foreach ($fields as $k => $v) {
+        $d = 'asc'; // Default direction
+        $c = '';    // Default class
+        
+        if ($k == $sort) {
+            $d = $dir == 'asc' ? 'desc' : 'asc';
+            $c = $dir;
+        }
+
+        echo "<button><a href='?sort=$k&dir=$d&$href' class='$c'>$v</a></button>";
+    }
+}
+
 // ============================================================================
 // Email Functions
 // ============================================================================           
+// Demo Accounts:
+// --------------
+// AACS3173@gmail.com           npsg gzfd pnio aylm
+// BAIT2173.email@gmail.com     ytwo bbon lrvw wclr
+// liaw.casual@gmail.com        wtpa kjxr dfcb xkhg
+// liawcv1@gmail.com            obyj shnv prpa kzvj
 
 // function get_mail() {
 //     require_once 'lib/PHPMailer.php';
 //     require_once 'lib/SMTP.php';
 
-//     $m = new PHPMailer(true);
-//     $m->isSMTP();
-//     $m->SMTPAuth = true;
-//     $m->Host = 'smtp.gmail.com';
-//     $m->Port = 587;
-//     $m->Username = 'targrocer@outlook.com';
-//     $m->Password = 'tar123grocer';
-//     $m->CharSet = 'utf-8';
-//     $m->setFrom($m->Username, 'TAR GROCER Admin');
+    $m = new PHPMailer(true);
+    $m->isSMTP();
+    $m->SMTPAuth = true;
+    $m->Host = 'smtp.gmail.com';
+    $m->Port = 587;
+    $m->Username = 'targrocer@outlook.com';
+    $m->Password = 'tar123grocer';
+    $m->CharSet = 'utf-8';
+    $m->setFrom($m->Username, 'TAR GROCER Admin');
 
 //     return $m;
 // }
@@ -269,22 +289,22 @@ function err($key) {
 // liawcv1@gmail.com            obyj shnv prpa kzvj
 
 // // Initialize and return mail object
-function get_mail() {
-    require_once 'lib/PHPMailer.php';
-    require_once 'lib/SMTP.php';
+// function get_mail() {
+//     require_once 'lib/PHPMailer.php';
+//     require_once 'lib/SMTP.php';
 
-    $m = new PHPMailer(true);
-    $m->isSMTP();
-    $m->SMTPAuth = true;
-    $m->Host = 'smtp.gmail.com';
-    $m->Port = 587;
-    $m->Username = 'aacs3173@gmail.com';
-    $m->Password = 'xxna ftdu plga hzxl';
-    $m->CharSet = 'utf-8';
-    $m->setFrom($m->Username, '😺 Admin');
+//     $m = new PHPMailer(true);
+//     $m->isSMTP();
+//     $m->SMTPAuth = true;
+//     $m->Host = 'smtp.gmail.com';
+//     $m->Port = 587;
+//     $m->Username = 'aacs3173@gmail.com';
+//     $m->Password = 'xxna ftdu plga hzxl';
+//     $m->CharSet = 'utf-8';
+//     $m->setFrom($m->Username, '😺 Admin');
 
-    return $m;
-}
+//     return $m;
+// }
 
 
 // ============================================================================

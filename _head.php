@@ -57,6 +57,8 @@
 </style>
 
 <body>
+    <!-- Flash message -->
+    <div id="info"><?= temp('info') ?></div>
     <header>
         <div class="home-logo">
             <a href="/">
@@ -73,49 +75,38 @@
         <!-- Show logout and other admin-related links only if the user is logged in -->
         <?php if ($user): ?>
             <?php if ($user->userType == 'admin'): ?>
-                <li><a href="/page/yongqiaorou/product.php">Product Management</a></li>
+                <li><a href="/page/yongqiaorou/page/yongqiaorou/product.php">Product Management</a></li>
+                        <li><a href="/page/yongqiaorou/category.php">Category Management</a></li>
+                        <li><a href="/page/yongqiaorou/voucher.php">Voucher Management</a></li>
                 <li><a href="/page/chanyijing/admin/order_management/order_list.php">Order Listing</a></li>
                 <li><a href="#">Member Management</a>
                     <div class="dropdown-content">
                         <a href="/page/chanyijing/admin/member_management/member_list.php">Member List</a>
                         <a href="/page/chanyijing/admin/feedback/member_feedback.php">Member Feedback</a>
-                    </div>
-                </li>
-                <li><a href="#">Admin Management</a>
-                    <div class="dropdown-content">
-                        <a href="/page/chanyijing/admin/admin_management/admin_list.php">Admin List</a>
-                        <!-- Display 'Register Admin' only for high-tier admins -->
-                        <?php if ($user->admin_tier === 'High'): ?>
-                            <a href="/user/registerAdmin.php">Register Admin</a>
-                        <?php endif; ?>
-                    </div>
-                </li>
-            <?php endif; ?>
-        <?php else: ?>
-            <!-- Optionally, you can show login/register options here -->
-        <?php endif; ?>
+                        <a href="/page/chanyijing/admin/admin_management/admin_list.php">Admin Management</a>
+                    <?php endif ?>
+                <?php else: ?>
+                    <li><a href="/login.php">Login</a></li>
+                <?php endif ?>
+                <?php if ($user): ?>
+                <?php if ($user->userType == 'member'): ?>
+                        <li><a href="/productsearch.php?product_name=&category_id=&minprice=&maxprice=&sort=product_name&dir=asc">View Products</a></li>
+                        <li><a href="/page/chanyijing/member/order_history/history_list.php">Order History</a></li>
+                        <?php endif ?>
+                        <?php endif ?>
 
-        <!-- Show View Products link for non-logged-in users and members -->
-        <?php if (!$user || $user->userType == 'member'): ?>
-            <li><a href="/productsearch.php?product_name=&category_id=&minprice=&maxprice=&sort=product_name&dir=asc">View Products</a></li>
-        <?php endif; ?>
-
-        <?php if ($user): ?>
-            <?php if ($user->userType == 'member'): ?>
-                <li><a href="/page/chanyijing/member/order_history/history_list.php">Order History</a></li>
-            <?php endif; ?>
-        <?php endif; ?>
-    </ul>
-</nav>
-
+            </ul>
+        </nav>
         <div class="right-logo">
-            <a href="/productsearch.php?product_name=&category_id=&minprice=&maxprice=&sort=product_name&dir=asc">
-                <img class="search" src="/images/search.png" alt="Search Icon" id="search-icon">
-            </a>
             <?php if ($user && $user->userType == 'member'): ?>
-                <a href="/shoppingcart.php">
+                <a href="/page/leewaixian/wishlist.php">
+                    <img class="search" src="/images/love.png" alt="Wishlist" id="search-icon">
+                </a>
+                <a href="/page/leewaixian/shoppingcart.php">
                     <img src="/images/shopping-cart.png" alt="Shopping Cart">
-                    <span class="quantity"><?= count($cart_products) ?></span>
+                    <?php if(count($cart_products)>0): ?>
+                        <span class="quantity"><?= count($cart_products) ?></span>
+                    <?php endif ?>
                 </a>
             <?php endif ?>
             <?php if ($user): ?>

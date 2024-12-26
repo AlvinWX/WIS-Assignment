@@ -244,10 +244,11 @@ a.desc::after {
 #info {
     position: fixed;
     color: #fff;
-    background: #ff6666;
-    border: 1px solid #cc3333;
+    background: #47db47;
+    border: 1px solid #40c22a;
     border-radius: 5px;
     padding: 10px 20px;
+    margin-top: 100px;
     left: 50%;
     translate: -50% 0;
     z-index: 999;

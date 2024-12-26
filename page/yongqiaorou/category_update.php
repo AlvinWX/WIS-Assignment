@@ -2,8 +2,13 @@
 require '../../_base.php';
 // ----------------------------------------------------------------------------
 
-// $user = $_SESSION['user'] ?? null;
-// $admin_id = $user->admin_id;
+$user = $_SESSION['user'] ?? null;
+$admin_id = $user->admin_id;
+if(empty($admin_id)){
+    redirect('../../login.php');
+    temp('info',"Unauthourized Access");
+}
+
 if (is_get()) {
     $id = req('id');
 
@@ -40,9 +45,9 @@ if (is_post()) {
     // Output
     if (!$_err) {
         $stm = $_db->prepare('UPDATE category
-                            SET category_name = ?, category_desc = ? 
+                            SET category_name = ?, category_desc = ?, category_last_update = ?, admin_id = ?
                             WHERE category_id = ?');
-        $stm->execute([$category_name, $category_desc, $id]);
+        $stm->execute([$category_name, $category_desc, date("Y-m-d H:i:s"), $admin_id, $id]);
 
         temp('info', 'Category updated');
         redirect('/page/yongqiaorou/category.php');
@@ -76,5 +81,5 @@ include '../../_admin_head.php';
 </form>
 
 <?php
-include '../../_admin_foot.php';
+include '../../_foot.php';
 ?>

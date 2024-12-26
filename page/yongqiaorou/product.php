@@ -1,6 +1,13 @@
 <?php
 require '../../_base.php';
 
+$user = $_SESSION['user'] ?? null;
+$admin_id = $user->admin_id;
+if(empty($admin_id)){
+    temp('info',"Unauthourized Access");
+    redirect('../../login.php');
+}
+
 $categories = $_db->query("SELECT * FROM category WHERE category_status = 1")->fetchAll();
 $query = "SELECT * FROM product p JOIN category c ON p.category_id = c.category_id WHERE p.product_status = 1";
 
@@ -93,8 +100,8 @@ if ($search_field == 'product_price') {
         $stmt->bindValue(':min_price', $min_price);
         $stmt->bindValue(':max_price', $max_price);
     } else {
-        echo "<p style='color:red;'>Please provide both Min and Max price!</p>";
-        $stmt = $_db->prepare($query); // Prepare the base query
+        // echo "<p style='color:red;'>Please provide both Min and Max price!</p>";
+        $stmt = $_db->prepare($query); 
     }
 } else {
     $query .= " AND p.$search_field LIKE :search_value"; // Default to the product table
@@ -127,7 +134,7 @@ if(count($arr)) { ?>
             <tr>
                 <td><?= $s->product_id ?></td>
                 <td><?= $s->product_name ?></td>
-                <td><img src="images/<?= $s->product_cover ?>"></td>
+                <td><img src="../../images/product_pic/<?= $s->product_cover ?>"></td>
                 <td>
                     <?php if (!empty($s->product_resources)): ?>
                         <?php
@@ -177,8 +184,8 @@ if(count($arr)) { ?>
                 </td>
                 <td>
                     <button data-get="/page/yongqiaorou/product_detail.php?id=<?= $s->product_id ?>">Detail</button>
-                    <button data-get="product_update.php?id=<?= $s->product_id ?>">Update</button>
-                    <button data-post="product_delete.php?id=<?= $s->product_id ?>" data-confirm>Delete</button>
+                    <button data-get="/page/yongqiaorou/product_update.php?id=<?= $s->product_id ?>">Update</button>
+                    <button data-post="/page/yongqiaorou/product_delete.php?id=<?= $s->product_id ?>" data-confirm>Delete</button>
                 </td>
             </tr>
             <?php endforeach ?>
@@ -283,4 +290,4 @@ function updateSlide(inner, index) {
 </script>
 
 <?php
-include '../../_admin_foot.php';
+include '../../_foot.php';

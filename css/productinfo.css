@@ -159,6 +159,19 @@ input[type="number"]::-webkit-outer-spin-button {
     opacity: 0.9;
 }
 
+.bx-heart {
+    font-size: 32px; /* ensure size is consistent */
+    color: #dc4c32; /* default color */
+    cursor: pointer;
+    transform: translateY();
+}
+
+.bx-heart[active] {
+    color: #ff007f; /* active state color */
+    cursor: pointer;
+}
+
+
 @media screen and (min-width: 992px){
     .card{
         display: grid;

@@ -4,6 +4,10 @@ require '../../_base.php';
 
 $user = $_SESSION['user'] ?? null;
 $admin_id = $user->admin_id;
+if(empty($admin_id)){
+    redirect('../../login.php');
+    temp('info',"Unauthourized Access");
+}
 
 if (is_post()) {
     // Input
@@ -39,9 +43,9 @@ if (is_post()) {
         }
 
         $stm = $_db->prepare('INSERT INTO category
-                              (category_id, category_name, category_desc, category_last_update)
-                              VALUES(?, ?, ?, ?)');
-        $stm->execute([$category_id, $category_name, $category_desc, date("Y-m-d H:i:s")]);
+        (category_id, category_name, category_desc, category_last_update, admin_id)
+        VALUES (?, ?, ?, ?, ?)');
+        $stm->execute([$category_id, $category_name, $category_desc, date("Y-m-d H:i:s"), $admin_id]);
 
         temp('info', 'Category added.');
         redirect('category.php');
@@ -49,7 +53,7 @@ if (is_post()) {
 }
 
 // ----------------------------------------------------------------------------
-$_title = 'Add Product';
+$_title = 'Add Category';
 include '../../_admin_head.php';
 ?>
 
