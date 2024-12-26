@@ -90,15 +90,16 @@
 
 .products-container .box .bx-heart{
     position: absolute;
-    top: 1rem;
-    right: 1rem;
-    font-size: 25px;
-    color:#dc4c32;
+    top: 10px; 
+    right: 10px; 
+    font-size: 24px; 
+    cursor: pointer; 
+    z-index: 10;
 }
 
 .products-container .box .bx-heart:hover{
     color: #420c09;
-    transition: 0.2s all linear;
+    transition: color 0.2s ease; 
 }
 
 .products-container .box .sold{

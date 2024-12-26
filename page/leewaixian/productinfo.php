@@ -21,6 +21,11 @@ $get_cart_stm = $_db -> prepare('SELECT * FROM cart c JOIN member m ON m.member_
 $get_cart_stm -> execute([$member_id]);
 $shoppingCart = $get_cart_stm -> fetch();
 
+//Retrieve member wishlist
+$get_wishlist_stm = $_db -> prepare('SELECT * FROM wishlist w JOIN member m ON m.member_id = w.member_id WHERE w.member_id = ?');
+$get_wishlist_stm -> execute([$member_id]);
+$wishlist = $get_wishlist_stm -> fetch();
+
 //Used to display quantity
 $currentQuantity = 1; //By default to 1
 $get_cart_product = $_db->prepare('SELECT * FROM cart_product WHERE product_id = ? AND cart_id = ?');
@@ -70,6 +75,7 @@ $resources = json_decode($s -> product_resources, true);
 <link rel="stylesheet" href="../../css/flash.css">
 <link rel="stylesheet" href="../../css/imageslider.css">
 <script src="../../js/productinfo.js" defer></script>
+<script src="../../js/wishlist.js" defer></script>
 <script src="../../js/imageslider2.js" defer></script>
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
@@ -143,9 +149,16 @@ window.onload = function() {
                     <form method="post" id="quantitySelect"><input type="number" blur name="quantity" id="spinnerValue" value="<?= $currentQuantity ?>" min="1" max="<?= $s -> product_stock ?>" step="1"></form>
                     <button class="increase" onclick="increaseValue()">+</button>
                     <input form="quantitySelect" hidden type="text" name="product_id" value="<?= $s->product_id ?>">
-                    <input form="quantitySelect" type = "submit" name="add-to-cart" class="add-to-cart" value="Add to Cart">
+                    <input form="quantitySelect" type = "submit" name="add-to-cart" class="add-to-cart" value="Add to Cart">  
+                    <?php
+                        $check_wishlist_stm = $_db->prepare('SELECT COUNT(*) FROM wishlist_product WHERE wishlist_id = ? AND product_id = ?');
+                        $check_wishlist_stm->execute([$wishlist->wishlist_id, $s->product_id]);
+                        $isWished = $check_wishlist_stm->fetchColumn() == 0 ? false : true;
+                    ?>
+                    <svg class='bx bx-heart' viewBox='0 0 24 24' width='32' height='32' onclick="updateWishlist('<?= $s->product_id ?>', '<?= $isWished ? 'remove' : 'add' ?>', '<?= $wishlist->wishlist_id ?>' , this)">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="<?= $isWished ? '#ff007f' : 'none' ?>" stroke="#ff007f" stroke-width="2"/>
+                    </svg>               
                 </div>
-
                 <div class = "product-desc">
                     <span>Product information:</span>
                     <p><?= $s -> product_desc ?></p>

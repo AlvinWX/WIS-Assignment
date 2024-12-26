@@ -41,9 +41,9 @@
           <div class="column4">
             <ul>
               <b><h7>Tar Grocer Social Account</h7></b>
-              <li><a href="https://www.facebook.com/powerrangers/" target="_blank"><img src="http://localhost:8000/images/facebook.png"></a>
-                <a href="https://instagram.com/powerrangers?igshid=YmMyMTA2M2Y=" target="_blank"><img src="http://localhost:8000/images/insta.png"></a>
-                <a href="https://twitter.com/PowerRangers?t=Z3JrtXTUz6YjyRsjgVKxNg&s=08" target="_blank"><img src="http://localhost:8000/images/twitter.png"></a>
+              <li><a href="https://www.facebook.com/" target="_blank"><img src="http://localhost:8000/images/facebook.png"></a>
+                <a href="https://instagram.com/" target="_blank"><img src="http://localhost:8000/images/insta.png"></a>
+                <a href="https://twitter.com/" target="_blank"><img src="http://localhost:8000/images/twitter.png"></a>
                 <br>
                 <br>
               <b><h7>Payment Method</h7></b>

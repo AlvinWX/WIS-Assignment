@@ -2,13 +2,14 @@
 require '../../_base.php';
 include '../../_head.php';
 
-
 $fields = [
     'product_name' => 'Product Name',
     'product_price' => 'Product Price',
     'product_sold' => 'Product Sold',
     'product_stock' => 'Product Stock'
 ];
+
+$fullPath = $_SERVER['REQUEST_URI'];
 
 //Retrieve member cart
 $member_id = $user->member_id; 
@@ -37,14 +38,6 @@ JOIN category c ON p.category_id = c.category_id
 WHERE product_status=1 AND product_stock > 0
 AND ' . $wishlistQuery
 . ' ORDER BY ' . $sort . ' ' . $dir;
-
-// $query = 'SELECT * FROM product p 
-// JOIN category c ON p.category_id = c.category_id 
-// WHERE product_status=1 AND product_stock > 0
-// AND product_name LIKE ' . $nameQuery
-// . $categoryQuery
-// . $priceQuery
-// . ' ORDER BY ' . $sort . ' ' . $dir;
 
 print_r($query);
 
@@ -103,6 +96,7 @@ $fullPath = $_SERVER['REQUEST_URI'];
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="../../js/wishlist.js" defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
     <title>My Wishlist</title>
@@ -168,7 +162,14 @@ $fullPath = $_SERVER['REQUEST_URI'];
                 <form method="post">
                     <input hidden type="text" name="product_id" value="<?= $s->product_id ?>">
                     <input type="submit" name="add-to-cart" class= "add-to-cart" value="+">
-                <i class='bx bx-heart' ></i></form>
+                    <?php
+                        $check_wishlist_stm = $_db->prepare('SELECT COUNT(*) FROM wishlist_product WHERE wishlist_id = ? AND product_id = ?');
+                        $check_wishlist_stm->execute([$wishlist->wishlist_id, $s->product_id]);
+                        $isWished = $check_wishlist_stm->fetchColumn() == 0 ? false : true;
+                        ?>
+                    <svg class='bx bx-heart' viewBox='0 0 24 24' width='24' height='24' onclick="updateWishlist('<?= $s->product_id ?>', '<?= $isWished ? 'remove' : 'add' ?>', '<?= $wishlist->wishlist_id ?>' , this)">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="<?= $isWished ? '#ff007f' : 'none' ?>" stroke="#ff007f" stroke-width="2"/>
+                    </svg>
                 <span class="sold" data-get="productinfo.php?id=<?= $s->product_id ?>&path=<?= $fullPath ?>"><?= $s->product_sold?> sold || <?= $s->product_stock?> left</span>
             </div>
             <?php endforeach ?>

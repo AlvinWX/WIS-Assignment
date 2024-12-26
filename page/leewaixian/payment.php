@@ -108,8 +108,8 @@ header("Location: " . $checkout_session->url);
         <div class="card-container">
             <div class="front">
                 <div class="image">
-                    <img src="images/chip.png">
-                    <img src="images/visa2.png">
+                    <img src="../../images/chip.png">
+                    <img src="../../images/visa2.png">
                 </div>
                 <div class="card-number-box">0000 0000 0000 0000</div>
                 <div class="flexbox">
