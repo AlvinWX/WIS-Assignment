@@ -51,4 +51,4 @@ include '../../_admin_head.php';
     <p class="err">No record deleted.</p>
 <?php }?>
 <?php
-include '../../_admin_foot.php';
+include '../../_foot.php';

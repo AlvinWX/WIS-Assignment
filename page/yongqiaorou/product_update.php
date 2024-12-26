@@ -196,5 +196,5 @@ include '../../_admin_head.php';
 </script>
 
 <?php
-include '../../_admin_foot.php';
+include '../../_foot.php';
 ?>

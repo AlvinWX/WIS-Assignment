@@ -1,16 +1,77 @@
-/*wj*/
+/* =========================== */
+/* Main Content Styles          */
+/* =========================== */
+main {
+    padding: 20px 50px;
+    text-align: center;
+}
+
+main h1 {
+    margin-top: 0;
+}
+
+/* footer {
+    padding: 12px;
+    background-color: #6c7ae0; 
+    color: #f9f9f9;
+    text-align: center; 
+} */
+
+.search-container {
+    display: none;
+    position: absolute;
+    top: 95px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    padding: 10px 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    z-index: 1000;
+}
+
+.search-bar {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    outline: none;
+}
+
+.search-bar:focus {
+    border-bottom: 2px solid red;
+}
+
+.search-container.show {
+    display: block;
+}
+
+.right-logo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding-right: 50px ;
+}
+
+.right-logo img{
+    max-width: 35px; /* Adjust logo size */
+    height: auto; /* Maintain aspect ratio */
+    cursor: pointer; /* Indicate clickability */
+    padding-right: 30px ;
+}
+
+.right-logo a {
+    text-decoration: none;
+}
 
 body {
     font-family: 'Montserrat', sans-serif;
     color: #333;
     justify-content: center;
     align-items: center;
-}
-
-body::after {
-    content: '';
-    display: block;
-    height: 50px;
 }
 
 /* =========================== */
@@ -122,75 +183,6 @@ nav ul li:hover .dropdown-content {
 }
 
 
-/* =========================== */
-/* Main Content Styles          */
-/* =========================== */
-main {
-    padding: 20px 50px;
-    text-align: center;
-}
-
-main h1 {
-    margin-top: 0;
-}
-
-/* footer {
-    padding: 12px;
-    background-color: #6c7ae0; 
-    color: #f9f9f9;
-    text-align: center; 
-} */
-
-.search-container {
-    display: none;
-    position: absolute;
-    top: 95px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80%;
-    padding: 10px 20px;
-    background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    z-index: 1000;
-}
-
-.search-bar {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border: none;
-    border-bottom: 2px solid #ccc;
-    outline: none;
-}
-
-.search-bar:focus {
-    border-bottom: 2px solid red;
-}
-
-.search-container.show {
-    display: block;
-}
-
-.right-logo {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    padding-right: 50px ;
-}
-
-.right-logo img{
-    max-width: 35px; /* Adjust logo size */
-    height: auto; /* Maintain aspect ratio */
-    cursor: pointer; /* Indicate clickability */
-    padding-right: 30px ;
-}
-
-.right-logo a {
-    text-decoration: none;
-}
-
 /*Search Form---------------------------*/
 .search-form {
     margin-top: 50px !important;
@@ -261,21 +253,19 @@ select, input[type="text"], input[type="number"] {
         flex-direction: row;
     }
 }
+
 /* Table ------------------------------------------------------------------- */
 .table-container {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    min-height: 80vh; /* Adjust based on your layout */
-    background-color: #f9f9f9; /* Light background for the whole container */
+    min-height: 80vh;
+    background-color: #f9f9f9;
 }
 
 .table {
-    margin-left: auto;
-    margin-right: auto;
     border-collapse: collapse;
-    margin: 20px 0;
     font-size: 18px;
     width: 80%; /* Adjust table width as needed */
     background-color: #fff; /* White background for the table */

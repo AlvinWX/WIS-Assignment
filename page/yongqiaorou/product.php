@@ -184,8 +184,8 @@ if(count($arr)) { ?>
                 </td>
                 <td>
                     <button data-get="/page/yongqiaorou/product_detail.php?id=<?= $s->product_id ?>">Detail</button>
-                    <button data-get="product_update.php?id=<?= $s->product_id ?>">Update</button>
-                    <button data-post="product_delete.php?id=<?= $s->product_id ?>" data-confirm>Delete</button>
+                    <button data-get="/page/yongqiaorou/product_update.php?id=<?= $s->product_id ?>">Update</button>
+                    <button data-post="/page/yongqiaorou/product_delete.php?id=<?= $s->product_id ?>" data-confirm>Delete</button>
                 </td>
             </tr>
             <?php endforeach ?>

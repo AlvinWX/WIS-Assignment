@@ -12,10 +12,10 @@ if(empty($admin_id)){
 if (is_post()) {
     $id = req('id');
 
-    $stm = $_db->prepare('UPDATE category SET category_status=0, category_last_update = ?, admin_id = ? WHERE category_id = ? ');
+    $stm = $_db->prepare('UPDATE voucher SET voucher_status=0, voucher_last_update = ?, admin_id = ? WHERE voucher_id = ? ');
     $stm->execute([, date("Y-m-d H:i:s"), $admin_id, $id]);
 
-    temp('info', 'Category deleted');
+    temp('info', 'voucher deleted');
 }
 
-redirect('/page/yongqiaorou/category.php');
+redirect('/page/yongqiaorou/voucher.php');

@@ -11,18 +11,18 @@ if(empty($admin_id)){
 
 if (is_post()) {
     $id         = req('id');
-    $stm = $_db->prepare('UPDATE category SET category_status=1, category_last_update = ?, admin_id = ? WHERE category_id = ? ');
+    $stm = $_db->prepare('UPDATE voucher SET voucher_status=1, voucher_last_update = ?, admin_id = ? WHERE voucher_id = ? ');
     $stm->execute([date("Y-m-d H:i:s"), $admin_id, $id]);
 
-    temp('info', 'Category recovered');
+    temp('info', 'Voucher recovered');
 
-    redirect('/page/yongqiaorou/category.php');
+    redirect('/page/yongqiaorou/voucher.php');
 }
 // // TODO
-$arr = $_db->query('SELECT * FROM category WHERE category_status=0')->fetchAll();
+$arr = $_db->query('SELECT * FROM voucher WHERE voucher_status=0')->fetchAll();
 
 // ----------------------------------------------------------------------------
-$_title = 'Category Recover';
+$_title = 'voucher Recover';
 include '../../_admin_head.php';
 ?>
 
@@ -31,18 +31,18 @@ include '../../_admin_head.php';
 <table class="table" style="margin: auto;">
     <tr>
         <th>Id</th>
-        <th>Category Name</th>
+        <th>Voucher Name</th>
         <th>Description</th>
         <th>Action</th>
     </tr>
 
-    <?php foreach ($arr as $c): ?>
+    <?php foreach ($arr as $v): ?>
     <tr>
-        <td><?= $c->category_id ?></td>
-        <td><?= $c->category_name ?></td>
-        <td><?= $c->category_desc ?></td>
+        <td><?= $v->voucher_id ?></td>
+        <td><?= $v->voucher_name ?></td>
+        <td><?= $v->voucher_desc ?></td>
         <td>
-            <button  data-post="category_recover.php?id=<?= $c->category_id ?>"  style="width:200px">Recover Back</button>
+            <button  data-post="voucher_recover.php?id=<?= $v->voucher_id ?>"  style="width:200px">Recover Back</button>
         </td>
     </tr>
     <?php endforeach ?>
@@ -51,4 +51,4 @@ include '../../_admin_head.php';
     <p style="color:red;">No record deleted.</p>
 <?php }?>
 <?php
-include '../../_admin_foot.php';
+include '../../_foot.php';

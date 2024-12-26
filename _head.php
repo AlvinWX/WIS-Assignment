@@ -72,6 +72,7 @@
                     <?php if ($user->userType == 'admin'): ?>
                         <li><a href="/page/yongqiaorou/product.php">Product Management</a></li>
                         <li><a href="/page/yongqiaorou/category.php">Category Management</a></li>
+                        <li><a href="/page/yongqiaorou/voucher.php">Voucher Management</a></li>
                         <a href="/page/chanyijing/admin/order_management/order_list.php">Order Listing</a>
                         <!-- <a href="/page/chanyijing/member/order_history/history_list.php">Order History</a> -->
                         <a href="/page/chanyijing/admin/member_management/member_list.php">Member Management</a>

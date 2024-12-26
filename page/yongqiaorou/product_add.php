@@ -74,7 +74,7 @@ if (is_post()) {
     // Handle product_cover (single image)
     $cover_file = isset($_FILES['product_cover']) ? $_FILES['product_cover'] : null;
     if ($cover_file && $cover_file['error'] == UPLOAD_ERR_OK) {
-        $product_cover = uniqid() . '.jpg';  // Generate a unique file name
+        $product_cover = uniqid() . '.jpg'; 
 
         require_once '../../lib/SimpleImage.php';
         $img = new SimpleImage();
@@ -88,26 +88,36 @@ if (is_post()) {
     // Handle product_photo (multiple images)
     $photo_files = isset($_FILES['product_photo']) ? $_FILES['product_photo'] : null;
     $photo_resources = [];
-    
-    if (empty($photo_files)) {
+
+    if (empty($photo_files) || empty($photo_files['name'][0])) {
         $_err['product_photo'] = 'At least one extra photo is required';
-    }else if ($photo_files && is_array($photo_files['name'])) {
+    } else if (is_array($photo_files['name'])) {
         foreach ($photo_files['name'] as $index => $name) {
-            $tmp_name = $photo_files['tmp_name'][$index];$type = mime_content_type($tmp_name);
+            $tmp_name = $photo_files['tmp_name'][$index];
             $size = $photo_files['size'][$index];
-            
+            $error = $photo_files['error'][$index];
+
+            if ($error === UPLOAD_ERR_NO_FILE || empty($name)) {
+                $_err['product_photo'] = 'At least one extra photo is required';
+                break;
+            }
+
             $extension = pathinfo($name, PATHINFO_EXTENSION);
-            if (!in_array($extension, ['jpg', 'jpeg', 'png','webp'])) {
+            if (!in_array($extension, ['jpg', 'jpeg', 'png', 'webp'])) {
                 $_err['product_photo'] = 'All files must be images';
-            }else if ($size > 1 * 1024 * 1024) {
+            } else if ($size > 1 * 1024 * 1024) {
                 $_err['product_photo'] = 'Each image must be under 1MB';
             } else {
-                $unique_name = uniqid() . '.' . pathinfo($name, PATHINFO_EXTENSION);
-                move_uploaded_file($tmp_name, "../../uploads/$unique_name");             
-                $photo_resources[] = $unique_name;
+                $unique_name = uniqid() . '.' . $extension;
+                if (move_uploaded_file($tmp_name, "../../uploads/$unique_name")) {
+                    $photo_resources[] = $unique_name;
+                } else {
+                    $_err['product_photo'] = 'Failed to upload file';
+                }
             }
         }
     }
+
 
 
     // Output
@@ -199,7 +209,7 @@ include '../../_admin_head.php';
     </section>
 </form>
 <script>
-    const existingResources = <?php echo json_encode($product_resources); ?>;  // PHP to JS array conversion
+    const existingResources = <?php echo json_encode($product_resources); ?>;
 
     existingResources.forEach(resource => {
         const ext = resource.split('.').pop().toLowerCase();

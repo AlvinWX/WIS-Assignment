@@ -12,78 +12,107 @@ if(empty($admin_id)){
 
 if (is_post()) {
     // Input
-    $category_id         = req('category_id');
-    $category_name       = req('category_name');
-    $category_desc     = req('category_desc');
+    $voucher_id         = req('voucher_id');
+    $voucher_name       = req('voucher_name');
+    $voucher_desc     = req('voucher_desc');
 
-    if ($category_name == '') {
-        $_err['category_name'] = 'Required';
+    if ($voucher_name == '') {
+        $_err['voucher_name'] = 'Required';
     }
-    else if (strlen($category_name) > 100) {
-        $_err['category_name'] = 'Maximum length 100';
+    else if (strlen($voucher_name) > 100) {
+        $_err['voucher_name'] = 'Maximum length 100';
     }
 
     // Validate desc
-    if ($category_desc == '') {
-        $_err['category_desc'] = 'Required';
+    if ($voucher_desc == '') {
+        $_err['voucher_desc'] = 'Required';
     }
-    else if (strlen($category_desc) > 1000) {
-        $_err['category_desc'] = 'Maximum length 1000';
+    else if (strlen($voucher_desc) > 1000) {
+        $_err['voucher_desc'] = 'Maximum length 1000';
     }
 
+    // Validate img
+    if ($voucher_img == '') {
+        $_err['voucher_img'] = 'Required';
+    }
+    else if (strlen($voucher_desc) > 1000) {
+        $_err['voucher_desc'] = 'Maximum length 1000';
+    }
+
+    // Handle voucher_img (single image)
+    $voucher_file = isset($_FILES['voucher_img']) ? $_FILES['voucher_img'] : null;
+    if ($voucher_file && $voucher_file['error'] == UPLOAD_ERR_OK) {
+        $voucher_img = uniqid() . '.jpg';  // Generate a unique file name
+
+        require_once '../../lib/SimpleImage.php';
+        $img = new SimpleImage();
+        $img->fromFile($voucher_file['tmp_name'])
+            ->thumbnail(200, 200)
+            ->toFile("images/$voucher_img", 'image/jpeg');
+    } else {
+        $_err['voucher_img'] = 'Cover Picture is required';
+    }
+    
     // Output
     if (!$_err) {
-        $arr = $_db->query('SELECT * FROM category ORDER BY category_id DESC LIMIT 1')->fetchAll(PDO::FETCH_ASSOC);
+        $arr = $_db->query('SELECT * FROM voucher ORDER BY voucher_id DESC LIMIT 1')->fetchAll(PDO::FETCH_ASSOC);
         if (!empty($arr)) {
-            $category_id = $arr[0]['category_id'];
-            $numeric_part = substr($category_id, 2);
+            $voucher_id = $arr[0]['voucher_id'];
+            $numeric_part = substr($voucher_id, 2);
             $incremented_numeric = str_pad((int)$numeric_part + 1, strlen($numeric_part), '0', STR_PAD_LEFT);
-            $category_id = "PC" . $incremented_numeric;
+            $voucher_id = "PC" . $incremented_numeric;
         } else {
-            $category_id = "PC00001";
+            $voucher_id = "PC00001";
         }
 
-        $stm = $_db->prepare('INSERT INTO category
-        (category_id, category_name, category_desc, category_last_update, admin_id)
+        $stm = $_db->prepare('INSERT INTO voucher
+        (voucher_id, voucher_name, voucher_desc, voucher_img, voucher_last_update, admin_id)
         VALUES (?, ?, ?, ?, ?)');
-        $stm->execute([$category_id, $category_name, $category_desc, date("Y-m-d H:i:s"), $admin_id]);
+        $stm->execute([$voucher_id, $voucher_name, $voucher_desc, $voucher_img, date("Y-m-d H:i:s"), $admin_id]);
 
-        temp('info', 'Category added.');
-        redirect('category.php');
+        temp('info', 'voucher added.');
+        redirect('voucher.php');
     }
 }
 
 // ----------------------------------------------------------------------------
-$_title = 'Add Product';
+$_title = 'Add Voucher';
 include '../../_admin_head.php';
 ?>
 
-<button data-get="/page/yongqiaorou/category.php"  class="back_button"><i class="fa fa-arrow-left" aria-hidden="true"></i>  Back</button>
+<button data-get="/page/yongqiaorou/voucher.php"  class="back_button"><i class="fa fa-arrow-left" aria-hidden="true"></i>  Back</button>
 
 <form method="post" class="form">
     <label for="id">Id</label>
     <?php 
-    $arr = $_db->query('SELECT * FROM category ORDER BY category_id DESC LIMIT 1')->fetchAll(PDO::FETCH_ASSOC);
+    $arr = $_db->query('SELECT * FROM voucher ORDER BY voucher_id DESC LIMIT 1')->fetchAll(PDO::FETCH_ASSOC);
     if (!empty($arr)) {
-        $category_id = $arr[0]['category_id'];
-        $numeric_part = substr($category_id, 2); 
+        $voucher_id = $arr[0]['voucher_id'];
+        $numeric_part = substr($voucher_id, 2); 
         $incremented_numeric = str_pad((int)$numeric_part + 1, strlen($numeric_part), '0', STR_PAD_LEFT);
-        $category_id = "PC" . $incremented_numeric;
-        echo $category_id;
+        $voucher_id = "VC" . $incremented_numeric;
+        echo $voucher_id;
     } else {
-        $category_id = "PC00001";
-        echo $category_id;
+        $voucher_id = "VC00001";
+        echo $voucher_id;
     }
     ?>
     <?= err('') ?>
     
-    <label for="category_name">Category Name</label>
-    <?= html_text('category_name', 'maxlength="100"') ?>
-    <?= err('category_name') ?>
+    <label for="voucher_name">Voucher Name</label>
+    <?= html_text('voucher_name', 'maxlength="100"') ?>
+    <?= err('voucher_name') ?>
 
     <label>Description</label>
-    <?= html_text('category_desc',  'maxlength="1000"') ?>
-    <?= err('category_desc') ?>
+    <?= html_text('voucher_desc',  'maxlength="1000"') ?>
+    <?= err('voucher_desc') ?>
+
+    <label for="voucher_img">Voucher Image</label>
+    <label class="upload" tabindex="0">
+        <?= html_file('voucher_img','image/*','hidden') ?>
+        <img src="/images/photo.jpg">
+    </label>
+    <?= err('voucher_img') ?>
 
     <section>
         <button>Submit</button>
@@ -91,4 +120,4 @@ include '../../_admin_head.php';
     </section>
 </form>
 <?php
-include '../../_admin_foot.php';
+include '../../_foot.php';
