@@ -54,7 +54,6 @@ include '../../../../_head.php';
 
 <div class="top-heading-space">
     <h2>Admin List</h2>
-    <h1><?= htmlspecialchars($loggedInAdminTier, ENT_QUOTES, 'UTF-8') ?></h1>
 </div>
 
 <?php if (empty($admins)): ?>

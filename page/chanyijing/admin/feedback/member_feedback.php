@@ -8,6 +8,7 @@ require '../../../../_base.php';
 $fields = [
     'feedback_id' => 'Feedback ID',
     'member_id' => 'Member ID',
+    'order_id' => 'Order ID',
     'product_satisfaction' => 'Product Satisfaction',
     'service_satisfaction' => 'Service Satisfaction',
     'team_satisfaction' => 'Team Satisfaction',
@@ -23,7 +24,7 @@ $sort = req('sort');
 key_exists($sort, $fields) || $sort = 'feedback_id';
 
 $dir = req('dir');
-in_array($dir, ['asc', 'desc']) || $dir = 'desc';
+in_array($dir, ['asc', 'desc']) || $dir = 'asc';
 
 // SQL query with filters and sorting
 $f_stm = $_db->prepare('SELECT * FROM feedback
@@ -64,7 +65,8 @@ include '../../../../_head.php';
         <?php foreach ($fb as $f): ?>
             <tr>
                 <td><?= $f->feedback_id ?></td>
-                <td><?= $f->member_id ?></td>
+                <td><a href="../member_management/member_list.php?id=<?= $f->member_id ?>"><?= $f->member_id ?></a></td>
+                <td><a href="../order_management/order_list.php?id=<?= $f->order_id ?>"><?= $f->order_id ?></a></td>
                 <td><?= $f->product_satisfaction ?></td>
                 <td><?= $f->service_satisfaction ?></td>
                 <td><?= $f->team_satisfaction ?></td>

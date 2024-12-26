@@ -60,16 +60,16 @@ if(is_post()){
                 $current_time = date('Y-m-d H:i:s');
                 
                 if ($order_status == 'Shipped') {
-                    $stm = $_db->prepare('UPDATE `order` SET order_ship_date = ? WHERE order_id = ?');
+                    $stm = $_db->prepare('UPDATE `order` SET ship_date = ? WHERE order_id = ?');
                     $stm->execute([$current_time, $order_id]);
                 } elseif ($order_status == 'Delivered') {
-                    $stm = $_db->prepare('UPDATE `order` SET order_received_date = ? WHERE order_id = ?');
+                    $stm = $_db->prepare('UPDATE `order` SET received_date = ? WHERE order_id = ?');
                     $stm->execute([$current_time, $order_id]);
                 }
             }
 
             if (in_array($order_status, ['Pending', 'Packed', 'Cancelled'])) {
-                $stm = $_db->prepare('UPDATE `order` SET order_ship_date = NULL, order_received_date = NULL WHERE order_id = ?');
+                $stm = $_db->prepare('UPDATE `order` SET ship_date = NULL, received_date = NULL WHERE order_id = ?');
                 $stm->execute([$order_id]);
             }
             temp('info', 'Order status updated successfully.');
@@ -90,6 +90,20 @@ include '../../../../_head.php';
     <h3>Order Details for Order ID <?= $o->order_id ?></h3>
 </div>
 
+<!-- Order Status -->
+<form method="post">
+    <table class="order-listing-table">
+        <tr>
+            <th colspan="3"><h3>Update Order Status</h3></th>
+        </tr>
+        <tr>
+            <td><?= html_select('order_status', $_orderStatuses, $o->order_status); ?></td>
+            <td><?= err('order_status') ?></td>
+            <td><button type="submit" class="green-btn">Update Status</button></td>
+        </tr>
+    </table>
+</form>
+
 <!-- Customer Information Table -->
 <table class="order-listing-table">
     <tr>
@@ -97,7 +111,7 @@ include '../../../../_head.php';
     </tr>
     <tr>
         <th>Member ID</th>
-        <td><a href="../member_management/member_detail.php?id=<?= $m->member_id ?>"><?= $m->member_id ?></a></td>
+        <td><a href="../member_management/member_list.php?id=<?= $m->member_id ?>"><?= $m->member_id ?></a></td>
     </tr>
     <tr>
         <th>Name</th>
@@ -115,7 +129,7 @@ include '../../../../_head.php';
     <th>Shipping Address</th>
     <td>
         <a href="https://www.google.com/maps/search/<?= urlencode($sa->street . ', ' . $sa->postcode . ', ' . $sa->city . ', ' . $sa->state) ?>" target="_blank">
-            <?= $sa->street . ', ' . $sa->postcode . ', ' . $sa->city . ', ' . $sa->state ?>
+            <?= htmlspecialchars($sa->street . ', ' . $sa->postcode . ', ' . $sa->city . ', ' . $sa->state) ?>
         </a>
     </td>
 </tr>
@@ -143,33 +157,19 @@ include '../../../../_head.php';
         $prod = $prod_stm->fetch(PDO::FETCH_ASSOC);
 
         // Calculate the subtotal for each product
-        $product_subtotal = $op['order_product_quantity'] * $op['order_product_price'];
+        $product_subtotal = $op['quantity'] * $op['price'];
         ?>
 
         <tr>
             <td><?= $prod['product_id'] ?></td>
             <td><?= $prod['product_name'] ?></td>
             <td><img src="../../../yongqiaorou/images/<?=  $prod['product_cover'] ?>" alt="<?= $prod['product_name'] ?>" style="width: 150px;"></td>
-            <td><?= $op['order_product_quantity'] ?></td>
-            <td><?= number_format($op['order_product_price'], 2) ?></td>
+            <td><?= $op['quantity'] ?></td>
+            <td><?= number_format($op['price'], 2) ?></td>
             <td><?= number_format($product_subtotal, 2) ?></td>
         </tr>
     <?php endforeach ?>
 </table>
-
-<!-- Order Status -->
-<form method="post">
-    <table class="order-listing-table">
-        <tr>
-            <th colspan="3"><h3>Update Order Status</h3></th>
-        </tr>
-        <tr>
-            <td><?= html_select('order_status', $_orderStatuses, $o->order_status); ?></td>
-            <td><?= err('order_status') ?></td>
-            <td><button type="submit" class="green-btn">Update Status</button></td>
-        </tr>
-    </table>
-</form>
 
 <!-- Order Summary Table -->
 <table class="order-listing-table">
@@ -186,35 +186,39 @@ include '../../../../_head.php';
     </tr>
     <tr>
         <th>Order Ship Date</th>
-        <td><?= $o->order_ship_date ?></td>
+        <td><?= $o->ship_date ?></td>
     </tr>
     <tr>
         <th>Order Delivered Date</th>
-        <td><?= $o->order_received_date ?></td>
+        <td><?= $o->received_date ?></td>
     </tr>
     <tr>
-        <th>Subtotal (RM)</th>
-        <td><?= number_format($o->order_subtotal, 2) ?></td>
+        <th>Order Subtotal</th>
+        <td>RM <?= number_format($o->order_subtotal, 2) ?></td>
     </tr>
     <tr>
-        <th>Delivery Fee (RM)</th>
-        <td><?= number_format($o->order_delivery_fee, 2) ?></td>
+        <th>Tax</th>
+        <td>RM <?= number_format($o->tax, 2) ?></td>
     </tr>
     <tr>
-        <th>Tax (RM)</th>
-        <td><?= number_format($o->order_tax, 2) ?></td>
+        <th>Delivery Fee</th>
+        <td>RM <?= number_format($o->delivery_fee, 2) ?></td>
+    </tr>
+    <tr>
+        <th>Subtotal</th>
+        <td>RM <?= number_format($o->subtotal, 2) ?></td>
     </tr>
     <tr>
         <th>Voucher Applied</th>
-        <td><?= $o->order_voucher ?></td>
+        <td><?= $o->voucher ?></td>
     </tr>
     <tr>
-        <th>Discount (RM)</th>
-        <td><?= number_format($o->order_discount_price, 2) ?></td>
+        <th>Discount</th>
+        <td> - RM <?= number_format($o->discount_price, 2) ?></td>
     </tr>
     <tr>
-        <th>Order Total (RM)</th>
-        <td><?= number_format($o->order_total, 2) ?></td>
+        <th>Order Total</th>
+        <td>RM <?= number_format($o->total, 2) ?></td>
     </tr>
 </table>
 
@@ -229,15 +233,15 @@ include '../../../../_head.php';
     </tr>
     <tr>
         <th>Payment Date</th>
-        <td><?= $p->payment_date ?></td>
+        <td><?= $p->date ?></td>
     </tr>
     <tr>
         <th>Payment Method</th>
-        <td><?= $pm->payment_method_name ?></td>
+        <td><?= $pm->name ?></td>
     </tr>
     <tr>
         <th>Payment Amount (RM)</th>
-        <td><?= number_format($p->payment_amount, 2) ?></td>
+        <td><?= number_format($p->amount, 2) ?></td>
     </tr>
 </table>
 

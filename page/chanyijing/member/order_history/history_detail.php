@@ -67,11 +67,11 @@ include '../../../../_head.php';
     <table class="order-listing-table">
         <tr>
             <th>Name</th>
-            <td colspan="2"><?= $m->memberName ?></td>
+            <td colspan="2"><?= $m->member_name ?></td>
         </tr>
         <tr>
             <th>Phone</th>
-            <td colspan="2"><?= $m->memberPhone ?></td>
+            <td colspan="2"><?= $m->member_phone ?></td>
         </tr>
         <tr>
             <th>Shipping Address</th>
@@ -103,15 +103,15 @@ include '../../../../_head.php';
         $prod = $prod_stm->fetch(PDO::FETCH_ASSOC);
 
         // Calculate the subtotal for each product
-        $product_subtotal = $op['order_product_quantity'] * $op['order_product_price'];
+        $product_subtotal = $op['quantity'] * $op['price'];
         ?>
 
         <tr>
             <td><?= $prod['product_id'] ?></td>
             <td><?= $prod['product_name'] ?></td>
             <td><img src="../../../yongqiaorou/images/<?= $prod['product_cover'] ?>" alt="<?= $prod['product_name'] ?>" style="width: 150px;"></td>
-            <td><?= $op['order_product_quantity'] ?></td>
-            <td><?= number_format($op['order_product_price'], 2) ?></td>
+            <td><?= $op['quantity'] ?></td>
+            <td><?= number_format($op['price'], 2) ?></td>
             <td><?= number_format($product_subtotal, 2) ?></td>
         </tr>
     <?php endforeach ?>
@@ -132,35 +132,39 @@ include '../../../../_head.php';
     </tr>
     <tr>
         <th>Order Ship Date</th>
-        <td><?= $o->order_ship_date ?></td>
+        <td><?= $o->ship_date ?></td>
     </tr>
     <tr>
         <th>Order Delivered Date</th>
-        <td><?= $o->order_received_date ?></td>
+        <td><?= $o->received_date ?></td>
     </tr>
     <tr>
-        <th>Subtotal (RM)</th>
-        <td><?= number_format($o->order_subtotal, 2) ?></td>
+        <th>Order Subtotal</th>
+        <td>RM <?= number_format($o->order_subtotal, 2) ?></td>
     </tr>
     <tr>
-        <th>Delivery Fee (RM)</th>
-        <td><?= number_format($o->order_delivery_fee, 2) ?></td>
+        <th>Tax</th>
+        <td>RM <?= number_format($o->tax, 2) ?></td>
     </tr>
     <tr>
-        <th>Tax (RM)</th>
-        <td><?= number_format($o->order_tax, 2) ?></td>
+        <th>Delivery Fee</th>
+        <td>RM <?= number_format($o->delivery_fee, 2) ?></td>
+    </tr>
+    <tr>
+        <th>Subtotal</th>
+        <td>RM <?= number_format($o->subtotal, 2) ?></td>
     </tr>
     <tr>
         <th>Voucher Applied</th>
-        <td><?= $o->order_voucher ?></td>
+        <td><?= $o->voucher ?></td>
     </tr>
     <tr>
-        <th>Discount (RM)</th>
-        <td><?= number_format($o->order_discount_price, 2) ?></td>
+        <th>Discount</th>
+        <td> - RM <?= number_format($o->discount_price, 2) ?></td>
     </tr>
     <tr>
-        <th>Order Total (RM)</th>
-        <td><?= number_format($o->order_total, 2) ?></td>
+        <th>Order Total</th>
+        <td>RM <?= number_format($o->total, 2) ?></td>
     </tr>
 </table>
 
@@ -171,22 +175,22 @@ include '../../../../_head.php';
     </tr>
     <tr>
         <th>Payment Date</th>
-        <td><?= $p->payment_date ?></td>
+        <td><?= $p->date ?></td>
     </tr>
     <tr>
         <th>Payment Method</th>
-        <td><?= $pm->payment_method_name ?></td>
+        <td><?= $pm->name ?></td>
     </tr>
     <tr>
         <th>Payment Amount (RM)</th>
-        <td><?= number_format($p->payment_amount, 2) ?></td>
+        <td><?= number_format($p->amount, 2) ?></td>
     </tr>
 </table>
 
 <?php if ($order_status == 'Delivered'): ?>
     <br/>
     <button data-get="order_receipt.php?order_id=<?= $o->order_id ?>" class="green-btn">Receipt</button>
-    <button data-get="feedback_order.php?order_id=<?= $m->member_id ?>" class="pink-btn">Feedback</button>
+    <button data-get="feedback_order.php?order_id=<?= $o->order_id ?>&member_id=<?= $m->member_id ?>" class="pink-btn">Feedback</button>
 <?php endif ?>
 
 <br/>

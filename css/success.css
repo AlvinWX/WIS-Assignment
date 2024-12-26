@@ -1,0 +1,83 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    background-color: whitesmoke;
+}
+
+.empty-box{
+    margin: 18px;
+    padding: 18px;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.success-container {
+    background: rgb(197, 212, 197);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 450px;
+    height: 480px;
+}
+
+
+.order-details {
+    margin-top: 20px;
+}
+
+.order-details .amount h2{
+    margin: 0;
+    padding: 0;
+}
+
+.order-details h3{
+    color: rgb(74, 72, 72);
+}
+
+.order-details table{
+    width: 100%;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.order-details table th{
+    text-align: end;
+}
+
+.order-details table td{
+    text-align: start;
+}
+
+.action-button button{
+    border-radius: 25px;
+    border: none;
+    padding: 14px;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.action-button .home{
+    cursor:pointer;
+    color: white;
+    background: #00bcb4;
+}
+
+.action-button .detail{
+    cursor: pointer;
+    color: white;
+    background: #6a90c1;
+}
+
+.action-button button:hover{
+    opacity: 0.9;
+}

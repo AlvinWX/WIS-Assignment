@@ -15,7 +15,7 @@ $order_status = req('order_status');
 $o_stm = $_db->prepare('SELECT * FROM `order`
                       WHERE member_id = ?
                       AND (order_id = ? OR ? = "")
-                      AND (order_status = ? OR ? = "")');
+                      AND (order_status = ? OR ? = "") ORDER BY order_date DESC');
 $o_stm->execute([$member_id, $order_id, $order_id, $order_status, $order_status]);
 
 // Fetch all orders
@@ -72,15 +72,15 @@ include '../../../../_head.php';
                 $prod_stm->execute([$op['product_id']]);
                 $prod = $prod_stm->fetch(PDO::FETCH_ASSOC);
 
-                $product_subtotal = $op['order_product_quantity'] * $op['order_product_price'];
+                $product_subtotal = $op['quantity'] * $op['price'];
             ?>
                 <tr>
                     <td><img src="../../../yongqiaorou/images/<?= $prod['product_cover'] ?>" alt="<?= $prod['product_name'] ?>" style="width: 100px;"></td>
                     <td><?= $prod['product_name'] ?></td>
                     <td>Quantity: </td>
-                    <td><?= $op['order_product_quantity'] ?></td>
+                    <td><?= $op['quantity'] ?></td>
                     <td>Price: </td>
-                    <td>RM <?= number_format($op['order_product_price'], 2) ?></td>
+                    <td>RM <?= number_format($op['price'], 2) ?></td>
                     <td>Subtotal: </td>
                     <td>RM <?= number_format($product_subtotal, 2) ?></td>
                 </tr>
@@ -89,7 +89,7 @@ include '../../../../_head.php';
             <tr>
                 <td colspan="6"></td>
                 <td>Order Total: </td>
-                <td>RM <?= number_format($o['order_total'], 2) ?></td>
+                <td>RM <?= number_format($o['total'], 2) ?></td>
             </tr>
             <tr>
                 <td colspan="7">
