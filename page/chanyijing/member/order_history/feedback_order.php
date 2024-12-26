@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="/css/yj_app.css">
-
 <?php
 require '../../../../_base.php';
 
@@ -45,7 +43,7 @@ if (is_post()) {
 $_title = 'Feedback Form';
 include '../../../../_head.php';
 ?>
-
+<link rel="stylesheet" href="/css/yj_app.css">
 <div class="top-heading-space">
     <h3>Feedback Form</h3>
 </div>

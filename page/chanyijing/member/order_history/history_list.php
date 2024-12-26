@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/css/yj_app.css">
+
 
 <?php
 require '../../../../_base.php';
@@ -33,7 +33,7 @@ $prod_stm = $_db->prepare('SELECT * FROM product WHERE product_id = ?');
 $_title = 'Order History';
 include '../../../../_head.php';
 ?>
-
+<link rel="stylesheet" href="/css/yj_app.css">
 <!-- Search Bar -->
 <div class="search-bar">
     <form>

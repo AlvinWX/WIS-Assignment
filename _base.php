@@ -217,22 +217,22 @@ function sort_buttons($productName, $productCategory, $minPrice, $maxPrice, $fie
 // Email Functions
 // ============================================================================           
 
-function get_mail() {
-    require_once 'lib/PHPMailer.php';
-    require_once 'lib/SMTP.php';
+// function get_mail() {
+//     require_once 'lib/PHPMailer.php';
+//     require_once 'lib/SMTP.php';
 
-    $m = new PHPMailer(true);
-    $m->isSMTP();
-    $m->SMTPAuth = true;
-    $m->Host = 'smtp.gmail.com';
-    $m->Port = 587;
-    $m->Username = 'targrocer@outlook.com';
-    $m->Password = 'tar123grocer';
-    $m->CharSet = 'utf-8';
-    $m->setFrom($m->Username, 'TAR GROCER Admin');
+//     $m = new PHPMailer(true);
+//     $m->isSMTP();
+//     $m->SMTPAuth = true;
+//     $m->Host = 'smtp.gmail.com';
+//     $m->Port = 587;
+//     $m->Username = 'targrocer@outlook.com';
+//     $m->Password = 'tar123grocer';
+//     $m->CharSet = 'utf-8';
+//     $m->setFrom($m->Username, 'TAR GROCER Admin');
 
-    return $m;
-}
+//     return $m;
+// }
 
 //Is email?
 function is_email($value) {
@@ -269,22 +269,22 @@ function err($key) {
 // liawcv1@gmail.com            obyj shnv prpa kzvj
 
 // // Initialize and return mail object
-// function get_mail() {
-//     require_once 'lib/PHPMailer.php';
-//     require_once 'lib/SMTP.php';
+function get_mail() {
+    require_once 'lib/PHPMailer.php';
+    require_once 'lib/SMTP.php';
 
-//     $m = new PHPMailer(true);
-//     $m->isSMTP();
-//     $m->SMTPAuth = true;
-//     $m->Host = 'smtp.gmail.com';
-//     $m->Port = 587;
-//     $m->Username = 'aacs3173@gmail.com';
-//     $m->Password = 'xxna ftdu plga hzxl';
-//     $m->CharSet = 'utf-8';
-//     $m->setFrom($m->Username, '😺 Admin');
+    $m = new PHPMailer(true);
+    $m->isSMTP();
+    $m->SMTPAuth = true;
+    $m->Host = 'smtp.gmail.com';
+    $m->Port = 587;
+    $m->Username = 'aacs3173@gmail.com';
+    $m->Password = 'xxna ftdu plga hzxl';
+    $m->CharSet = 'utf-8';
+    $m->setFrom($m->Username, '😺 Admin');
 
-//     return $m;
-// }
+    return $m;
+}
 
 
 // ============================================================================
@@ -304,22 +304,14 @@ function is_unique($value, $table, $field) {
     return $stm->fetchColumn() == 0;
 }
 
-// Check if email exists in either the member or admin tables
+// Is exists?
 function is_exists($value, $table, $field) {
     global $_db;
-    
-    // Check in member table
-    $stm = $_db->prepare("SELECT COUNT(*) FROM member WHERE $field = ?");
-    $stm->execute([$value]);
-    if ($stm->fetchColumn() > 0) {
-        return true;
-    }
-
-    // Check in admin table
-    $stm = $_db->prepare("SELECT COUNT(*) FROM admin WHERE $field = ?");
+    $stm = $_db->prepare("SELECT COUNT(*) FROM $table WHERE $field = ?");
     $stm->execute([$value]);
     return $stm->fetchColumn() > 0;
 }
+
 // ============================================================================
 // Security
 // ============================================================================
@@ -358,6 +350,9 @@ function logout($url = '/') {
 function auth(...$types) {
     global $_user;
 
+    if (empty($types)) {
+        return; // No restriction, user is authorized (either logged in or not)
+    }
     // Check if the user is logged in
     if ($_user) {
         // If types are provided, check if the user's type matches one of the allowed types
@@ -372,6 +367,18 @@ function auth(...$types) {
     
     // Redirect to login if the user is not authorized
     redirect('/login.php');
+}
+
+function validate_local_malaysian_phone($phone) {
+    // Remove all non-digit characters
+    $phone = preg_replace('/\D/', '', $phone);
+
+    // Check if it starts with 0 and is 10-11 digits long
+    if (substr($phone, 0, 1) === '0' && (strlen($phone) === 10 || strlen($phone) === 11)) {
+        return $phone; // Valid local number
+    }
+
+    return false; // Invalid number
 }
 // ============================================================================
 // Global Constants and Variables

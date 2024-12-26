@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="/css/yj_app.css">
-
 <?php
 require '../../../../_base.php';
 
@@ -19,7 +17,7 @@ $address = $addr_stm->fetch();
 $_title = 'Member Detail';
 include '../../../../_head.php';
 ?>
-
+<link rel="stylesheet" href="/css/yj_app.css">
 <div class="top-heading-space">
     <h3>Member Detail</h3>
 </div>

@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/css/yj_app.css">
+
 
 <?php
 
@@ -10,7 +10,7 @@ $member_id = $user->member_id;
 $_title = 'Thank You for Your Feedback';
 include '../../../../_head.php';
 ?>
-
+<link rel="stylesheet" href="/css/yj_app.css">
 <div class="thank-you-container">
     <div class="thank-you-message">
         <h2>Thank you for your feedback!</h2>

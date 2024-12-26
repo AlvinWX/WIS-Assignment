@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/css/yj_app.css">
+
 
 <?php
 session_start();
@@ -42,7 +42,7 @@ $_title = 'Admin List';
 include '../../../../_head.php';
 
 ?>
-
+<link rel="stylesheet" href="/css/yj_app.css">
 <!-- Seach Bar -->
 <div class="search-bar">
     <form>
@@ -51,7 +51,7 @@ include '../../../../_head.php';
     <button>Search</button>
     </form>
 </div>
-
+<div id="info"><?= temp('info')?></div>
 <div class="top-heading-space">
     <h2>Admin List</h2>
 </div>

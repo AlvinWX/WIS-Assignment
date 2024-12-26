@@ -1,3 +1,5 @@
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 <?php
 include '../_base.php';
 
@@ -15,8 +17,17 @@ if (is_post()) {
     $postcode = req('postcode');
     $city     = req('city');
     $state    = req('state');
-    
 
+    // reCAPTCHA v2 Validation
+    $recaptchaResponse = req('g-recaptcha-response'); // Use 'g-recaptcha-response' for v2
+    $recaptchaSecret = '6Ld8E6YqAAAAAAjbJFpnbTw7gYkixRRKAomZOe2M'; // Replace with your actual secret key
+    $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$recaptchaSecret&response=$recaptchaResponse");
+    $responseKeys = json_decode($response, true);
+
+    // Check reCAPTCHA validation
+    if (!$responseKeys['success']) {
+        $_err['recaptcha'] = 'Please verify you are not a robot.';
+    }
     // Validate: email
     if (!$email) {
         $_err['email'] = 'Required';
@@ -27,7 +38,7 @@ if (is_post()) {
     else if (!is_email($email)) {
         $_err['email'] = 'Invalid email';
     }
-    else if (!is_unique($email, 'member', 'member_email')) {
+    else if (!is_unique($email, 'pending_members', 'member_email') && !is_unique($email, 'member', 'member_email')) {
         $_err['email'] = 'Duplicated';
     }
 
@@ -76,111 +87,110 @@ if (is_post()) {
 
     // validate phone
     if (!$phone) {
-        $_err['phone'] = 'Required';
+        $_err['phone'] = 'Phone number is required.';
     } else if (!preg_match('/^(01)[0-9]{8,9}$/', $phone)) {
         $_err['phone'] = 'Invalid Malaysian phone number. Must start with "01" and contain 10 or 11 digits.';
+    } else if (!is_unique($phone, 'pending_members', 'member_phone') && !is_unique($phone, 'member', 'member_phone')) {
+        $_err['phone'] = 'Phone number already registered.';
     }
+
     // Validate: address
-if (!$address) {
-    $_err['address'] = 'Required';
-}
-else if (strlen($address) > 255) {
-    $_err['address'] = 'Maximum 255 characters';
-}
+    if (!$address) {
+        $_err['address'] = 'Required';
+    }
+    else if (strlen($address) > 255) {
+        $_err['address'] = 'Maximum 255 characters';
+    }
 
-// Validate: postcode
-if (!$postcode) {
-    $_err['postcode'] = 'Required';
-} else if (!preg_match('/^[0-9]{5,10}$/', $postcode)) {
-    $_err['postcode'] = 'Invalid postcode';
-}
+    // Validate: postcode
+    if (!$postcode) {
+        $_err['postcode'] = 'Required';
+    } else if (!preg_match('/^[0-9]{5,10}$/', $postcode)) {
+        $_err['postcode'] = 'Invalid postcode';
+    }
 
-// Validate: city
-if (!$city) {
-    $_err['city'] = 'Required';
-} else if (strlen($city) > 100) {
-    $_err['city'] = 'Maximum 100 characters';
-}
+    // Validate: city
+    if (!$city) {
+        $_err['city'] = 'Required';
+    } else if (strlen($city) > 100) {
+        $_err['city'] = 'Maximum 100 characters';
+    }
 
-// Validate: state
-if (!$state) {
-    $_err['state'] = 'Required';
-} else if (strlen($state) > 100) {
-    $_err['state'] = 'Maximum 100 characters';
-}
+    // Validate: state
+    if (!$state) {
+        $_err['state'] = 'Required';
+    } else if (strlen($state) > 100) {
+        $_err['state'] = 'Maximum 100 characters';
+    }
 
     // DB operation
     if (!$_err) {
-            // (1) Save photo
-    $photo = save_photo($f, '../uploads/profiles');
+        $photo = save_photo($f, '../uploads/profiles');
 
-    // (2) Generate memberID (Assuming memberID is a unique value, e.g., 'MB00001')
-    $stm = $_db->query('SELECT MAX(member_id) AS maxID FROM member');
-    $result = $stm->fetch(PDO::FETCH_ASSOC);
-    $lastID = $result['maxID'] ?? 'MB00000';
-    $newID = sprintf('MB%05d', (int)substr($lastID, 2) + 1);
+        $stm = $_db->query('SELECT MAX(member_id) AS maxID FROM pending_members');
+        $result = $stm->fetch(PDO::FETCH_ASSOC);
+        $lastID = $result['maxID'] ?? 'PM00000';
+        $newID = sprintf('PM%05d', (int)substr($lastID, 2) + 1);
 
-    // (3) Insert user (member)
-    $stm = $_db->prepare('
-        INSERT INTO member (member_id, member_name, member_password, member_email, member_phone, member_gender, member_profile_pic, member_date_joined)
-        VALUES (?, ?, SHA1(?), ?, ?, ?, ?, ?)
-    ');
-    $currentDate = date('Y-m-d');
-    $stm->execute([$newID, $name, $password, $email, $phone, $gender, $photo, $currentDate]);
+        $token = sha1(uniqid() . rand());
+        $currentDate = date('Y-m-d');
 
-// Generate a unique address ID
-$addressID = sprintf('AD%05d', (int)substr($lastID, 2) + 1);
+        try {
+            $stm = $_db->prepare('
+                INSERT INTO pending_members (member_id, member_name, member_password, member_email, member_phone, member_gender, member_profile_pic, member_date_joined, token)
+                VALUES (?, ?, SHA1(?), ?, ?, ?, ?, ?, ?)
+            ');
+            $stm->execute([$newID, $name, $password, $email, $phone, $gender, $photo, $currentDate, $token]);
 
-// Check if the addressID already exists in the database
-$checkStm = $_db->prepare('SELECT address_id FROM address WHERE address_id = ?');
-$checkStm->execute([$addressID]);
+            $url = base("user/activate.php?token=$token");
+            $m = get_mail();
+            $m->addAddress($email, $name);
+            $m->addEmbeddedImage("../uploads/profiles/$photo", 'photo');
+            $m->isHTML(true);
+            $m->Subject = 'Activate your account';
+            $m->Body = "
+                <img src='cid:photo' style='width: 200px; height: 200px; border: 1px solid #333'>
+                <p>Dear $name,</p>
+                <h1 style='color: red'>Activate Your Account</h1>
+                <p>Please click <a href='$url'>here</a> to activate your account.</p>
+                <p>From, 😺 Admin</p>
+            ";
 
-// If the addressID exists, regenerate it
-while ($checkStm->fetch()) {
-    // Increment the address ID
-    $addressID = sprintf('AD%05d', (int)substr($addressID, 2) + 1);
-    // Re-run the check
-    $checkStm->execute([$addressID]);
-}
+            if ($m->send()) {
+                echo 'Activation link sent to your email.';
+            } else {
+                $_err['email'] = 'Failed to send email.';
+            }
+        } catch (PDOException $e) {
+            if ($e->getCode() == 23000) {
+                $_err['email'] = 'Email already registered.';
+            } else {
+                throw $e;
+            }
+        }
 
-// Now perform the insert
-$stm = $_db->prepare('
-    INSERT INTO address (address_id, street, postcode, city, state, member_id)
-    VALUES (?, ?, ?, ?, ?, ?)
-');
-$stm->execute([$addressID, $address, $postcode, $city, $state, $newID]);
-
-temp('info', 'Record inserted');
-redirect('/login.php');
-    }}
+        redirect('/login.php');
+    }
+}  
 
 // ----------------------------------------------------------------------------
 
 $_title = 'User | Register Member';
 include '../_head.php';
 ?>
+
 <div class="register-container">
 <h2>Register as Member</h2>
 <form method="post" class="form" enctype="multipart/form-data">
 
-<label for="photo">Photo</label>
-<label class="upload" tabindex="0">
-    <?= html_file('photo','image/*','hidden') ?>
-    <img src="/images/photo.jpg" id="photoPreview">
-</label>
- 
-<!-- Start Webcam Button 
-<button id="startWebcamButton">Start Webcam</button>
+    <label for="photo">Photo</label>
+    <label class="upload" tabindex="0">
+        <?= html_file('photo','image/*','hidden') ?>
+        <img src="/images/photo.jpg" id="photoPreview">
+    </label>
+    <?= err('photo') ?>
 
-Webcam Section
-<video id="webcam" width="200" height="200" autoplay></video>
-<button id="captureButton">Capture Photo</button>
-
-Canvas for capturing the image
-<canvas id="canvas" width="200" height="200" style="display:none;"></canvas> -->
-
-<?= err('photo') ?>
-<label for="email">Email</label>
+    <label for="email">Email</label>
     <?= html_text('email', 'maxlength="100"') ?>
     <?= err('email') ?>
 
@@ -197,7 +207,16 @@ Canvas for capturing the image
     <?= err('name') ?>
 
     <label for="phone">Phone</label>
-    <?= html_text('phone', 'maxlength="15" pattern="[0-9+()-]{10,15}" placeholder="Enter phone number"') ?>
+    <input 
+        type="text" 
+        id="phone" 
+        name="phone" 
+        maxlength="11" 
+        pattern="^01[0-9]{8,9}$" 
+        placeholder="e.g., 0121231234" 
+        required
+        oninput="validatePhone()">
+    <small id="phoneError" style="color: red; display: none;">Invalid phone number format.</small>
     <?= err('phone') ?>
 
     <label for="gender">Gender</label>
@@ -225,6 +244,10 @@ Canvas for capturing the image
     <?= html_text('state', 'maxlength="100"') ?>
     <?= err('state') ?>
 
+    <!-- Visible reCAPTCHA Checkbox -->
+    <div class="g-recaptcha" data-sitekey="6Ld8E6YqAAAAAK1TJ3ULHmONjjqPNp-_10Le6k9k"></div>
+    <?= err('recaptcha') ?>
+</br>
     <section>
         <button type="submit" class="register-btn">Submit</button>
         <button type="reset" class="register-btn">Reset</button>

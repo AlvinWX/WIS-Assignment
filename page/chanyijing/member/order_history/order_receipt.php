@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="/css/yj_app.css">
 
 <?php
 require '../../../../_base.php';
@@ -122,6 +121,7 @@ if (is_post()) {
 $_title = 'Order Receipt';
 include '../../../../_head.php';
 ?>
+<link rel="stylesheet" href="/css/yj_app.css">
 
 <div class="top-heading-space">
     <h3>Send Receipt</h3>

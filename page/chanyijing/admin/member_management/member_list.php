@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="/css/yj_app.css">
-
 <?php
 require '../../../../_base.php';
 
@@ -37,7 +35,7 @@ $members= $m_stm->fetchAll();
 $_title = 'Member List';
 include '../../../../_head.php';
 ?>
-
+<link rel="stylesheet" href="/css/yj_app.css">
 <!-- Seach Bar -->
 <div class="search-bar">
     <form>
