@@ -1,6 +1,6 @@
 <?php
-require '_base.php';
-include '_head.php';
+require '../../_base.php';
+include '../../_head.php';
 
 //Retrieve member cart
 $member_id = $user->member_id; 
@@ -26,13 +26,13 @@ $addresses = $get_address_stm -> fetchAll();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/checkout.css">
-    <link rel="stylesheet" href="css/flash.css">
+    <link rel="stylesheet" href="../../css/checkout.css">
+    <link rel="stylesheet" href="../../css/flash.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <script src="js/shoppingcart.js" defer></script>
+    <script src="../../js/shoppingcart.js" defer></script>
     <title>Checkout</title>
 </head>
 <script>
@@ -67,7 +67,7 @@ document.getElementById('payment').addEventListener('submit', function(event) {
         ?>
         <div class="table-row">
         <div class="product-item">
-            <img src="page/yongqiaorou/images/<?= $s->product_cover ?>" alt="<?= $s->product_name ?>">
+            <img src="../../page/yongqiaorou/images/<?= $s->product_cover ?>" alt="<?= $s->product_name ?>">
             <div class="product-text">
                 <span class="category-name"><?= $s->category_name ?></span>
                 <h2 class="product-name"><?= $s->product_name ?></h2>
@@ -186,5 +186,5 @@ document.getElementById('payment').addEventListener('submit', function(event) {
 </html>
 
 <?php
-include '_foot.php';
+include '../../_foot.php';
 ?>

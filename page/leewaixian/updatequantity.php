@@ -1,6 +1,6 @@
 <?php
 
-include '_base.php';
+include '../../_base.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $quantity = $_POST['quantity'] ?? 0;

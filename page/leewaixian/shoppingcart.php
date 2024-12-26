@@ -1,6 +1,6 @@
 <?php
-require '_base.php';
-include '_head.php';
+require '../../_base.php';
+include '../../_head.php';
 
 //Retrieve member cart
 $member_id = $user->member_id; 
@@ -23,13 +23,13 @@ $cart_products = $get_products_stm -> fetchAll();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/shoppingcart.css">
-    <link rel="stylesheet" href="css/flash.css">
+    <link rel="stylesheet" href="../../css/shoppingcart.css">
+    <link rel="stylesheet" href="../../css/flash.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <script src="js/shoppingcart.js" defer></script>
+    <script src="../../js/shoppingcart.js" defer></script>
     <title>My Shopping Cart</title>
 </head>
 <script>
@@ -56,7 +56,7 @@ window.onload = function() {
                 $s = $get_product_detail_stm -> fetch();
             ?>
             <div class="box">
-                <div class="product-image"><img src="page/yongqiaorou/images/<?= $s->product_cover ?>"></div>
+                <div class="product-image"><img src="../yongqiaorou/images/<?= $s->product_cover ?>"></div>
                 <div class="product-content">
                     <span><?= $s->category_name?></span>
                     <h2 class="product-name"><?= $s->product_name?></h2>
@@ -83,7 +83,7 @@ window.onload = function() {
             
                 <div class="action-button">
                     <button class="clear" onclick="confirmClearCart('<?= $a->cart_id ?>')">Clear Cart</button>
-                    <button class="checkout" onclick="window.location.href='/checkout.php';">Checkout</button>
+                    <button class="checkout" onclick="window.location.href='checkout.php';">Checkout</button>
                 </div>
             <?php } $i = 0; ?>
 
@@ -94,5 +94,5 @@ window.onload = function() {
 </html>
 
 <?php
-include '_foot.php';
+include '../../_foot.php';
 ?>

@@ -1,7 +1,7 @@
 <?php
-require '_base.php';
-require 'lib/stripe-php-16.4.0/init.php';
-include '_head.php';
+require '../../_base.php';
+require '../../lib/stripe-php-16.4.0/init.php';
+include '../../_head.php';
 
 $member_id = $user->member_id; 
 
@@ -30,7 +30,7 @@ $payment_card = $get_payment_card_stm -> fetch();
 
 if($_POST['address']==null){
     temp('info', 'Please select a shipping address');
-    redirect('/checkout.php');
+    redirect('page/leewaixian/checkout.php');
 }
 
 $_SESSION['order_details'] = [
@@ -53,8 +53,8 @@ if($paymentMethod == "Stripe"){
 
 $checkout_session = \Stripe\Checkout\Session::create([
     "mode" => "payment",
-    "success_url" => "http://localhost:8000/processing.php",
-    "cancel_url" => "http://localhost:8000/checkout.php",
+    "success_url" => "http://localhost:8000/page/leewaixian/processing.php",
+    "cancel_url" => "http://localhost:8000/page/leewaixian/checkout.php",
     "line_items" => [
         [  
         "quantity" => 1,
@@ -81,13 +81,13 @@ header("Location: " . $checkout_session->url);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/payment.css">
-    <link rel="stylesheet" href="css/flash.css">
+    <link rel="stylesheet" href="../../css/payment.css">
+    <link rel="stylesheet" href="../../css/flash.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <script src="js/payment.js" defer></script>
+    <script src="../../js/payment.js" defer></script>
     <title>Payment</title>
 </head>
 <style>
@@ -173,15 +173,6 @@ header("Location: " . $checkout_session->url);
             <div class="checkbox">
                     <label><input type="checkbox" id="save_card" name="save_card" value="1" checked>Save the above payment card for future payment use.</label>
             </div>
-            <!-- <input hidden type="number" step="0.01" value="<?= $order_subtotal ?>" name="order_subtotal">
-            <input hidden type="number" step="0.01" value="<?= $tax ?>" name="tax">
-            <input hidden type="number" step="0.01" value="<?= $delivery_fee ?>" name="delivery_fee">
-            <input hidden type="number" step="0.01" value="<?= $subtotal ?>" name="subtotal">
-            <input hidden type="number" step="0.01" value="<?= $discount?>" name="discount">
-            <input hidden type="number" step="0.01" value="<?= $total ?>" name="total">
-            <input hidden type="number" step ="1" value="<?= $points ?>" name="points">
-            <input hidden type="number" step ="1" value="<?= $addressID ?>" name="address">
-            <input hidden type="text" value="<?= $paymentMethod ?>" name="payment_method"> -->
             <input type="submit" value="Pay: RM <?= sprintf('%.2f', $total) ?>" class="submit-btn">
         </form>
     </div>
@@ -189,5 +180,5 @@ header("Location: " . $checkout_session->url);
 </html>
 
 <?php
-include '_foot.php';
+include '../../_foot.php';
 ?>

@@ -83,7 +83,7 @@
                 <?php endif ?>
                 <?php if ($user): ?>
                 <?php if ($user->userType == 'member'): ?>
-                        <li><a href="/productsearch.php?product_name=&category_id=&minprice=&maxprice=&sort=product_name&dir=asc">View Products</a></li>
+                        <li><a href="/page/leewaixian/productsearch.php?product_name=&category_id=&minprice=&maxprice=&sort=product_name&dir=asc">View Products</a></li>
                         <li><a href="/page/chanyijing/member/order_history/history_list.php">Order History</a></li>
                         <?php endif ?>
                         <?php endif ?>
@@ -91,13 +91,15 @@
             </ul>
         </nav>
         <div class="right-logo">
-            <a href="/productsearch.php?product_name=&category_id=&minprice=&maxprice=&sort=product_name&dir=asc">
-                <img class="search" src="/images/search.png" alt="Search Icon" id="search-icon">
-            </a>
             <?php if ($user && $user->userType == 'member'): ?>
-                <a href="/shoppingcart.php">
+                <a href="/page/leewaixian/wishlist.php">
+                    <img class="search" src="/images/love.png" alt="Wishlist" id="search-icon">
+                </a>
+                <a href="/page/leewaixian/shoppingcart.php">
                     <img src="/images/shopping-cart.png" alt="Shopping Cart">
-                    <span class="quantity"><?= count($cart_products) ?></span>
+                    <?php if(count($cart_products)>0): ?>
+                        <span class="quantity"><?= count($cart_products) ?></span>
+                    <?php endif ?>
                 </a>
             <?php endif ?>
             <a href="/login.php">

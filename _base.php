@@ -213,6 +213,20 @@ function sort_buttons($productName, $productCategory, $minPrice, $maxPrice, $fie
     }
 }
 
+function sort_buttons2($fields, $sort, $dir, $href = '') {
+    foreach ($fields as $k => $v) {
+        $d = 'asc'; // Default direction
+        $c = '';    // Default class
+        
+        if ($k == $sort) {
+            $d = $dir == 'asc' ? 'desc' : 'asc';
+            $c = $dir;
+        }
+
+        echo "<button><a href='?sort=$k&dir=$d&$href' class='$c'>$v</a></button>";
+    }
+}
+
 // ============================================================================
 // Email Functions
 // ============================================================================           
