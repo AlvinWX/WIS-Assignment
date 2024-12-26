@@ -4,7 +4,8 @@ require '../../_base.php';
 include '../../_head.php';
 
 $id = req('id');
-$path = req('path');
+
+$fullPath = $_SESSION['path_details'];
 
 $stm = $_db->prepare('SELECT * FROM product p JOIN category c ON p.category_id = c.category_id WHERE product_id = ?'); 
 $stm->execute([$id]);
@@ -63,7 +64,7 @@ if(isset($_POST['add-to-cart'], $_POST['product_id'], $_POST['quantity'])){
     }
     
     temp('info', 'Item added to cart.');
-    redirect($path);
+    redirect($fullPath);
 }
 
 $resources = json_decode($s -> product_resources, true);
@@ -91,10 +92,10 @@ window.onload = function() {
         <div class="card">
             <!--card left-->
             <div class="product-images">
-            <div class = "slide-container">
+            <div class = "slide-container" style="width: 560px; height: 560px;">
         
         <div class="slides">
-        <img src="../../page/yongqiaorou/images/<?= $s->product_cover ?>" alt="Resource <?= $index + 1 ?>" class="image active">
+        <img src="../../images/product_pic/<?= $s->product_cover ?>" alt="Resource <?= $index + 1 ?>" class="image active">
         <?php foreach ($resources as $index => $resource):?>
                             <?php if (strpos(mime_content_type("../../uploads/$resource"), 'image/') !== false): ?>
                                 <img src="../../uploads/<?= $resource ?>" alt="Resource <?= $index + 1 ?>" class="image">
@@ -112,7 +113,7 @@ window.onload = function() {
         </div>
 
         <div class="image-thumbnail">
-            <img class="img active" src="../../page/yongqiaorou/images/<?= $s->product_cover ?>" alt="Resource <?= $index + 1 ?>" attr='0' onclick="switchImage(this)">
+            <img class="img active" src="../../images/product_pic/<?= $s->product_cover ?>" alt="Resource <?= $index + 1 ?>" attr='0' onclick="switchImage(this)">
             <?php for($i = 1; $i <= count($resources); $i++): $resource = $resources[$i-1] ?>
 			    
                 <?php if (strpos(mime_content_type("../../uploads/$resource"), 'image/') !== false): ?>
@@ -126,6 +127,16 @@ window.onload = function() {
         </div>
 
             </div>
+
+            <?php
+                if($s->product_youtube_url != null):
+            ?>
+                <div class = "media">
+                    <span>Relevant media:</span>
+                    <iframe width="560" height="315" src="<?= $s -> product_youtube_url ?>" title="YouTube video player" frameborder="5" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+            <?php endif ?>
+
             </div>
             <!--card right-->
             <div class = "product-content">
@@ -143,7 +154,7 @@ window.onload = function() {
 
                 <div class="purchase-info">
                     <?php if($check_result != null && $check_result -> quantity > 0) { ?>
-                    <button class="remove" onclick="confirmDelete('<?= $s->product_id ?>', '<?= $check_result->cart_id ?>', '<?= $path ?>')">Remove</button>
+                    <button class="remove" onclick="confirmDelete('<?= $s->product_id ?>', '<?= $check_result->cart_id ?>', '<?= $fullPath ?>')">Remove</button>
                     <?php } ?>
                     <button class="decrease" onclick="decreaseValue()">-</button>
                     <form method="post" id="quantitySelect"><input type="number" blur name="quantity" id="spinnerValue" value="<?= $currentQuantity ?>" min="1" max="<?= $s -> product_stock ?>" step="1"></form>
@@ -166,6 +177,7 @@ window.onload = function() {
             </div>
         </div>
     </div>
+    <div class="empty-box"></div>
 </body>
 
 <?php

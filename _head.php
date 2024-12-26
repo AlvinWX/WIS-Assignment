@@ -90,7 +90,7 @@
                 <?php endif ?>
                 <?php if ($user): ?>
                 <?php if ($user->userType == 'member'): ?>
-                        <li><a href="/productsearch.php?product_name=&category_id=&minprice=&maxprice=&sort=product_name&dir=asc">View Products</a></li>
+                        <li><a href="/page/leewaixian/productsearch.php?product_name=&category_id=&minprice=&maxprice=&sort=product_name&dir=asc">View Products</a></li>
                         <li><a href="/page/chanyijing/member/order_history/history_list.php">Order History</a></li>
                         <?php endif ?>
                         <?php endif ?>

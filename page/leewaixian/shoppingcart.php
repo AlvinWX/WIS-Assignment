@@ -14,7 +14,8 @@ $get_products_stm = $_db -> prepare('SELECT * FROM cart_product WHERE cart_id = 
 $get_products_stm -> execute([$shoppingCart->cart_id]); 
 $cart_products = $get_products_stm -> fetchAll();
 
-
+$fullPath = $_SERVER['REQUEST_URI'];
+$_SESSION['path_details'] = $fullPath;
 
 ?>
 
@@ -56,13 +57,13 @@ window.onload = function() {
                 $s = $get_product_detail_stm -> fetch();
             ?>
             <div class="box">
-                <div class="product-image"><img src="../yongqiaorou/images/<?= $s->product_cover ?>"></div>
+                <div class="product-image"><img src="../../images/product_pic/<?= $s->product_cover ?>"></div>
                 <div class="product-content">
                     <span><?= $s->category_name?></span>
                     <h2 class="product-name"><?= $s->product_name?></h2>
                     <span class="sold"><?= $s->product_sold?> sold || <?= $s->product_stock?> left</span>
                     <div class="purchase-info">
-                        <button class="remove" onclick="confirmDelete('<?= $s->product_id ?>', '<?= $a->cart_id ?>', 'cart')">Remove</button>
+                        <button class="remove" onclick="confirmDelete('<?= $s->product_id ?>', '<?= $a->cart_id ?>', '<?= $fullPath ?>')">Remove</button>
                         <button class="decrease" onclick="decreaseValue(<?= $i ?>); updatePrice(<?= $s->product_price ?>, <?= $i ?>)">-</button>
                         <form method="post" id="quantitySelect"><input disabled type="number" name="quantity" id="<?= $value_id ?>" value="<?= $a->quantity ?>" min="1" max="<?= $s -> product_stock ?>" step="1" data-product-id="<?= $s->product_id ?>" 
                         data-cart-id="<?= $a->cart_id ?>"></form>
