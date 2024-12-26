@@ -56,6 +56,8 @@
 </style>
 
 <body>
+    <!-- Flash message -->
+    <div id="info"><?= temp('info') ?></div>
     <header>
         <div class="home-logo">
             <a href="/">
