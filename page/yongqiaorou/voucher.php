@@ -51,6 +51,9 @@ if(count($arr)) {?>
         <th>Id</th>
         <th>Voucher Name</th>
         <th>Description</th>
+        <th>Points to Redeem</th>
+        <th>Min Spend</th>
+        <th>Discounts</th>
         <th>Voucher Image</th>
         <th>Actions</th>
     </tr>
@@ -60,6 +63,9 @@ if(count($arr)) {?>
         <td><?= $v->voucher_id ?></td>
         <td><?= $v->voucher_name ?></td>
         <td><?= $v->voucher_desc ?></td>
+        <td><?= $v->voucher_points ?></td>
+        <td><?= $v->voucher_min_spend ?></td>
+        <td><?= $v->voucher_discount ?></td>
         <td><img src="../../images/voucher_pic/<?= $v->voucher_img ?>"></td>
         <td>
             <button data-get="voucher_detail.php?id=<?= $v->voucher_id ?>">Detail</button><br>

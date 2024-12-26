@@ -35,6 +35,10 @@ include '../../_admin_head.php';
         <th>Id</th>
         <th>Voucher Name</th>
         <th>Description</th>
+        <th>Points to Redeem</th>
+        <th>Min Spend</th>
+        <th>Discounts</th>
+        <th>Voucher Image</th>
         <th>Action</th>
     </tr>
 
@@ -43,6 +47,10 @@ include '../../_admin_head.php';
         <td><?= $v->voucher_id ?></td>
         <td><?= $v->voucher_name ?></td>
         <td><?= $v->voucher_desc ?></td>
+        <td><?= $v->voucher_points ?></td>
+        <td><?= $v->voucher_min_spend ?></td>
+        <td><?= $v->voucher_discount ?></td>
+        <td><img src="../../images/voucher_pic/<?= $v->voucher_img ?>"/></td>
         <td>
             <button  data-post="voucher_recover.php?id=<?= $v->voucher_id ?>"  style="width:200px">Recover Back</button>
         </td>
