@@ -81,5 +81,5 @@ include '../../_admin_head.php';
 </form>
 
 <?php
-include '../../_admin_foot.php';
+include '../../_foot.php';
 ?>

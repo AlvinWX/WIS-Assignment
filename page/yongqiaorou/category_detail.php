@@ -44,4 +44,4 @@ include '../../_admin_head.php';
 <button data-get="/page/yongqiaorou/category.php"><i class="fa fa-arrow-left" aria-hidden="true"></i>  Back</button>
 
 <?php
-include '../../_admin_foot.php';
+include '../../_foot.php';

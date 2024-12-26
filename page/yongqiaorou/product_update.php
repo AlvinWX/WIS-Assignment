@@ -29,6 +29,7 @@ if (is_post()) {
     $product_name = req('product_name');
     $product_cover = req('product_cover');
     $product_resources = req('product_resources');
+    $product_youtube_url = req('product_youtube_url');
     $product_desc = req('product_desc');
     $product_price = req('product_price');
     $product_stock = req('product_stock');
@@ -110,18 +111,18 @@ if (is_post()) {
     if (!$_err) {
         if(json_encode($photo_resources) != "[]"){
             $stm = $_db->prepare('UPDATE product
-                                SET product_name = ?, product_desc = ?, product_price = ?, product_stock = ?, product_cover = ?, product_resources = ?, admin_id = ?, product_last_update = ?, category_id = ?
+                                SET product_name = ?, product_desc = ?, product_price = ?, product_stock = ?, product_cover = ?, product_resources = ?, product_youtube_url, admin_id = ?, product_last_update = ?, category_id = ?
                                 WHERE product_id = ?');
-            $stm->execute([$product_name, $product_desc, $product_price, $product_stock, $product_cover, json_encode($photo_resources), $admin_id, date("Y-m-d H:i:s"), $category_id, $id]);
+            $stm->execute([$product_name, $product_desc, $product_price, $product_stock, $product_cover, json_encode($photo_resources), $product_youtube_url, $admin_id, date("Y-m-d H:i:s"), $category_id, $id]);
 
             temp('info', 'Product updated');
             redirect('/page/yongqiaorou/product.php');
 
         }else{
             $stm = $_db->prepare('UPDATE product
-                                SET product_name = ?, product_desc = ?, product_price = ?, product_stock = ?,  category_id = ?
+                                SET product_name = ?, product_desc = ?, product_price = ?, product_stock = ?,  product_youtube_url =? , admin_id = ?, product_last_update = ?, category_id = ?
                                 WHERE product_id = ?');
-            $stm->execute([$product_name, $product_desc, $product_price, $product_stock, $category_id, $id]);
+            $stm->execute([$product_name, $product_desc, $product_price, $product_stock, $product_youtube_url, $admin_id, date("Y-m-d H:i:s"), $category_id, $id]);
 
             temp('info', 'Product updated');
             redirect('/page/yongqiaorou/product.php');
@@ -172,8 +173,12 @@ include '../../_admin_head.php';
     <label class="upload" tabindex="0">
         <?= html_file('product_photo[]', 'image/*', 'multiple') ?>
     </label>
-    <div id="product_photo_previews"></div>
-    <?= err('product_photo') ?>
+    <div id="product_photo_previews">
+    <?= err('product_photo') ?></div>
+    
+    <label>Youtube URL</label>
+    <?= html_text('product_youtube_url',  'maxlength="1000"') ?>
+    <?= err('product_youtube_url') ?>
 
     <section>
         <button>Submit</button>
@@ -196,5 +201,5 @@ include '../../_admin_head.php';
 </script>
 
 <?php
-include '../../_admin_foot.php';
+include '../../_foot.php';
 ?>

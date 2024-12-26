@@ -2,7 +2,6 @@
 require '../../_base.php';
 // ----------------------------------------------------------------------------
 
-
 $user = $_SESSION['user'] ?? null;
 $admin_id = $user->admin_id;
 if(empty($admin_id)){
@@ -54,7 +53,7 @@ if (is_post()) {
 }
 
 // ----------------------------------------------------------------------------
-$_title = 'Add Product';
+$_title = 'Add Category';
 include '../../_admin_head.php';
 ?>
 

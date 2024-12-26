@@ -14,19 +14,19 @@ if (isset($_SESSION['user'])) {
 
     // Check user type and extract corresponding user properties
     if ($currentUser->userType == 'member') {
-        $userID = $currentUser->memberID;      // Example: member ID
-        $userName = $currentUser->memberName;  // Example: member name
-        $userEmail = $currentUser->memberEmail; // Example: member email
-        $userPhone = $currentUser->memberPhone; // Example: member phone
-        $userGender = $currentUser->memberGender; // Example: member gender
-        $userProfilePic = $currentUser->memberProfilePic; // Example: member profile picture
+        $userID = $currentUser->member_id;      // Example: member ID
+        $userName = $currentUser->member_name;  // Example: member name
+        $userEmail = $currentUser->member_email; // Example: member email
+        $userPhone = $currentUser->member_phone; // Example: member phone
+        $userGender = $currentUser->member_gender; // Example: member gender
+        $userProfilePic = $currentUser->member_profile_pic; // Example: member profile picture
     } elseif ($currentUser->userType == 'admin') {
-        $userID = $currentUser->adminID;      // Example: admin ID
-        $userName = $currentUser->adminName;  // Example: admin name
-        $userEmail = $currentUser->adminEmail; // Example: admin email
-        $userPhone = $currentUser->adminPhone; // Example: admin phone
-        $userGender = $currentUser->adminGender; // Example: admin gender
-        $userProfilePic = $currentUser->adminProfilePic; // Example: admin profile picture
+        $userID = $currentUser->admin_id;      // Example: admin ID
+        $userName = $currentUser->admin_name;  // Example: admin name
+        $userEmail = $currentUser->admin_email; // Example: admin email
+        $userPhone = $currentUser->admin_phone; // Example: admin phone
+        $userGender = $currentUser->admin_gender; // Example: admin gender
+        $userProfilePic = $currentUser->admin_profile_pic; // Example: admin profile picture
     }} else {
         // Redirect to login page if the user is not logged in
         redirect('/login.php');

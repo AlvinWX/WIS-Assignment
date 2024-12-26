@@ -100,7 +100,7 @@ if ($search_field == 'product_price') {
         $stmt->bindValue(':min_price', $min_price);
         $stmt->bindValue(':max_price', $max_price);
     } else {
-        echo "<p style='color:red;'>Please provide both Min and Max price!</p>";
+        // echo "<p style='color:red;'>Please provide both Min and Max price!</p>";
         $stmt = $_db->prepare($query); // Prepare the base query
     }
 } else {
@@ -184,8 +184,8 @@ if(count($arr)) { ?>
                 </td>
                 <td>
                     <button data-get="/page/yongqiaorou/product_detail.php?id=<?= $s->product_id ?>">Detail</button>
-                    <button data-get="product_update.php?id=<?= $s->product_id ?>">Update</button>
-                    <button data-post="product_delete.php?id=<?= $s->product_id ?>" data-confirm>Delete</button>
+                    <button data-get="/page/yongqiaorou/product_update.php?id=<?= $s->product_id ?>">Update</button>
+                    <button data-post="/page/yongqiaorou/product_delete.php?id=<?= $s->product_id ?>" data-confirm>Delete</button>
                 </td>
             </tr>
             <?php endforeach ?>

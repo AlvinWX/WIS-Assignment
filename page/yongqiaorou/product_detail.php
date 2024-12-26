@@ -51,4 +51,4 @@ include '../../_admin_head.php';
 <button data-get="/page/yongqiaorou/product.php"  class="back_button"><i class="fa fa-arrow-left" aria-hidden="true"></i>  Back</button>
 
 <?php
-include '../../_admin_foot.php';
+include '../../_foot.php';
