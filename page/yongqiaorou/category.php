@@ -75,4 +75,4 @@ if(count($arr)) {?>
 <a href="category_add.php"><span id="dot" class="dot_right"><i class="fa fa-plus" aria-hidden="true"></i></span></a>
 
 <?php
-include '../../_admin_foot.php';
+include '../../_foot.php';

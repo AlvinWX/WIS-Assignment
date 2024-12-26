@@ -48,7 +48,7 @@ include '../../_admin_head.php';
     <?php endforeach ?>
 </table>
 <?php }else{?>
-    <p style="color:red;">No record deleted.</p>
+    <p class="err">No record deleted.</p>
 <?php }?>
 <?php
 include '../../_admin_foot.php';

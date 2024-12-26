@@ -290,4 +290,4 @@ function updateSlide(inner, index) {
 </script>
 
 <?php
-include '../../_admin_foot.php';
+include '../../_foot.php';

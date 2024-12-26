@@ -13,7 +13,7 @@ if (is_post()) {
     $id = req('id');
 
     $stm = $_db->prepare('UPDATE category SET category_status=0, category_last_update = ?, admin_id = ? WHERE category_id = ? ');
-    $stm->execute([, date("Y-m-d H:i:s"), $admin_id, $id]);
+    $stm->execute([date("Y-m-d H:i:s"), $admin_id, $id]);
 
     temp('info', 'Category deleted');
 }

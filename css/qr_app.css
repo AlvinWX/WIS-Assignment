@@ -6,6 +6,13 @@ body {
     justify-content: center;
     align-items: center;
 }
+
+body::after {
+    content: '';
+    display: block;
+    height: 50px;
+}
+
 /* =========================== */
 /* Header and Navigation        */
 /* =========================== */
@@ -127,12 +134,12 @@ main h1 {
     margin-top: 0;
 }
 
-footer {
-    padding: 12px; /* Add padding for space around the footer */
-    background-color: #6c7ae0; /* Optional, for styling */
+/* footer {
+    padding: 12px;
+    background-color: #6c7ae0; 
     color: #f9f9f9;
-    text-align: center; /* Center the content in the footer */
-}
+    text-align: center; 
+} */
 
 .search-container {
     display: none;
