@@ -237,9 +237,9 @@ function sort_buttons2($fields, $sort, $dir, $href = '') {
 // liaw.casual@gmail.com        wtpa kjxr dfcb xkhg
 // liawcv1@gmail.com            obyj shnv prpa kzvj
 
-// function get_mail() {
-//     require_once 'lib/PHPMailer.php';
-//     require_once 'lib/SMTP.php';
+function get_mail() {
+    require_once 'lib/PHPMailer.php';
+    require_once 'lib/SMTP.php';
 
     $m = new PHPMailer(true);
     $m->isSMTP();
@@ -251,17 +251,14 @@ function sort_buttons2($fields, $sort, $dir, $href = '') {
     $m->CharSet = 'utf-8';
     $m->setFrom($m->Username, 'TAR GROCER Admin');
 
-//     return $m;
-// }
+    return $m;
+}
 
-<<<<<<< Updated upstream
 //Is email?
 function is_email($value) {
     return filter_var($value, FILTER_VALIDATE_EMAIL) !== false;
 }
 
-=======
->>>>>>> Stashed changes
 // ============================================================================
 // Error Handlings
 // ============================================================================

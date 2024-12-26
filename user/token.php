@@ -3,7 +3,6 @@ include '../_base.php';
 
 // ----------------------------------------------------------------------------
 
-<<<<<<< Updated upstream
 
 // TODO: (1) Delete expired tokens
 $_db->query('DELETE FROM token WHERE expire < NOW()');
@@ -16,8 +15,6 @@ if (!is_exists($id, 'token', 'id')) {
     redirect('/');
 }
 
-=======
->>>>>>> Stashed changes
 if (is_post()) {
     $email = req('email');
 
@@ -32,17 +29,11 @@ if (is_post()) {
     if (!$_err) {
         // (1) Check if the user is a member or admin
         $stm = $_db->prepare('
-<<<<<<< Updated upstream
             UPDATE member
             SET member_password = SHA1(?)
             WHERE member_id = (SELECT member_id FROM token WHERE id = ?);
 
             DELETE FROM token WHERE id = ?;
-=======
-            SELECT *, "member" AS userType FROM member WHERE memberEmail = ? 
-            UNION
-            SELECT *, "admin" AS userType FROM admin WHERE adminEmail = ?
->>>>>>> Stashed changes
         ');
         $stm->execute([$email, $email]);
         $user = $stm->fetch();

@@ -22,7 +22,6 @@ if (is_post()) {
     $input_otp = req('input_otp');
     $remember = req('remember') === 'on';
 
-<<<<<<< Updated upstream
     if ($login_method == 'otp' && $input_otp != '') {
         // Validate OTP and phone number
         if (isset($_SESSION['otp']) && $_SESSION['otp'] == $input_otp && $_SESSION['otp_phone'] == $phone) {
@@ -60,42 +59,6 @@ if (is_post()) {
             } else {
                 $_err['otp'] = 'User not found. Please check your phone number.';
             }
-=======
-    $_err = [];
-
-    if ($email == '') {
-        $_err['email'] = 'Required';
-    } elseif (!is_email($email)) {
-        $_err['email'] = 'Invalid email';
-    }
-
-    if ($password == '') {
-        $_err['password'] = 'Required';
-    }
-
-    if (!$_err) {
-        // Check if the user is a member
-        $stm = $_db->prepare('
-            SELECT *, "member" AS userType FROM member
-            WHERE memberEmail = ? AND memberPassword = SHA1(?)
-        ');
-        $stm->execute([$email, $password]);
-        $user = $stm->fetch();
-
-        if (!$user) {
-            // Check if the user is an admin if not found as a member
-            $stm = $_db->prepare('
-                SELECT *, "admin" AS userType FROM admin
-                WHERE adminEmail = ? AND adminPassword = SHA1(?)
-            ');
-            $stm->execute([$email, $password]);
-            $user = $stm->fetch();
-        }
-
-        if ($user) {
-            // Use the login function
-            login($user, $user->userType); // Call the login function with the user and type
->>>>>>> Stashed changes
         } else {
             $_err['otp'] = 'Invalid OTP. Please try again.';
         }
@@ -170,7 +133,6 @@ if (is_post()) {
         }
     }
 }
-<<<<<<< Updated upstream
 
 if (isset($_GET['send_otp']) && $_GET['send_otp'] == '1') {
     $phone = $_GET['phone'];
@@ -178,9 +140,6 @@ if (isset($_GET['send_otp']) && $_GET['send_otp'] == '1') {
     $otp = rand(100000, 999999);
     $_SESSION['otp'] = $otp;
     $_SESSION['otp_phone'] = $phone;
-=======
-// ----------------------------------------------------------------------------
->>>>>>> Stashed changes
 
     $messageContent = $message . $otp;
     try {
@@ -247,7 +206,6 @@ include '_head.php';
         <button type="submit" class="login-btn">Login</button>
         <button type="reset" class="login-btn">Reset</button>
     </form>
-<<<<<<< Updated upstream
     </br>
     <div class="remember-box">
             <input type="checkbox" name="remember" id="remember">
@@ -261,10 +219,6 @@ include '_head.php';
 </div>
 
 
-=======
-    <a href="/user/registerMember.php">Register</a>
-    <a href="/user/reset.php">Reset Password</a>
->>>>>>> Stashed changes
 </div>
 
 <script>
