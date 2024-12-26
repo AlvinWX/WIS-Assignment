@@ -45,9 +45,9 @@ if (is_post()) {
     // Output
     if (!$_err) {
         $stm = $_db->prepare('UPDATE category
-                            SET category_name = ?, category_desc = ?, category_last_update, admin_id
+                            SET category_name = ?, category_desc = ?, category_last_update = ?, admin_id = ?
                             WHERE category_id = ?');
-        $stm->execute([$category_name, $category_desc, , date("Y-m-d H:i:s"), $admin_id, $id]);
+        $stm->execute([$category_name, $category_desc, date("Y-m-d H:i:s"), $admin_id, $id]);
 
         temp('info', 'Category updated');
         redirect('/page/yongqiaorou/category.php');
