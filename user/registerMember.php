@@ -183,6 +183,7 @@ include '../_head.php';
 <h2>Register as Member</h2>
 <form method="post" class="form" enctype="multipart/form-data">
 
+<<<<<<< Updated upstream
     <label for="photo">Photo</label>
     <label class="upload" tabindex="0">
         <?= html_file('photo','image/*','hidden') ?>
@@ -191,6 +192,26 @@ include '../_head.php';
     <?= err('photo') ?>
 
     <label for="email">Email</label>
+=======
+<label for="photo">Photo</label>
+<label class="upload" tabindex="0">
+    <?= html_file('photo','image/*','hidden') ?>
+    <img src="/images/photo.jpg" id="photoPreview">
+</label>
+
+<!-- Start Webcam Button -->
+<button id="startWebcamButton">Start Webcam</button>
+
+<!-- Webcam Section -->
+<video id="webcam" width="200" height="200" autoplay></video>
+<button id="captureButton">Capture Photo</button>
+
+<!-- Canvas for capturing the image -->
+<canvas id="canvas" width="200" height="200" style="display:none;"></canvas>
+
+<?= err('photo') ?>
+<label for="email">Email</label>
+>>>>>>> Stashed changes
     <?= html_text('email', 'maxlength="100"') ?>
     <?= err('email') ?>
 
