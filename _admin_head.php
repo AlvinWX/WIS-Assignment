@@ -25,17 +25,29 @@
         </div>
         <nav>
             <ul>
-                <li><a href="index.php">Home</a></li>
-                <li><a href="login.php">Login</a></li>
-                <!-- Dropdown Menu -->
-                <li>
-                    <a href="#">More</a>
-                    <div class="dropdown-content">
-                        <a href="#">XXXXX</a>
+                <li><a href="/index.php">Home</a></li>
+                <li><a href="/user/profile.php">Profile</a></li>
+                <!-- Show logout only if the user is logged in -->
+                <?php if ($user): ?>
+                    <li><a href="/logout.php">Logout</a></li>
+                    <?php if ($user->userType == 'admin'): ?>
+                        <li><a href="/page/yongqiaorou/product.php">Product Management</a></li>
+                        <li><a href="/page/yongqiaorou/category.php">Category Management</a></li>
+                        <a href="/page/chanyijing/admin/order_management/order_list.php">Order Listing</a>
+                        <!-- <a href="/page/chanyijing/member/order_history/history_list.php">Order History</a> -->
                         <a href="/page/chanyijing/admin/member_management/member_list.php">Member Management</a>
+                        <a href="/page/chanyijing/admin/feedback/member_feedback.php">Member Feedback</a>
                         <a href="/page/chanyijing/admin/admin_management/admin_list.php">Admin Management</a>
-                    </div>
-                </li>
+                    <?php endif ?>
+                <?php else: ?>
+                    <li><a href="/login.php">Login</a></li>
+                <?php endif ?>
+                <?php if ($user): ?>
+                <?php if ($user->userType == 'member'): ?>
+                        <li><a href="/page/chanyijing/member/order_history/history_list.php">Order History</a></li>
+                        <?php endif ?>
+                        <?php endif ?>
+
             </ul>
         </nav>
         <div class="right-logo">

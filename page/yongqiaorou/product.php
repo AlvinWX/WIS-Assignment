@@ -1,6 +1,13 @@
 <?php
 require '../../_base.php';
 
+$user = $_SESSION['user'] ?? null;
+$admin_id = $user->admin_id;
+if(empty($admin_id)){
+    redirect('../../login.php');
+    temp('info',"Unauthourized Access");
+}
+
 $categories = $_db->query("SELECT * FROM category WHERE category_status = 1")->fetchAll();
 $query = "SELECT * FROM product p JOIN category c ON p.category_id = c.category_id WHERE p.product_status = 1";
 

@@ -2,8 +2,12 @@
 require '../../_base.php';
 // ----------------------------------------------------------------------------
 
-// $user = $_SESSION['user'] ?? null;
-// $admin_id = $user->admin_id;
+$user = $_SESSION['user'] ?? null;
+$admin_id = $user->admin_id;
+if(empty($admin_id)){
+    redirect('../../login.php');
+    temp('info',"Unauthourized Access");
+}
 
 if (is_post()) {
     // Input
@@ -121,7 +125,7 @@ if (is_post()) {
         $stm = $_db->prepare('INSERT INTO product
                               (product_id, product_name, product_cover, product_resources, product_desc, product_price, product_stock, product_last_update, admin_id, category_id)
                               VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
-        $stm->execute([$product_id, $product_name, $product_cover, json_encode($photo_resources), $product_desc, $product_price, $product_stock, date("Y-m-d H:i:s"), 0, $category_id]);
+        $stm->execute([$product_id, $product_name, $product_cover, json_encode($photo_resources), $product_desc, $product_price, $product_stock, date("Y-m-d H:i:s"), $admin_id, $category_id]);
 
         temp('info', 'Product added.');
         redirect('product.php');
