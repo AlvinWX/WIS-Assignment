@@ -100,7 +100,7 @@ if ($search_field == 'product_price') {
         $stmt->bindValue(':min_price', $min_price);
         $stmt->bindValue(':max_price', $max_price);
     } else {
-        echo "<p style='color:red;'>Please provide both Min and Max price!</p>";
+        // echo "<p style='color:red;'>Please provide both Min and Max price!</p>";
         $stmt = $_db->prepare($query); // Prepare the base query
     }
 } else {

@@ -16,6 +16,7 @@ if (is_post()) {
     $product_desc     = req('product_desc');
     $product_price = req('product_price');
     $product_stock = req('product_stock');
+    $product_youtube_url = req('product_youtube_url');
     $category_id = req('category_id');
 
     // $product_cover = req('product_cover');
@@ -133,9 +134,9 @@ if (is_post()) {
         }
 
         $stm = $_db->prepare('INSERT INTO product
-                              (product_id, product_name, product_cover, product_resources, product_desc, product_price, product_stock, product_last_update, admin_id, category_id)
-                              VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
-        $stm->execute([$product_id, $product_name, $product_cover, json_encode($photo_resources), $product_desc, $product_price, $product_stock, date("Y-m-d H:i:s"), $admin_id, $category_id]);
+                              (product_id, product_name, product_cover, product_resources, product_youtube_url, product_desc, product_price, product_stock, product_last_update, admin_id, category_id)
+                              VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+        $stm->execute([$product_id, $product_name, $product_cover, json_encode($photo_resources), $product_youtube_url, $product_desc, $product_price, $product_stock, date("Y-m-d H:i:s"), $admin_id, $category_id]);
 
         temp('info', 'Product added.');
         redirect('product.php');
@@ -203,6 +204,11 @@ include '../../_admin_head.php';
     </label>
     <div id="product_photo_previews">
     <?= err('product_photo') ?></div>
+
+    <label>Youtube URL</label>
+    <?= html_text('product_youtube_url',  'maxlength="1000"') ?>
+    <?= err('product_youtube_url') ?>
+
     <section>
         <button>Submit</button>
         <button type="reset">Reset</button>
