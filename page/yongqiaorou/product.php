@@ -4,8 +4,8 @@ require '../../_base.php';
 $user = $_SESSION['user'] ?? null;
 $admin_id = $user->admin_id;
 if(empty($admin_id)){
-    redirect('../../login.php');
     temp('info',"Unauthourized Access");
+    redirect('../../login.php');
 }
 
 $categories = $_db->query("SELECT * FROM category WHERE category_status = 1")->fetchAll();
@@ -134,7 +134,7 @@ if(count($arr)) { ?>
             <tr>
                 <td><?= $s->product_id ?></td>
                 <td><?= $s->product_name ?></td>
-                <td><img src="images/<?= $s->product_cover ?>"></td>
+                <td><img src="../../images/product_pic/<?= $s->product_cover ?>"></td>
                 <td>
                     <?php if (!empty($s->product_resources)): ?>
                         <?php

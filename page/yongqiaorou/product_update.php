@@ -74,7 +74,7 @@ if (is_post()) {
         $img = new SimpleImage();
         $img->fromFile($cover_file['tmp_name'])
             ->thumbnail(200, 200)
-            ->toFile("images/$product_cover", 'image/jpeg');
+            ->toFile("../../images/product_pic/$product_cover", 'image/jpeg');
     }
 
     // Handle product_photo (multiple images)
@@ -111,7 +111,7 @@ if (is_post()) {
     if (!$_err) {
         if(json_encode($photo_resources) != "[]"){
             $stm = $_db->prepare('UPDATE product
-                                SET product_name = ?, product_desc = ?, product_price = ?, product_stock = ?, product_cover = ?, product_resources = ?, product_youtube_url, admin_id = ?, product_last_update = ?, category_id = ?
+                                SET product_name = ?, product_desc = ?, product_price = ?, product_stock = ?, product_cover = ?, product_resources = ?, product_youtube_url = ?, admin_id = ?, product_last_update = ?, category_id = ?
                                 WHERE product_id = ?');
             $stm->execute([$product_name, $product_desc, $product_price, $product_stock, $product_cover, json_encode($photo_resources), $product_youtube_url, $admin_id, date("Y-m-d H:i:s"), $category_id, $id]);
 
@@ -165,7 +165,7 @@ include '../../_admin_head.php';
     <label for="product_cover">Cover Picture</label>
     <div>
         <?= html_file('product_cover', 'image/*', 'hidden id="product_cover"') ?>
-        <img id="preview" src="images/<?= $product_cover ?>" style="width: 200px; height: 200px;">
+        <img id="preview" src="../../images/product_pic/<?= $product_cover ?>" style="width: 200px; height: 200px;">
     </div>
     <?= err('product_cover') ?>
 

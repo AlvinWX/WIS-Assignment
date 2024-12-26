@@ -107,7 +107,7 @@ include '../../_admin_head.php';
     <label for="voucher_img">Voucher Image</label>
     <label class="upload" tabindex="0">
         <?= html_file('voucher_img','image/*','hidden') ?>
-        <img src="/images/photo.jpg">
+        <img src="images/photo.jpg"  style="width: 200px; height: 200px;">
     </label>
     <?= err('voucher_img') ?>
 

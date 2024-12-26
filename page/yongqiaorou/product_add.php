@@ -81,7 +81,7 @@ if (is_post()) {
         $img = new SimpleImage();
         $img->fromFile($cover_file['tmp_name'])
             ->thumbnail(200, 200)
-            ->toFile("images/$product_cover", 'image/jpeg');
+            ->toFile("../../images/product_pic/$product_cover", 'image/jpeg');
     } else {
         $_err['product_cover'] = 'Cover Picture is required';
     }
@@ -194,7 +194,7 @@ include '../../_admin_head.php';
     </label>
     <div>
         <?= html_file('product_cover', 'image/*', 'hidden id="product_cover"') ?>
-        <img id="preview" src="/images/photo.jpg" style="width: 200px; height: 200px;">
+        <img id="preview" src="../../images/photo.jpg" style="width: 200px; height: 200px;">
     </div>
     <?= err('product_cover') ?>
 

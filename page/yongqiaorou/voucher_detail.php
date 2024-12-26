@@ -37,6 +37,10 @@ include '../../_admin_head.php';
         <th>Description</th>
         <td><?= $s->voucher_desc ?></td>
     </tr>
+    <tr>
+        <th>Voucher Image</th>
+        <td><img src="images/<?= $s->voucher_img ?>"/></td>
+    </tr>
 </table>
 
 <br>

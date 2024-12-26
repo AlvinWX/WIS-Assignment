@@ -69,6 +69,7 @@ $(() => {
 function sanitizeFileName(fileName) {
     return fileName.replace(/\s+/g, '_').replace(/[^\w.-]/g, '');
 }
+
 $('label.upload input[type=file]').on('change', function(e) {
     const files = e.target.files;
     const previewContainer = $('#product_photo_previews');
@@ -92,7 +93,7 @@ $('label.upload input[type=file]').on('change', function(e) {
             checkbox.classList.add('cover-checkbox');
             checkbox.style.position = 'absolute';
             checkbox.style.top = '5px';
-            checkbox.style.right = '5px';
+            checkbox.style.right = '15px';
             checkbox.style.zIndex = '1';
 
             // Create a container div to hold both the image and the checkbox
