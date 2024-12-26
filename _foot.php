@@ -41,17 +41,17 @@
           <div class="column4">
             <ul>
               <b><h7>Tar Grocer Social Account</h7></b>
-              <li><a href="https://www.facebook.com/powerrangers/" target="_blank"><img src="images\facebook.png"></a>
-                <a href="https://instagram.com/powerrangers?igshid=YmMyMTA2M2Y=" target="_blank"><img src="images\insta.png"></a>
-                <a href="https://twitter.com/PowerRangers?t=Z3JrtXTUz6YjyRsjgVKxNg&s=08" target="_blank"><img src="images\twitter.png"></a>
+              <li><a href="https://www.facebook.com/powerrangers/" target="_blank"><img src="http://localhost:8000/images/facebook.png"></a>
+                <a href="https://instagram.com/powerrangers?igshid=YmMyMTA2M2Y=" target="_blank"><img src="http://localhost:8000/images/insta.png"></a>
+                <a href="https://twitter.com/PowerRangers?t=Z3JrtXTUz6YjyRsjgVKxNg&s=08" target="_blank"><img src="http://localhost:8000/images/twitter.png"></a>
                 <br>
                 <br>
               <b><h7>Payment Method</h7></b>
-              <li><img src="images\visa.png">
-                <img src="images\mastercard.png">
-                <img src="images\amex.png">
-                <img src="images\paypal.png">
-                <img src="images\applepay.png"></li>
+              <li><img src="http://localhost:8000/images/visa.png">
+                <img src="http://localhost:8000/images/mastercard.png">
+                <img src="http://localhost:8000/images/amex.png">
+                <img src="http://localhost:8000/images/paypal.png">
+                <img src="http://localhost:8000/images/applepay.png"></li>
             </ul>
           </div>
         </div>

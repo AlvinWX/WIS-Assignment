@@ -163,6 +163,10 @@ include '../../../../_head.php';
         <td> - RM <?= number_format($o->discount_price, 2) ?></td>
     </tr>
     <tr>
+        <th>Points Earned</th>
+        <td><?= $o->points ?></td>
+    </tr>
+    <tr>
         <th>Order Total</th>
         <td>RM <?= number_format($o->total, 2) ?></td>
     </tr>

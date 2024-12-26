@@ -1,7 +1,7 @@
 <?php
-require '_base.php';
+require '../../_base.php';
 
-include '_head.php';
+include '../../_head.php';
 
 $id = req('id');
 $path = req('path');
@@ -66,11 +66,11 @@ $resources = json_decode($s -> product_resources, true);
 ?>
 
 <title><?= $s -> product_name ?> @ TAR GROCER</title>
-<link rel="stylesheet" href="css/productinfo.css">
-<link rel="stylesheet" href="css/flash.css">
-<link rel="stylesheet" href="css/imageslider.css">
-<script src="js/productinfo.js" defer></script>
-<script src="js/imageslider2.js" defer></script>
+<link rel="stylesheet" href="../../css/productinfo.css">
+<link rel="stylesheet" href="../../css/flash.css">
+<link rel="stylesheet" href="../../css/imageslider.css">
+<script src="../../js/productinfo.js" defer></script>
+<script src="../../js/imageslider2.js" defer></script>
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
 <script>
@@ -88,13 +88,13 @@ window.onload = function() {
             <div class = "slide-container">
         
         <div class="slides">
-        <img src="page/yongqiaorou/images/<?= $s->product_cover ?>" alt="Resource <?= $index + 1 ?>" class="image active">
+        <img src="../../page/yongqiaorou/images/<?= $s->product_cover ?>" alt="Resource <?= $index + 1 ?>" class="image active">
         <?php foreach ($resources as $index => $resource):?>
-                            <?php if (strpos(mime_content_type("uploads/$resource"), 'image/') !== false): ?>
-                                <img src="/uploads/<?= $resource ?>" alt="Resource <?= $index + 1 ?>" class="image">
-                            <?php elseif (strpos(mime_content_type("uploads/$resource"), 'video/') !== false): ?>
+                            <?php if (strpos(mime_content_type("../../uploads/$resource"), 'image/') !== false): ?>
+                                <img src="../../uploads/<?= $resource ?>" alt="Resource <?= $index + 1 ?>" class="image">
+                            <?php elseif (strpos(mime_content_type("../../uploads/$resource"), 'video/') !== false): ?>
                                 <video controls>
-                                    <source src="/uploads/<?= $resource ?>" type="video/<?= pathinfo($resource, PATHINFO_EXTENSION) ?>" class="image">
+                                    <source src="../../uploads/<?= $resource ?>" type="video/<?= pathinfo($resource, PATHINFO_EXTENSION) ?>" class="image">
                                 </video>
                             <?php endif; ?>
                         <?php endforeach; ?>
@@ -106,14 +106,14 @@ window.onload = function() {
         </div>
 
         <div class="image-thumbnail">
-            <img class="img active" src="page/yongqiaorou/images/<?= $s->product_cover ?>" alt="Resource <?= $index + 1 ?>" attr='0' onclick="switchImage(this)">
+            <img class="img active" src="../../page/yongqiaorou/images/<?= $s->product_cover ?>" alt="Resource <?= $index + 1 ?>" attr='0' onclick="switchImage(this)">
             <?php for($i = 1; $i <= count($resources); $i++): $resource = $resources[$i-1] ?>
 			    
-                <?php if (strpos(mime_content_type("uploads/$resource"), 'image/') !== false): ?>
-                                <img class="img" attr='<?= $i ?>' onclick="switchImage(this)" src="/uploads/<?= $resource ?>" alt="Resource <?= $index + 1 ?>">
-                            <?php elseif (strpos(mime_content_type("uploads/$resource"), 'video/') !== false): ?>
+                <?php if (strpos(mime_content_type("../../uploads/$resource"), 'image/') !== false): ?>
+                                <img class="img" attr='<?= $i ?>' onclick="switchImage(this)" src="../../uploads/<?= $resource ?>" alt="Resource <?= $index + 1 ?>">
+                            <?php elseif (strpos(mime_content_type("../../uploads/$resource"), 'video/') !== false): ?>
                                 <video controls>
-                                    <source class="img" attr='<?= $i ?>' onclick="switchImage(this)" src="/uploads/<?= $resource ?>" type="video/<?= pathinfo($resource, PATHINFO_EXTENSION) ?>">
+                                    <source class="img" attr='<?= $i ?>' onclick="switchImage(this)" src="../../uploads/<?= $resource ?>" type="video/<?= pathinfo($resource, PATHINFO_EXTENSION) ?>">
                                 </video>
                             <?php endif; ?>
             <?php endfor; ?>
@@ -150,15 +150,10 @@ window.onload = function() {
                     <span>Product information:</span>
                     <p><?= $s -> product_desc ?></p>
                 </div>
-
-                
-                
-
             </div>
-
         </div>
     </div>
 </body>
 
 <?php
-include '_foot.php';
+include '../../_foot.php';

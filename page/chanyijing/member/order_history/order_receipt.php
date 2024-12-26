@@ -81,6 +81,7 @@ if (is_post()) {
 
         <p><strong>Voucher Applied:</strong><?= $o->voucher ?></p>
         <p><strong>Discount       :</strong> - RM <?= number_format($o->discount_price, 2) ?></p>
+        <p><strong>Points Earned  :</strong><?= $o->points ?></p>
         <b><p>Order Total    :RM <?= number_format($o->total, 2) ?></p></b>
         <hr/>
         <p><strong>Payment Method :</strong> <?= $pm->name ?></p>

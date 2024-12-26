@@ -1,8 +1,7 @@
 <?php
 
-require '_base.php';
-require 'lib/stripe-php-16.4.0/init.php';
-include '_head.php';
+require '../../_base.php';
+include '../../_head.php';
 
 $member_id = $user->member_id; 
 
