@@ -26,8 +26,6 @@ $_title = 'voucher Recover';
 include '../../_admin_head.php';
 ?>
 
-<button data-get="/page/yongqiaorou/voucher.php"  class="back_button"><i class="fa fa-arrow-left" aria-hidden="true"></i>  Back</button>
-
 <?php if(count($arr)) {?>
 <p><?= count($arr) ?> record(s)</p>
 <table class="table" style="margin: auto;">
@@ -60,5 +58,8 @@ include '../../_admin_head.php';
 <?php }else{?>
     <p style="color:red;">No record deleted.</p>
 <?php }?>
+
+<button data-get="/page/yongqiaorou/voucher.php"><i class="fa fa-arrow-left" aria-hidden="true"></i>  Back</button>
+
 <?php
 include '../../_foot.php';

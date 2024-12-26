@@ -48,7 +48,7 @@ include '../../_admin_head.php';
 
 <br>
 
-<button data-get="/page/yongqiaorou/product.php"  class="back_button"><i class="fa fa-arrow-left" aria-hidden="true"></i>  Back</button>
+<button data-get="/page/yongqiaorou/product.php"><i class="fa fa-arrow-left" aria-hidden="true"></i>  Back</button>
 
 <?php
 include '../../_foot.php';

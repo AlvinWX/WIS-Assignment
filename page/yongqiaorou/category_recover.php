@@ -16,7 +16,7 @@ if (is_post()) {
 
     temp('info', 'Category recovered');
 
-    redirect('/page/yongqiaorou/category.php');
+    // redirect('/page/yongqiaorou/category.php');
 }
 // // TODO
 $arr = $_db->query('SELECT * FROM category WHERE category_status=0')->fetchAll();
@@ -50,5 +50,8 @@ include '../../_admin_head.php';
 <?php }else{?>
     <p class="err">No record deleted.</p>
 <?php }?>
+
+<button data-get="/page/yongqiaorou/category.php"><i class="fa fa-arrow-left" aria-hidden="true"></i>  Back</button>
+
 <?php
 include '../../_foot.php';
