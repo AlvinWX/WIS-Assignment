@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/css/yj_app.css">
+
 
 <?php
 require '../../../../_base.php';
@@ -16,7 +16,7 @@ if(!$s){
 $_title = 'Admin Detail';
 include '../../../../_head.php';
 ?>
-
+<link rel="stylesheet" href="/css/yj_app.css">
 <div class="top-heading-space">
     <h3>Admin Detail</h3>
 </div>

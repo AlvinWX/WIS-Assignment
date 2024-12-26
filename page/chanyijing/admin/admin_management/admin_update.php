@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/css/yj_app.css">
+
 
 <?php
 require '../../../../_base.php';
@@ -66,7 +66,7 @@ if (is_post()) {
 $_title = 'Update admin';
 include '../../../../_head.php';
 ?>
-
+<link rel="stylesheet" href="/css/yj_app.css">
 <div class="top-heading-space">
     <h3>Update Admin Details</h3>
 </div>

@@ -112,12 +112,15 @@ if (is_post()) {
 $_title = 'Admin | Register';
 include '../_head.php';
 ?>
-<style>
-    form {
-        margin-top: 200px;
-    }
-</style>
+<div class="login-container">
 <form method="post" class="form" enctype="multipart/form-data">
+<label for="photo">Photo</label>
+    <label class="upload" tabindex="0">
+        <?= html_file('photo', 'image/*', 'hidden') ?>
+        <img src="/images/photo.jpg">
+    </label>
+    <?= err('photo') ?>
+
     <label for="email">Email</label>
     <?= html_text('email', 'maxlength="100"') ?>
     <?= err('email') ?>
@@ -155,18 +158,11 @@ include '../_head.php';
     </select>
     <?= err('adminTier') ?>
 
-    <label for="photo">Photo</label>
-    <label class="upload" tabindex="0">
-        <?= html_file('photo', 'image/*', 'hidden') ?>
-        <img src="/images/photo.jpg">
-    </label>
-    <?= err('photo') ?>
-
     <section>
         <button type="submit">Submit</button>
         <button type="reset">Reset</button>
     </section>
 </form>
-
+</div>
 <?php
 include '../_foot.php';

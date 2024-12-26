@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/css/yj_app.css">
+
 
 <?php
 require '../../../../_base.php';
@@ -41,7 +41,7 @@ $orders= $o_stm->fetchAll();
 $_title = 'Order List';
 include '../../../../_head.php';
 ?>
-
+<link rel="stylesheet" href="/css/yj_app.css">
 <!-- Seach Bar -->
 <div class="search-bar">
     <form>

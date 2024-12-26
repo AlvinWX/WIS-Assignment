@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/css/yj_app.css">
+
 
 <?php
 require '../../../../_base.php';
@@ -53,7 +53,7 @@ $icon = $image_path . $order_status . '.png';
 $_title = 'Order History Detail';
 include '../../../../_head.php';
 ?>
-
+<link rel="stylesheet" href="/css/yj_app.css">
 <div class="top-heading-space">
     <h3>Order Details</h3>
 </div>

@@ -17,7 +17,7 @@
           <div class="column1">
             <ul>
               <b><h7>About Tar Grocer</h7></b>
-            <li><a href="store_locator.html">Store Locator</a></li>
+            <li><a href="/store_locator.php">Store Locator</a></li>
             <li><a href="careers.html">Careers</a></li>
             <li><a href="contact_us.html">Contact us</a></li>
             <li><a href="about_us.html">About us</a></li>

@@ -53,6 +53,7 @@
 .right-logo a {
     position: relative;
 }
+
 </style>
 
 <body>
@@ -65,19 +66,22 @@
             </a>
         </div>
         <nav>
-            <ul>
-                <li><a href="/index.php">Home</a></li>
-                <li><a href="/user/profile.php">Profile</a></li>
-                <!-- Show logout only if the user is logged in -->
-                <?php if ($user): ?>
-                    <li><a href="/logout.php">Logout</a></li>
-                    <?php if ($user->userType == 'admin'): ?>
-                        <li><a href="/page/yongqiaorou/product.php">Product Management</a></li>
+    <ul>
+        <!-- Show Home link only if the user is not an admin -->
+        <?php if (!$user || $user->userType != 'admin'): ?>
+            <li><a href="/index.php">Home</a></li>
+        <?php endif; ?>
+
+        <!-- Show logout and other admin-related links only if the user is logged in -->
+        <?php if ($user): ?>
+            <?php if ($user->userType == 'admin'): ?>
+                <li><a href="/page/yongqiaorou/page/yongqiaorou/product.php">Product Management</a></li>
                         <li><a href="/page/yongqiaorou/category.php">Category Management</a></li>
                         <li><a href="/page/yongqiaorou/voucher.php">Voucher Management</a></li>
-                        <a href="/page/chanyijing/admin/order_management/order_list.php">Order Listing</a>
-                        <!-- <a href="/page/chanyijing/member/order_history/history_list.php">Order History</a> -->
-                        <a href="/page/chanyijing/admin/member_management/member_list.php">Member Management</a>
+                <li><a href="/page/chanyijing/admin/order_management/order_list.php">Order Listing</a></li>
+                <li><a href="#">Member Management</a>
+                    <div class="dropdown-content">
+                        <a href="/page/chanyijing/admin/member_management/member_list.php">Member List</a>
                         <a href="/page/chanyijing/admin/feedback/member_feedback.php">Member Feedback</a>
                         <a href="/page/chanyijing/admin/admin_management/admin_list.php">Admin Management</a>
                     <?php endif ?>
@@ -86,7 +90,7 @@
                 <?php endif ?>
                 <?php if ($user): ?>
                 <?php if ($user->userType == 'member'): ?>
-                        <li><a href="/page/leewaixian/productsearch.php?product_name=&category_id=&minprice=&maxprice=&sort=product_name&dir=asc">View Products</a></li>
+                        <li><a href="/productsearch.php?product_name=&category_id=&minprice=&maxprice=&sort=product_name&dir=asc">View Products</a></li>
                         <li><a href="/page/chanyijing/member/order_history/history_list.php">Order History</a></li>
                         <?php endif ?>
                         <?php endif ?>
@@ -105,13 +109,19 @@
                     <?php endif ?>
                 </a>
             <?php endif ?>
-            <a href="/login.php">
-                <img src="/images/user.png" alt="Clickable Image">
-            </a>
-            <div class="dropdown-content">
-                <a href="/user/profile.php">Profile</a>
-                <a href="#">Logout</a>
-            </div>
+            <?php if ($user): ?>
+                <div class="dropdown">
+                    <img src="/images/user.png" alt="User Icon" class="user-icon">
+                    <div class="dropdown-content">
+                        <a href="/user/profile.php">Profile</a>
+                        <a href="/logout.php">Logout</a>
+                    </div>
+                </div>
+            <?php else: ?>
+                <a href="/login.php">
+                    <img src="/images/user.png" alt="Login">
+                </a>
+            <?php endif ?>
         </div>
         <div class="search-container" id="search-container">
             <input type="text" class="search-bar" placeholder="Search...">

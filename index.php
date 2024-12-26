@@ -3,7 +3,6 @@ require '_base.php';
 include '_head.php';
 
 
-
 auth('member');
 $success = $_SESSION['flash_success'] ?? '';
 $error = $_SESSION['flash_error'] ?? '';

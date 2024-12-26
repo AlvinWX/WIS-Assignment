@@ -3,6 +3,18 @@ include '../_base.php';
 
 // ----------------------------------------------------------------------------
 
+
+// TODO: (1) Delete expired tokens
+$_db->query('DELETE FROM token WHERE expire < NOW()');
+
+$id = req('id');
+
+// TODO: (2) Is token id valid?
+if (!is_exists($id, 'token', 'id')) {
+    temp('info', 'Invalid token. Try again');
+    redirect('/');
+}
+
 if (is_post()) {
     $email = req('email');
 
@@ -17,9 +29,11 @@ if (is_post()) {
     if (!$_err) {
         // (1) Check if the user is a member or admin
         $stm = $_db->prepare('
-            SELECT *, "member" AS userType FROM member WHERE memberEmail = ? 
-            UNION
-            SELECT *, "admin" AS userType FROM admin WHERE adminEmail = ?
+            UPDATE member
+            SET member_password = SHA1(?)
+            WHERE member_id = (SELECT member_id FROM token WHERE id = ?);
+
+            DELETE FROM token WHERE id = ?;
         ');
         $stm->execute([$email, $email]);
         $user = $stm->fetch();
@@ -89,15 +103,25 @@ if (is_post()) {
 
 // ----------------------------------------------------------------------------
 
-$_title = 'User | Reset Password';
+$_title = 'Member | Reset Password';
 include '../_head.php';
 ?>
 
+<<<<<<< Updated upstream
+
+<div class="login-container">
+<form method="post" class="form">
+    <h2>Reset Password</h2>
+    <label for="password">New Password</label>
+    <?= html_password('password', 'maxlength="100"') ?>
+    <?= err('password') ?>
+=======
 <style>
     form {
         margin-top: 200px;
     }
 </style>
+>>>>>>> Stashed changes
 
 <form method="post" class="form">
     <label for="email">Email</label>
@@ -109,7 +133,7 @@ include '../_head.php';
         <button type="reset">Reset</button>
     </section>
 </form>
-
+</div>
 <?php
 include '../_foot.php';
 ?>

@@ -246,10 +246,8 @@ function get_mail() {
     $m->SMTPAuth = true;
     $m->Host = 'smtp.gmail.com';
     $m->Port = 587;
-    // $m->Username = 'targrocer@outlook.com';
-    // $m->Password = 'tar123grocer';
-    $m->Username = 'liaw.casual@gmail.com';
-    $m->Password = 'wtpa kjxr dfcb xkhg';
+    $m->Username = 'targrocer@outlook.com';
+    $m->Password = 'tar123grocer';
     $m->CharSet = 'utf-8';
     $m->setFrom($m->Username, 'TAR GROCER Admin');
 
@@ -278,6 +276,35 @@ function err($key) {
         echo '<span></span>';
     }
 }
+
+// ============================================================================
+// Email Functions
+// ============================================================================
+
+// Demo Accounts:
+// --------------
+// AACS3173@gmail.com           npsg gzfd pnio aylm
+// BAIT2173.email@gmail.com     ytwo bbon lrvw wclr
+// liaw.casual@gmail.com        wtpa kjxr dfcb xkhg
+// liawcv1@gmail.com            obyj shnv prpa kzvj
+
+// // Initialize and return mail object
+// function get_mail() {
+//     require_once 'lib/PHPMailer.php';
+//     require_once 'lib/SMTP.php';
+
+//     $m = new PHPMailer(true);
+//     $m->isSMTP();
+//     $m->SMTPAuth = true;
+//     $m->Host = 'smtp.gmail.com';
+//     $m->Port = 587;
+//     $m->Username = 'aacs3173@gmail.com';
+//     $m->Password = 'xxna ftdu plga hzxl';
+//     $m->CharSet = 'utf-8';
+//     $m->setFrom($m->Username, '😺 Admin');
+
+//     return $m;
+// }
 
 
 // ============================================================================
@@ -351,6 +378,9 @@ function logout($url = '/') {
 function auth(...$types) {
     global $_user;
 
+    if (empty($types)) {
+        return; // No restriction, user is authorized (either logged in or not)
+    }
     // Check if the user is logged in
     if ($_user) {
         // If types are provided, check if the user's type matches one of the allowed types
@@ -365,6 +395,18 @@ function auth(...$types) {
     
     // Redirect to login if the user is not authorized
     redirect('/login.php');
+}
+
+function validate_local_malaysian_phone($phone) {
+    // Remove all non-digit characters
+    $phone = preg_replace('/\D/', '', $phone);
+
+    // Check if it starts with 0 and is 10-11 digits long
+    if (substr($phone, 0, 1) === '0' && (strlen($phone) === 10 || strlen($phone) === 11)) {
+        return $phone; // Valid local number
+    }
+
+    return false; // Invalid number
 }
 // ============================================================================
 // Global Constants and Variables

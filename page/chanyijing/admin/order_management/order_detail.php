@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/css/yj_app.css">
+
 
 <?php
 require '../../../../_base.php';
@@ -85,7 +85,7 @@ if(is_post()){
 $_title = 'Order Detail';
 include '../../../../_head.php';
 ?>
-
+<link rel="stylesheet" href="/css/yj_app.css">
 <div class="top-heading-space">
     <h3>Order Details for Order ID <?= $o->order_id ?></h3>
 </div>

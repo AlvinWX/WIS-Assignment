@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/css/yj_app.css">
+
 
 <?php
 require '../../../../_base.php';
@@ -39,7 +39,7 @@ $fb= $f_stm->fetchAll();
 $_title = 'Member Feedback';
 include '../../../../_head.php';
 ?>
-
+<link rel="stylesheet" href="/css/yj_app.css">
 <div class="search-bar">
     <form>
         <?= html_search('feedback_id', 'placeholder="Enter feedback ID to search"') ?>
