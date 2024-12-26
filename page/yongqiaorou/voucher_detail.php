@@ -39,7 +39,7 @@ include '../../_admin_head.php';
     </tr>
     <tr>
         <th>Voucher Image</th>
-        <td><img src="images/<?= $s->voucher_img ?>"/></td>
+        <td><img src="../../images/voucher_pic/<?= $s->voucher_img ?>"/></td>
     </tr>
 </table>
 

@@ -45,7 +45,7 @@ if (is_post()) {
         $img = new SimpleImage();
         $img->fromFile($voucher_file['tmp_name'])
             ->thumbnail(200, 200)
-            ->toFile("images/$voucher_img", 'image/jpeg');
+            ->toFile("../../images/voucher_pic/$voucher_img", 'image/jpeg');
     } else {
         $_err['voucher_img'] = 'Voucher Image is required';
     }
@@ -107,7 +107,7 @@ include '../../_admin_head.php';
     <label for="voucher_img">Voucher Image</label>
     <label class="upload" tabindex="0">
         <?= html_file('voucher_img','image/*','hidden') ?>
-        <img src="images/photo.jpg"  style="width: 200px; height: 200px;">
+        <img src="../../images/photo.jpg"  style="width: 200px; height: 200px;">
     </label>
     <?= err('voucher_img') ?>
 

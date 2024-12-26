@@ -15,7 +15,6 @@ if (is_post()) {
 
     temp('info', 'Product recovered');
 
-    redirect('/page/yongqiaorou/product.php');
 }
 // // TODO
 $arr = $_db->query('SELECT * FROM product WHERE product_status=0')->fetchAll();

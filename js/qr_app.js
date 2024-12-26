@@ -24,14 +24,35 @@ $(() => {
     $('.err:first').prev().find(':input:first').focus();
     
     // Confirmation message
-    $('[data-confirm]').on('click', e => {
-        const text = e.target.dataset.confirm || 'Are you sure you want to delete the record?';
-        if (!confirm(text)) {
-            e.preventDefault();
-            e.stopImmediatePropagation();
+    // $('[data-confirm]').on('click', e => {
+    //     const text = e.target.dataset.confirm || 'Are you sure you want to delete the record?';
+    //     if (!confirm(text)) {
+    //         e.preventDefault();
+    //         e.stopImmediatePropagation();
+    //     }
+    // });
+
+    $('[data-post]').on('click', e => {
+        e.preventDefault();
+    
+        // Check if the element has a `data-confirm` attribute
+        const confirmText = e.target.dataset.confirm;
+        if (confirmText) {
+            if (!confirm(confirmText)) {
+                // Stop execution if user cancels
+                return false;
+            }
         }
+    
+        // Proceed with POST request
+        const url = e.target.dataset.post;
+        const f = $('<form>').appendTo(document.body)[0];
+        f.method = 'POST';
+        f.action = url || location;
+        f.submit();
     });
 
+    
     // Initiate GET request
     $('[data-get]').on('click', e => {
         e.preventDefault();
@@ -40,14 +61,14 @@ $(() => {
     });
 
     // Initiate POST request
-    $('[data-post]').on('click', e => {
-        e.preventDefault();
-        const url = e.target.dataset.post;
-        const f = $('<form>').appendTo(document.body)[0];
-        f.method = 'POST';
-        f.action = url || location;
-        f.submit();
-    });
+    // $('[data-post]').on('click', e => {
+    //     e.preventDefault();
+    //     const url = e.target.dataset.post;
+    //     const f = $('<form>').appendTo(document.body)[0];
+    //     f.method = 'POST';
+    //     f.action = url || location;
+    //     f.submit();
+    // });
 
     // Reset form
     $('[type=reset]').on('click', e => {
