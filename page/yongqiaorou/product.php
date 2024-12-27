@@ -191,6 +191,7 @@ if(count($arr)) { ?>
             <?php endforeach ?>
         </table>
     </div> 
+
 <?php 
     if(!empty($stock_alert)){
         $names = '';
@@ -203,10 +204,11 @@ if(count($arr)) { ?>
         $verb = count($stock_alert) == 1 ? 'is' : 'are';
         temp('info', "$names $verb low stock now!!");
     }
-?>
-<?php }else{?>
+    $stock_alert = [];
+}else{?>
     <p class="err">No record found.</p>
-<?php }?>
+<?php 
+}?>
 <a href="product_recover.php"><span id="dot" class="dot_left" style="color:rgb(245, 167, 167);"><i class="fa fa-trash" aria-hidden="true"></i></span></a>
 <a href="product_add.php"><span id="dot" class="dot_right"><i class="fa fa-plus" aria-hidden="true"></i></span></a>
 <script>
