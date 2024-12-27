@@ -18,24 +18,24 @@
             <ul>
               <b><h7>About Tar Grocer</h7></b>
             <li><a href="/store_locator.php">Store Locator</a></li>
-            <li><a href="careers.html">Careers</a></li>
-            <li><a href="contact_us.html">Contact us</a></li>
-            <li><a href="about_us.html">About us</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Contact us</a></li>
+            <li><a href="#">About us</a></li>
             </ul>
           </div>
           <div class="column2">
             <ul>
               <b><h7>Help</h7></b>
-            <li><a href="faq.html">FAQ</a></li>
-            <li><a href="terms.html">Terms & Conditions</a></li>
-            <li><a href="privacy_policy.html">Privacy Policy</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Terms & Conditions</a></li>
+            <li><a href="#">Privacy Policy</a></li>
             </ul>
           </div>
           <div class="column3">
             <ul>
               <b><h7>Account</h7></b>
-            <li><a href="membership.html">Membership</a></li>
-            <li><a href="paymentmethod.html">Payment Method</a></li>
+            <li><a href="#">Membership</a></li>
+            <li><a href="#">Payment Method</a></li>
             </ul>
           </div>
           <div class="column4">

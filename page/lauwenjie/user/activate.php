@@ -1,5 +1,5 @@
 <?php
-include '../_base.php';
+include '../../../_base.php';
 
 if (isset($_GET['token'])) {
     $token = $_GET['token'];

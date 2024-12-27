@@ -1,5 +1,5 @@
 <?php
-include '../_base.php';
+include '../../../_base.php';
 
 // ----------------------------------------------------------------------------
 
@@ -64,7 +64,7 @@ if (is_post()) {
             $stm->execute([$id, $memberId, $adminId]);
 
             // (6) Generate token URL
-            $url = base("user/token.php?id=$id");
+            $url = base("page/lauwenjie/user/token.php?id=$id");
 
             // (7) Prepare and send email content based on user role (member or admin)
             $m = get_mail();
@@ -104,10 +104,9 @@ if (is_post()) {
 // ----------------------------------------------------------------------------
 
 $_title = 'Member | Reset Password';
-include '../_head.php';
+include '../../../_head.php';
 ?>
 
-<<<<<<< Updated upstream
 
 <div class="login-container">
 <form method="post" class="form">
@@ -115,13 +114,6 @@ include '../_head.php';
     <label for="password">New Password</label>
     <?= html_password('password', 'maxlength="100"') ?>
     <?= err('password') ?>
-=======
-<style>
-    form {
-        margin-top: 200px;
-    }
-</style>
->>>>>>> Stashed changes
 
 <form method="post" class="form">
     <label for="email">Email</label>
@@ -135,5 +127,5 @@ include '../_head.php';
 </form>
 </div>
 <?php
-include '../_foot.php';
+include '../../../_foot.php';
 ?>

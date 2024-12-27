@@ -378,9 +378,6 @@ function logout($url = '/') {
 function auth(...$types) {
     global $_user;
 
-    if (empty($types)) {
-        return; // No restriction, user is authorized (either logged in or not)
-    }
     // Check if the user is logged in
     if ($_user) {
         // If types are provided, check if the user's type matches one of the allowed types

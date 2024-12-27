@@ -1,7 +1,7 @@
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 <?php
-include '../_base.php';
+include '../../../_base.php';
 
 // ----------------------------------------------------------------------------
 
@@ -176,14 +176,13 @@ if (is_post()) {
 // ----------------------------------------------------------------------------
 
 $_title = 'User | Register Member';
-include '../_head.php';
+include '../../../_head.php';
 ?>
 
 <div class="register-container">
 <h2>Register as Member</h2>
 <form method="post" class="form" enctype="multipart/form-data">
 
-<<<<<<< Updated upstream
     <label for="photo">Photo</label>
     <label class="upload" tabindex="0">
         <?= html_file('photo','image/*','hidden') ?>
@@ -192,36 +191,22 @@ include '../_head.php';
     <?= err('photo') ?>
 
     <label for="email">Email</label>
-=======
-<label for="photo">Photo</label>
-<label class="upload" tabindex="0">
-    <?= html_file('photo','image/*','hidden') ?>
-    <img src="/images/photo.jpg" id="photoPreview">
-</label>
-
-<!-- Start Webcam Button -->
-<button id="startWebcamButton">Start Webcam</button>
-
-<!-- Webcam Section -->
-<video id="webcam" width="200" height="200" autoplay></video>
-<button id="captureButton">Capture Photo</button>
-
-<!-- Canvas for capturing the image -->
-<canvas id="canvas" width="200" height="200" style="display:none;"></canvas>
-
-<?= err('photo') ?>
-<label for="email">Email</label>
->>>>>>> Stashed changes
     <?= html_text('email', 'maxlength="100"') ?>
     <?= err('email') ?>
 
-    <label for="password">Password</label>
-    <?= html_password('password', 'maxlength="100"') ?>
-    <?= err('password') ?>
+    <div style="position: relative;">
+        <label for="password">Password</label>
+        <?= html_password('password', 'maxlength="100" class="input-field" style="padding-right: 40px;"') ?>
+        <img src="/images/closed-eyes.png" alt="Show Password" id="togglePassword" class="eye-icon">
+        <?= err('password') ?>
+    </div>
 
-    <label for="confirm">Confirm</label>
-    <?= html_password('confirm', 'maxlength="100"') ?>
-    <?= err('confirm') ?>
+    <div style="position: relative;">
+        <label for="confirm">Confirm Password</label>
+        <?= html_password('confirm', 'maxlength="100" class="input-field" style="padding-right: 40px;"') ?>
+        <img src="/images/closed-eyes.png" alt="Show Password" id="toggleConfirmPassword" class="eye-icon">
+        <?= err('confirm') ?>
+    </div>
 
     <label for="name">Name</label>
     <?= html_text('name', 'maxlength="100"') ?>
@@ -275,6 +260,29 @@ include '../_head.php';
     </section>
 </form>
 </div>
+<script>
+// Toggle visibility for password
+    document.getElementById('togglePassword').addEventListener('click', function () {
+        const passwordInput = document.querySelector('[name="password"]');
+        toggleVisibility(passwordInput, this);
+    });
+
+    // Toggle visibility for confirm password
+    document.getElementById('toggleConfirmPassword').addEventListener('click', function () {
+        const confirmPasswordInput = document.querySelector('[name="confirm"]');
+        toggleVisibility(confirmPasswordInput, this);
+    });
+
+    function toggleVisibility(input, toggleIcon) {
+        if (input.type === 'password') {
+            input.type = 'text';
+            toggleIcon.src = '/images/opened-eye.png';
+        } else {
+            input.type = 'password';
+            toggleIcon.src = '/images/closed-eyes.png';
+        }
+    }
+</script>
 
 <?php
-include '../_foot.php';
+include '../../../_foot.php';

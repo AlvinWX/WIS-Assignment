@@ -214,8 +214,8 @@ include '_head.php';
     </form>
 
     <a>Don't have an account?</a>
-    <a href="/user/registerMember.php">Register</a></br>
-    <a href="/user/reset.php">Forgot Password?</a>
+    <a href="/page/lauwenjie/user/registerMember.php">Register</a></br>
+    <a href="/page/lauwenjie/user/reset.php">Forgot Password?</a>
 </div>
 
 

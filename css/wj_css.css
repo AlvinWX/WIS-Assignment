@@ -370,7 +370,7 @@ input:focus {
 
 .input-field {
     width: 100%;
-    max-width: 400px; /* Optional: Set a maximum width */
+    max-width: 550px; /* Optional: Set a maximum width */
     padding: 8px; /* Adjust padding as needed */
     font-size: 16px; /* Ensure text size matches */
     box-sizing: border-box; /* Include padding in width */
@@ -608,4 +608,9 @@ button.register-btn:hover {
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+
+.err {
+    color: red;
+    font-size: 14px;
 }

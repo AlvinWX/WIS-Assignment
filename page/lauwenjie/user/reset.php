@@ -1,5 +1,5 @@
 <?php
-include '../_base.php';
+include '../../../_base.php';
 
 // ----------------------------------------------------------------------------
 
@@ -30,13 +30,13 @@ if (is_post()) {
             ');
             $stm->execute([$u->member_id, $id, $u->member_id]);
 
-            $url = base("user/token.php?id=$id");
+            $url = base("page/lauwenjie/user/token.php?id=$id");
 
             $m = get_mail();
             $m->addAddress($u->member_email, $u->member_name);
             
             if (!empty($u->photo)) {
-                $m->addEmbeddedImage("../uploads/profiles/$u->member_profile_pic", 'photo');
+                $m->addEmbeddedImage("../../../images/uploads/profiles/$u->member_profile_pic", 'photo');
             }
 
             $m->isHTML(true);
@@ -62,7 +62,7 @@ if (is_post()) {
 // ----------------------------------------------------------------------------
 
 $_title = 'User | Reset Password';
-include '../_head.php';
+include '../../../_head.php';
 ?>
 
 <div class="login-container">
@@ -81,5 +81,5 @@ include '../_head.php';
 </form>
 
 <?php
-include '../_foot.php';
+include '../../../_foot.php';
 ?>
