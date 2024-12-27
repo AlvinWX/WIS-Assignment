@@ -38,6 +38,18 @@ include '../../_admin_head.php';
         <td><?= $s->voucher_desc ?></td>
     </tr>
     <tr>
+        <th>Points to Redeem</th>
+        <td><?= $s->voucher_points ?></td>
+    </tr>
+    <tr>
+        <th>Min Spend</th>
+        <td><?= $s->voucher_min_spend ?></td>
+    </tr>
+    <tr>
+        <th>Discounts</th>
+        <td><?= $s->voucher_discount ?></td>
+    </tr>
+    <tr>
         <th>Voucher Image</th>
         <td><img src="../../images/voucher_pic/<?= $s->voucher_img ?>"/></td>
     </tr>

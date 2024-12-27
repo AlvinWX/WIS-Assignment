@@ -67,7 +67,7 @@ document.getElementById('payment').addEventListener('submit', function(event) {
         ?>
         <div class="table-row">
         <div class="product-item">
-            <img src="../../page/yongqiaorou/images/<?= $s->product_cover ?>" alt="<?= $s->product_name ?>">
+            <img src="../../images/product_pic/<?= $s->product_cover ?>" alt="<?= $s->product_name ?>">
             <div class="product-text">
                 <span class="category-name"><?= $s->category_name ?></span>
                 <h2 class="product-name"><?= $s->product_name ?></h2>

@@ -155,14 +155,6 @@ $('label.upload input[type=file]').on('change', function(e) {
         }
     });
 });
-
-
-
-
-
-
-
-
-    
+ 
 
 });

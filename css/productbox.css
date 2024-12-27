@@ -77,9 +77,9 @@
     font-size: 20px;
     border-radius: 0.5rem 0 0.5rem 0;
     border: none;
-    min-height: 45px;
     max-width: 40px;
-    transform: translate(0%, 17%); 
+    text-decoration: none;
+    color: black;
 }
 
 .products-container .box .add-to-cart:hover{

@@ -26,8 +26,6 @@ $_title = 'voucher Recover';
 include '../../_admin_head.php';
 ?>
 
-<button data-get="/page/yongqiaorou/voucher.php"  class="back_button"><i class="fa fa-arrow-left" aria-hidden="true"></i>  Back</button>
-
 <?php if(count($arr)) {?>
 <p><?= count($arr) ?> record(s)</p>
 <table class="table" style="margin: auto;">
@@ -35,6 +33,10 @@ include '../../_admin_head.php';
         <th>Id</th>
         <th>Voucher Name</th>
         <th>Description</th>
+        <th>Points to Redeem</th>
+        <th>Min Spend</th>
+        <th>Discounts</th>
+        <th>Voucher Image</th>
         <th>Action</th>
     </tr>
 
@@ -43,6 +45,10 @@ include '../../_admin_head.php';
         <td><?= $v->voucher_id ?></td>
         <td><?= $v->voucher_name ?></td>
         <td><?= $v->voucher_desc ?></td>
+        <td><?= $v->voucher_points ?></td>
+        <td><?= $v->voucher_min_spend ?></td>
+        <td><?= $v->voucher_discount ?></td>
+        <td><img src="../../images/voucher_pic/<?= $v->voucher_img ?>"/></td>
         <td>
             <button  data-post="voucher_recover.php?id=<?= $v->voucher_id ?>"  style="width:200px">Recover Back</button>
         </td>
@@ -52,5 +58,8 @@ include '../../_admin_head.php';
 <?php }else{?>
     <p style="color:red;">No record deleted.</p>
 <?php }?>
+
+<button data-get="/page/yongqiaorou/voucher.php"><i class="fa fa-arrow-left" aria-hidden="true"></i>  Back</button>
+
 <?php
 include '../../_foot.php';

@@ -27,6 +27,9 @@ if (is_post()) {
     $id = req('id'); // <-- From URL
     $voucher_name = req('voucher_name');
     $voucher_desc = req('voucher_desc');
+    $voucher_points = req('voucher_points');
+    $voucher_min_spend = req('voucher_min_spend');
+    $voucher_discount = req('voucher_discount');
 
     // Validate name
     if ($voucher_name == '') {
@@ -40,6 +43,22 @@ if (is_post()) {
         $_err['voucher_desc'] = 'Required';
     } else if (strlen($voucher_desc) > 1000) {
         $_err['voucher_desc'] = 'Maximum length 1000';
+    }
+
+
+    // Validate point
+    if ($voucher_points == '') {
+        $_err['voucher_points'] = 'Required';
+    }
+
+    // Validate min spend
+    if ($voucher_min_spend == '') {
+        $_err['voucher_min_spend'] = 'Required';
+    }
+
+    // Validate discount
+    if ($voucher_discount == '') {
+        $_err['voucher_discount'] = 'Required';
     }
 
     
@@ -58,14 +77,14 @@ if (is_post()) {
     if (!$_err) {
         if (!empty($voucher_img)) {
             $stm = $_db->prepare('UPDATE voucher
-                                SET voucher_name = ?, voucher_desc = ?, voucher_img = ?, voucher_last_update = ?, admin_id = ?
+                                SET voucher_name = ?, voucher_desc = ?, voucher_points = ?, voucher_min_spend = ?, voucher_discount = ?, voucher_img = ?, voucher_last_update = ?, admin_id = ?
                                 WHERE voucher_id = ?');
-            $stm->execute([$voucher_name, $voucher_desc, $voucher_img, date("Y-m-d H:i:s"), $admin_id, $id]);
+            $stm->execute([$voucher_name, $voucher_desc, $voucher_points, $voucher_min_spend, $voucher_discount, $voucher_img, date("Y-m-d H:i:s"), $admin_id, $id]);
         } else {
             $stm = $_db->prepare('UPDATE voucher
-                                SET voucher_name = ?, voucher_desc = ?, voucher_last_update = ?, admin_id = ?
+                                SET voucher_name = ?, voucher_desc = ?, voucher_points = ?, voucher_min_spend = ?, voucher_discount = ?, voucher_last_update = ?, admin_id = ?
                                 WHERE voucher_id = ?');
-            $stm->execute([$voucher_name, $voucher_desc, date("Y-m-d H:i:s"), $admin_id, $id]);
+            $stm->execute([$voucher_name, $voucher_desc, $voucher_points, $voucher_min_spend, $voucher_discount, date("Y-m-d H:i:s"), $admin_id, $id]);
         }
         temp('info', 'Voucher updated');
         redirect('/page/yongqiaorou/voucher.php');
@@ -92,6 +111,18 @@ include '../../_admin_head.php';
     <?= html_text('voucher_desc', 'maxlength="1000"') ?>
     <?= err('voucher_desc') ?>
 
+    <label>Points to Redeem</label>
+    <?= html_number('voucher_points', 1, 100000, 0.01, '') ?>
+    <?= err('voucher_points') ?>
+    
+    <label>Min Spend</label>
+    <?= html_number('voucher_min_spend',  1,100000,0.01,'') ?>
+    <?= err('voucher_min_spend') ?>
+    
+    <label>Discounts</label>
+    <?= html_number('voucher_discount',  1,100000,0.01,'') ?>
+    <?= err('voucher_discount') ?>
+    
     <label for="voucher_img">Voucher Image</label>
     <label class="upload" tabindex="0">
         <?= html_file('voucher_img', 'image/*', 'hidden') ?>

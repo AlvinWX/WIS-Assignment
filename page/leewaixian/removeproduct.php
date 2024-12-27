@@ -9,10 +9,8 @@ $page = req('page');
 $remove_product_stm = $_db -> prepare('DELETE FROM cart_product WHERE product_id = ? AND cart_id = ?');
 $remove_product_stm -> execute([$id, $cart]);
 
-if($page == 'cart')
-    redirect('shoppingcart.php');
-else
-    redirect($page);
+redirect($page);
+
 ?>
 
 <!DOCTYPE html>
