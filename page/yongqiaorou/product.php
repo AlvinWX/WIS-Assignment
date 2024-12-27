@@ -144,11 +144,11 @@ if(count($arr)) { ?>
                                     <div class="carousel-inner" data-current="0">
                                         <?php foreach ($resources as $index => $resource): ?>
                                             <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
-                                                <?php if (strpos(mime_content_type("../../uploads/$resource"), 'image/') !== false): ?>
-                                                    <img class="d-block w-100 custom-carousel-item" src="/../../uploads/<?= $resource ?>" alt="Resource <?= $index + 1 ?>">
-                                                <?php elseif (strpos(mime_content_type("../../uploads/$resource"), 'video/') !== false): ?>
+                                                <?php if (strpos(mime_content_type("../../images/uploads/$resource"), 'image/') !== false): ?>
+                                                    <img class="d-block w-100 custom-carousel-item" src="/../../images/uploads/<?= $resource ?>" alt="Resource <?= $index + 1 ?>">
+                                                <?php elseif (strpos(mime_content_type("../../images/uploads/$resource"), 'video/') !== false): ?>
                                                     <video class="d-block w-100 custom-carousel-item" controls>
-                                                        <source src="/../../uploads/<?= $resource ?>" type="video/<?= pathinfo($resource, PATHINFO_EXTENSION) ?>">
+                                                        <source src="/../../images/uploads/<?= $resource ?>" type="video/<?= pathinfo($resource, PATHINFO_EXTENSION) ?>">
                                                     </video>
                                                 <?php endif; ?>
                                             </div>
