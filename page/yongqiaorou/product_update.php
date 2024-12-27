@@ -162,12 +162,18 @@ include '../../_admin_head.php';
     <?= html_select('category_id', $_categories) ?>
     <?= err('category_id') ?>
 
-    <label for="product_cover">Cover Picture</label>
+    <label for="product_cover" style="height:180px; width:150px; padding:10px; margin-top:auto">Cover Picture
+    <div class="tooltip">
+        <i class="fa fa-question-circle" aria-hidden="true"></i>
+        <span class="tooltiptext">Tick ✔️ at Extra Resources to Have Cover Picture</span>
+    </div>
+    </label>
     <div>
         <?= html_file('product_cover', 'image/*', 'hidden id="product_cover"') ?>
         <img id="preview" src="../../images/product_pic/<?= $product_cover ?>" style="width: 200px; height: 200px;">
     </div>
     <?= err('product_cover') ?>
+    
 
     <label for="product_photo">Extra Resources</label>
     <label class="upload" tabindex="0">
