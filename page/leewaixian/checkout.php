@@ -47,33 +47,9 @@ $voucherFound = $get_voucher_owned -> fetchAll();
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <script src="../../js/shoppingcart.js" defer></script>
+    <script src="../../js/checkout.js" defer></script>
     <title>Checkout</title>
 </head>
-<script>
-window.onload = function() {
-    document.getElementById('spinnerValue0').blur();
-};
-document.getElementById('payment').addEventListener('submit', function(event) {
-    var addressSelected = document.querySelector('input[name="address"]:checked');
-    if (!addressSelected) {
-        alert('Please select a shipping address.');
-        event.preventDefault(); 
-    }
-});
-
-var selectfield = document.getElementById("selectfield");
-var selecttext = document.getElementById("selecttext");
-var options = document.getElementsByClassName("options");
-
-for(option of options){
-    option.onclick = function(){
-        alert('click');
-        selecttext.innerHTML = this.textContent;
-    }
-}
-
-</script>
 <body>
     <div id="info"><?= temp('info')?></div>    
     <section class="cart-display">
@@ -145,10 +121,14 @@ for(option of options){
     <div class="select-voucher">
         <div id="selectfield">
             <p id="selecttext">No Vouchers Applied</p>
-            <img src="" alt="arrow">
+            <img src="../../images/arrow.png" alt="arrow" id="arrowicon">
         </div>
 
-            <ul id="list">
+            <ul id="list" class="hide">
+                <li class="options">
+                    <img src="../../images/novouchers.png">
+                    <p>No Vouchers Applied</p>
+                </li>
                 <?php foreach($voucherFound as $s): ?>
                 <li class="options">
                     <img src="../../images/voucher_pic/<?= $s -> voucher_img ?>">

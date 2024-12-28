@@ -197,25 +197,41 @@ body{
     opacity: 0.9;
 }
 
+.select-voucher {
+    position: relative; 
+    z-index: 2; 
+}
+
 #selectfield{
     width: 100%;
     box-sizing: border-box;
     border-radius: 6px;
     display: flex;
-    border:2px solid black;
+    border:3px solid black;
     justify-content: space-between;
     cursor: pointer;
 }
 
+#selectfield p{
+    margin-left: 30px;
+}
+
 #selectfield img {
-    width: 12px;
+    margin: 1px 8px 1px 0;
+    width: 40px;
+    transition: transform 0.5s;
 }
 
 #list{
-    width: 100%;
+    width: 96%;
     background: rgba(255, 255, 255, 0.7);
-    border-radius: 6px;
+    border-radius: 25px;
     overflow: hidden;
+    position: absolute;
+    top: 100%;
+    background: #FFFFFF; 
+    border: 3px solid #CCCCCC; 
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.15); 
 }
 
 .options{
@@ -230,10 +246,18 @@ body{
 .options img{
     width: 75px;
     position: absolute;
-    top: 12px;
+    top: 3px;
     left: 25px;
 }
 
 .options:hover{
-    background: #00d9ff;
+    background: #aeaeae;
+}
+
+.hide{
+    visibility: hidden;
+}
+
+.rotate{
+    transform: rotate(180deg);
 }
