@@ -1,0 +1,107 @@
+/* Block Container */
+.block-container {
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.block-con{
+    margin-top: 200px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #3697ff;
+    color: #fff;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Button Styles */
+button {
+    padding: 8px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+button.red-btn {
+    background-color: #e74c3c;
+    color: white;
+}
+
+button.red-btn:hover {
+    background-color: #c0392b;
+}
+
+button.blue-btn {
+    background-color: #3498db;
+    color: white;
+}
+
+button.blue-btn:hover {
+    background-color: #2980b9;
+}
+
+/* Confirm Action Button */
+.confirm-action-btn {
+    padding: 8px 15px;
+    font-size: 14px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.confirm-action-btn {
+    background-color: #f39c12;
+}
+
+.confirm-action-btn:hover {
+    background-color: #e67e22;
+}
+
+/* Blocked Status Styling */
+.blocked {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+.active {
+    color: #2ecc71;
+    font-weight: bold;
+}
+
+/* Responsive Table */
+@media (max-width: 768px) {
+    table {
+        font-size: 12px;
+    }
+
+    th, td {
+        padding: 8px 10px;
+    }
+
+    button {
+        font-size: 12px;
+    }
+}

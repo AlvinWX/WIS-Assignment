@@ -82,6 +82,7 @@ if (is_post()) {
 $_title = 'User | Reset Password';
 include '../../../_head.php';
 ?>
+<link rel="stylesheet" href="/css/wj_app.css">
 <div id="info"><?= temp('info')?></div>
 <div class="login-container">
     <form method="post" class="form">
