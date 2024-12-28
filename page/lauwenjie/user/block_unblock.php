@@ -52,6 +52,7 @@ if (is_post()) {
 $_title = 'Admin | Manage Users';
 include '../../../_head.php';
 ?>
+<link rel="stylesheet" href="/css/wj_app.css">
 <div class="block-con"></div>
 <div class="block-container">
 <h2>Admins</h2>

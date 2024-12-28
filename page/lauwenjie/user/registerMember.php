@@ -233,6 +233,7 @@ if (!$_err) {
 $_title = 'User | Register Member';
 include '../../../_head.php';
 ?>
+<link rel="stylesheet" href="/css/wj_app.css">
 <div id="info"><?= temp('info')?></div>
 <div class="register-container">
 <h2>Register as Member</h2>

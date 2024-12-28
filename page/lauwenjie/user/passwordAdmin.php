@@ -69,7 +69,7 @@ if (is_post()) {
 $_title = 'Admin | Password';
 include '../../../_head.php';
 ?>
-
+<link rel="stylesheet" href="/css/wj_app.css">
 <div class="login-container">
     <h2>Change Password</h2>
     <form method="post" class="form">
