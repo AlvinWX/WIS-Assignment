@@ -30,11 +30,6 @@ body, html {
     height: 550px;
 }
 
-th, td{
-    color: inherit !important;
-    background-color: #c5d4c5 !important;
-}
-
 .order-details {
     margin-top: 20px;
 }
