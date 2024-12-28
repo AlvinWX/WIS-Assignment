@@ -228,38 +228,6 @@ function sort_buttons2($fields, $sort, $dir, $href = '') {
 }
 
 // ============================================================================
-// Email Functions
-// ============================================================================           
-// Demo Accounts:
-// --------------
-// AACS3173@gmail.com           npsg gzfd pnio aylm
-// BAIT2173.email@gmail.com     ytwo bbon lrvw wclr
-// liaw.casual@gmail.com        wtpa kjxr dfcb xkhg
-// liawcv1@gmail.com            obyj shnv prpa kzvj
-
-// function get_mail() {
-//     require_once 'lib/PHPMailer.php';
-//     require_once 'lib/SMTP.php';
-
-//     $m = new PHPMailer(true);
-//     $m->isSMTP();
-//     $m->SMTPAuth = true;
-//     $m->Host = 'smtp.gmail.com';
-//     $m->Port = 587;
-//     $m->Username = 'targrocer@outlook.com';
-//     $m->Password = 'tar123grocer';
-//     $m->CharSet = 'utf-8';
-//     $m->setFrom($m->Username, 'TAR GROCER Admin');
-
-//     return $m;
-// }
-
-//Is email?
-function is_email($value) {
-    return filter_var($value, FILTER_VALIDATE_EMAIL) !== false;
-}
-
-// ============================================================================
 // Error Handlings
 // ============================================================================
 
@@ -304,6 +272,12 @@ function get_mail() {
     $m->setFrom($m->Username, '😺 TarGrocer');
 
     return $m;
+}
+
+
+//Is email?
+function is_email($value) {
+    return filter_var($value, FILTER_VALIDATE_EMAIL) !== false;
 }
 
 
