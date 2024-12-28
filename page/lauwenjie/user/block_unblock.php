@@ -82,6 +82,7 @@ include '../../../_head.php';
 ?>
 <link rel="stylesheet" href="/css/wj_app.css">
 <div class="block-con">
+    <h2>Block & Unblock User</h2>
     <form method="get" action="">
         <input type="text" name="search" placeholder="Search by name" value="<?= htmlspecialchars($search) ?>">
         <select name="status_filter">
