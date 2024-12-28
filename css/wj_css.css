@@ -260,7 +260,163 @@ main h1 {
     text-decoration: none;
 }
 
+/* =========================== */
+/* Form Styles (Login/Register) */
+/* =========================== */
+.login-container {
+    background-color: #fff;
+    padding: 3rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    margin: auto;
+    margin-top: 150px;
+    margin-bottom: 50px;
+}
+.register-container {
+    background-color: #fff;
+    padding: 3rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 550px;
+    text-align: center;
+    margin: auto;
+    margin-top: 150px;
+    margin-bottom: 50px;
+}
 
+h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+.message {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+    font-size: 1.1rem;
+}
+
+.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.login-form,
+.register-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+input {
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* =========================== */
+/* Button Styles                */
+/* =========================== */
+.login-btn,
+.register-btn {
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 10px;
+}
+
+.login-btn:hover,
+.register-btn:hover {
+    background-color: #0056b3;
+}
+
+.login-links {
+    margin-top: 2rem;
+    font-size: 1rem;
+}
+
+.login-links a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.login-links a:hover {
+    text-decoration: underline;
+}
+
+.login-links p {
+    margin: 0.5rem 0;
+}
+
+/* =========================== */
+/* Password Field Styles        */
+/* =========================== */
+.password-field-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-field-container input {
+    padding-right: 30px; /* Space for the eye icon */
+}
+
+.input-field {
+    width: 100%;
+    max-width: 550px; /* Optional: Set a maximum width */
+    padding: 8px; /* Adjust padding as needed */
+    font-size: 16px; /* Ensure text size matches */
+    box-sizing: border-box; /* Include padding in width */
+}
+
+.input-container {
+    position: relative;
+}
+
+.eye-icon {
+    position: absolute;
+    top: 47px;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 20px; /* Adjust width */
+    height: 20px; /* Adjust height */
+}
 
 /* =========================== */
 /* Footer Styles                */
