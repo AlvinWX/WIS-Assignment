@@ -193,8 +193,15 @@ include '../../../_head.php';
 
         <!-- Phone -->
         <label for="phone">Phone</label>
-        <input type="text" name="phone" maxlength="15" value="<?= htmlspecialchars($userPhone) ?>" />
-        <?= err('phone') ?>
+        <input 
+        type="text" 
+        id="phone" 
+        name="phone" 
+        maxlength="11" 
+        pattern="^01[0-9]{8,9}$" 
+        placeholder="e.g., 0121231234" >
+    <small id="phoneError" style="color: red; display: none;">Invalid phone number format.</small>
+    <?= err('phone') ?>
 
         <!-- Gender -->
         <label for="gender">Gender</label>
