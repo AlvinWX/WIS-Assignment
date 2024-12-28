@@ -12,7 +12,7 @@ $stm->execute([$id]);
 $s = $stm->fetch();
 
 if (!$s) { 
-    redirect('/');
+    redirect($fullPath);
 }
 
 $user = $_SESSION['user'] ?? null;

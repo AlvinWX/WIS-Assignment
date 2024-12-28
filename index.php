@@ -196,32 +196,35 @@ $_SESSION['path_details'] = $fullPath;
         <?php foreach ($lowest_price_arr as $s): ?>
             <div class="box">
                 <img src="images/product_pic/<?= $s->product_cover ?>" data-get="page/leewaixian/productinfo.php?id=<?= $s->product_id ?>">
-                <span data-get="page/leewaixian/productinfo.php?id=<?= $s->product_id ?>"><?= $s->category_name ?></span>
-                <h2 class="product-name" data-get="page/leewaixian/productinfo.php?id=<?= $s->product_id ?>"><?= $s->product_name ?></h2>
+                <span data-get="page/leewaixian/productinfo.php?id=<?= $s->product_id ?>"><?= $s->category_name?></span>
+                <h2 class="product-name" data-get="page/leewaixian/productinfo.php?id=<?= $s->product_id ?>"><?= $s->product_name?></h2>
                 <?php 
-                if(!empty($member_id)){
-                    $get_cart_product = $_db->prepare('SELECT * FROM cart_product WHERE product_id = ? AND cart_id = ?');
-                    $get_cart_product->execute([$s->product_id, $shoppingCart->cart_id]);
-                    $cartProductFound = $get_cart_product->fetch();
-                    if ($cartProductFound != null): ?>
-                        <h2 class="selected" data-get="page/leewaixian/productinfo.php?id=<?= $s->product_id ?>">Selected: <?= $cartProductFound->quantity ?></h2>
-                    <?php else: ?>
-                        <h2 class="selected"></h2>
-                    <?php endif; ?>
+                    if(!empty($member_id)){
+                        $get_cart_product = $_db->prepare('SELECT * FROM cart_product WHERE product_id = ? AND cart_id = ?');
+                        $get_cart_product -> execute([$s->product_id, $shoppingCart->cart_id]);
+                        $cartProductFound = $get_cart_product -> fetch();
+                        if($cartProductFound != null){ ?>
+                            <h2 class="selected" data-get="page/leewaixian/productinfo.php?id=<?= $s->product_id ?>">Selected: <?= $cartProductFound->quantity?></h2>
+                    <?php  } else { ?>
+                            <h2 class="selected"></h2>
+                        <?php  }
+                    }?>
+                    
                     <h3 class="price" data-get="page/leewaixian/productinfo.php?id=<?= $s->product_id ?>">RM <?= sprintf('%.2f', $s->product_price) ?></h3>
                     <a class= "add-to-cart" href="page/leewaixian/addquantity.php?id=<?= $s->product_id ?>"><i class="bx bx-cart-alt"></i></a>
                     <?php
+                    if(!empty($member_id)){
                         $check_wishlist_stm = $_db->prepare('SELECT COUNT(*) FROM wishlist_product WHERE wishlist_id = ? AND product_id = ?');
                         $check_wishlist_stm->execute([$wishlist->wishlist_id, $s->product_id]);
                         $isWished = $check_wishlist_stm->fetchColumn() == 0 ? false : true;
-                }
-                ?>
+                    }
+                    ?>
                     <svg class='bx bx-heart' viewBox='0 0 24 24' width='24' height='24' onclick="updateWishlist('<?= $s->product_id ?>', '<?= $isWished ? 'remove' : 'add' ?>', '<?= $wishlistId ?>' , this)">
                         <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="<?= $isWished ? '#ff007f' : 'none' ?>" stroke="#ff007f" stroke-width="2"/>
                     </svg>
                 <span class="sold" data-get="page/leewaixian/productinfo.php?id=<?= $s->product_id ?>"><?= $s->product_sold?> sold || <?= $s->product_stock?> left</span>
-</div>
-<?php endforeach ?>
+            </div>
+            <?php endforeach ?>
 
         </div>
             
