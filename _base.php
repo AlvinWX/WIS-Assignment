@@ -237,22 +237,22 @@ function sort_buttons2($fields, $sort, $dir, $href = '') {
 // liaw.casual@gmail.com        wtpa kjxr dfcb xkhg
 // liawcv1@gmail.com            obyj shnv prpa kzvj
 
-function get_mail() {
-    require_once 'lib/PHPMailer.php';
-    require_once 'lib/SMTP.php';
+// function get_mail() {
+//     require_once 'lib/PHPMailer.php';
+//     require_once 'lib/SMTP.php';
 
-    $m = new PHPMailer(true);
-    $m->isSMTP();
-    $m->SMTPAuth = true;
-    $m->Host = 'smtp.gmail.com';
-    $m->Port = 587;
-    $m->Username = 'targrocer@outlook.com';
-    $m->Password = 'tar123grocer';
-    $m->CharSet = 'utf-8';
-    $m->setFrom($m->Username, 'TAR GROCER Admin');
+//     $m = new PHPMailer(true);
+//     $m->isSMTP();
+//     $m->SMTPAuth = true;
+//     $m->Host = 'smtp.gmail.com';
+//     $m->Port = 587;
+//     $m->Username = 'targrocer@outlook.com';
+//     $m->Password = 'tar123grocer';
+//     $m->CharSet = 'utf-8';
+//     $m->setFrom($m->Username, 'TAR GROCER Admin');
 
-    return $m;
-}
+//     return $m;
+// }
 
 //Is email?
 function is_email($value) {
@@ -288,23 +288,23 @@ function err($key) {
 // liaw.casual@gmail.com        wtpa kjxr dfcb xkhg
 // liawcv1@gmail.com            obyj shnv prpa kzvj
 
-// // Initialize and return mail object
-// function get_mail() {
-//     require_once 'lib/PHPMailer.php';
-//     require_once 'lib/SMTP.php';
+// Initialize and return mail object
+function get_mail() {
+    require_once 'lib/PHPMailer.php';
+    require_once 'lib/SMTP.php';
 
-//     $m = new PHPMailer(true);
-//     $m->isSMTP();
-//     $m->SMTPAuth = true;
-//     $m->Host = 'smtp.gmail.com';
-//     $m->Port = 587;
-//     $m->Username = 'aacs3173@gmail.com';
-//     $m->Password = 'xxna ftdu plga hzxl';
-//     $m->CharSet = 'utf-8';
-//     $m->setFrom($m->Username, '😺 Admin');
+    $m = new PHPMailer(true);
+    $m->isSMTP();
+    $m->SMTPAuth = true;
+    $m->Host = 'smtp.gmail.com';
+    $m->Port = 587;
+    $m->Username = 'aacs3173@gmail.com';
+    $m->Password = 'xxna ftdu plga hzxl';
+    $m->CharSet = 'utf-8';
+    $m->setFrom($m->Username, '😺 TarGrocer');
 
-//     return $m;
-// }
+    return $m;
+}
 
 
 // ============================================================================
@@ -329,16 +329,11 @@ function is_exists($value, $table, $field) {
     global $_db;
     
     // Check in member table
-    $stm = $_db->prepare("SELECT COUNT(*) FROM member WHERE $field = ?");
+    $stm = $_db->prepare("SELECT COUNT(*) FROM $table WHERE $field = ?");
     $stm->execute([$value]);
     if ($stm->fetchColumn() > 0) {
         return true;
     }
-
-    // Check in admin table
-    $stm = $_db->prepare("SELECT COUNT(*) FROM admin WHERE $field = ?");
-    $stm->execute([$value]);
-    return $stm->fetchColumn() > 0;
 }
 // ============================================================================
 // Security

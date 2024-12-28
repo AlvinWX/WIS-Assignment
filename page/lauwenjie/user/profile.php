@@ -1,7 +1,7 @@
 <?php
 
 // Include your base configuration or database connection file
-include '../_base.php';
+include '../../../_base.php';
 
 // ----------------------------------------------------------------------------
 
@@ -37,7 +37,7 @@ if (isset($_SESSION['user'])) {
 <?php
 // Include the head template
 $_title = 'User Profile';
-include '../_head.php';
+include '../../../_head.php';
 ?>
 <div class="login-container">
 <form method="post" class="form" enctype="multipart/form-data">
@@ -45,7 +45,7 @@ include '../_head.php';
 <label for="photo">Profile Picture</label>
     <label class="upload" tabindex="0">
         <input type="file" name="photo" accept="image/*" hidden />
-        <img src="/uploads/profiles/<?= htmlspecialchars($userProfilePic) ?>" alt="Profile Picture" />
+        <img src="../../../images/uploads/profiles/<?= htmlspecialchars($userProfilePic) ?>" alt="Profile Picture" />
     </label>
     <?= err('photo') ?>
 
@@ -78,5 +78,5 @@ include '../_head.php';
 </div>
 <?php
 // Include the footer template
-include '../_foot.php';
+include '../../../_foot.php';
 ?>

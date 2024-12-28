@@ -1,5 +1,5 @@
 <?php
-include '../_base.php';
+include '../../../_base.php';
 
 // ----------------------------------------------------------------------------
 
@@ -23,7 +23,7 @@ if (is_post()) {
     else if (!is_email($email)) {
         $_err['email'] = 'Invalid email';
     }
-    else if (!is_unique($email, 'admin', 'adminEmail')) {
+    else if (!is_unique($email, 'admin', 'admin_email')) {
         $_err['email'] = 'Duplicated';
     }
 
@@ -85,17 +85,17 @@ if (is_post()) {
     // DB operation
     if (!$_err) {
         // (1) Save photo
-        $photo = save_photo($f, '../uploads/profiles');
+        $photo = save_photo($f, '../../../images/uploads/profiles');
 
         // (2) Generate adminID (Assuming adminID is a unique value, e.g., 'AM00001')
-        $stm = $_db->query('SELECT MAX(adminID) AS maxID FROM admin');
+        $stm = $_db->query('SELECT MAX(admin_id) AS maxID FROM admin');
         $result = $stm->fetch(PDO::FETCH_ASSOC);
         $lastID = $result['maxID'] ?? 'AM00000';
         $newID = sprintf('AM%05d', (int)substr($lastID, 2) + 1);
 
         // (3) Insert user (admin)
         $stm = $_db->prepare('
-        INSERT INTO admin (adminID, adminName, adminPassword, adminEmail, adminPhone, adminGender, adminProfilePic, adminTier)
+        INSERT INTO admin (admin_id, admin_name, admin_password, admin_email, admin_phone, admin_gender, admin_profile_pic, admin_tier)
         VALUES (?, ?, SHA1(?), ?, ?, ?, ?, ?)
         ');
         $currentDate = date('Y-m-d');
@@ -103,14 +103,14 @@ if (is_post()) {
 
 
         temp('info', 'Record inserted');
-        redirect('/login.php');
+        redirect('/page/chanyijing/admin/admin_management/admin_list.php');
     }
 }
 
 // ----------------------------------------------------------------------------
 
 $_title = 'Admin | Register';
-include '../_head.php';
+include '../../../_head.php';
 ?>
 <div class="login-container">
 <form method="post" class="form" enctype="multipart/form-data">
@@ -165,4 +165,4 @@ include '../_head.php';
 </form>
 </div>
 <?php
-include '../_foot.php';
+include '../../../_foot.php';
