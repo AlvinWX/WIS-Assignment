@@ -6,6 +6,13 @@ include '../../../_base.php';
 // Authenticated users (Admins only)
 auth('admin'); // Assume this function ensures only admins can access
 
+$user = $_SESSION['user'] ?? null;
+$admin_id = $user->admin_id;
+if(empty($admin_id)){
+    redirect('../../login.php');
+    temp('info',"Unauthourized Access");
+}
+
 if (is_post()) {
 
     $new_password = req('new_password');
@@ -39,7 +46,7 @@ if (is_post()) {
             SET admin_password = SHA1(?)
             WHERE admin_id = ?
         ');
-        $stm->execute([$new_password, $_user->id]);
+        $stm->execute(["$new_password", $admin_id]);
 
         temp('info', 'Password updated');
         redirect('/');
