@@ -4,7 +4,8 @@ function updateWishlist(productId, action,wishlistId, element) {
         type: 'POST',
         data: { product_id: productId, action: action, wishlist_id: wishlistId },
         success: function(response) {
-            console.log(response);
+            //console.log(response);
+            alert(response + " to " + wishlistId);
             if (response.trim() == 'added') {
                 element.querySelector('path').setAttribute('fill', '#ff007f');  // Fill heart
                 element.setAttribute('onclick', `updateWishlist('${productId}', 'remove', '${wishlistId}', this)`);  // Change action to remove

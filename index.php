@@ -8,9 +8,11 @@ $user = $_SESSION['user'] ?? null;
 $member_id = $user->member_id;
 $success = "";
 $error = "";
+
 if(!empty($member_id)){
     $success = $_SESSION['flash_success'] ?? '';
     $error = $_SESSION['flash_error'] ?? '';
+
 // Clear flash messages after displaying them
 unset($_SESSION['flash_success'], $_SESSION['flash_error']);
 
@@ -148,6 +150,7 @@ $_SESSION['path_details'] = $fullPath;
         </div>
 
         <div class="products-container">
+        <?php $wishlistId = $member_id!=null?$wishlist->wishlist_id:null; ?>
         <?php foreach ($top_selling_arr as $s): ?>
             <div class="box">
                 <img src="images/product_pic/<?= $s->product_cover ?>" data-get="page/leewaixian/productinfo.php?id=<?= $s->product_id ?>">
@@ -174,7 +177,7 @@ $_SESSION['path_details'] = $fullPath;
                         $isWished = $check_wishlist_stm->fetchColumn() == 0 ? false : true;
                     }
                     ?>
-                    <svg class='bx bx-heart' viewBox='0 0 24 24' width='24' height='24' onclick="updateWishlist('<?= $s->product_id ?>', '<?= $isWished ? 'remove' : 'add' ?>', '<?php $member_id?$wishlist->wishlist_id:null?>' , this)">
+                    <svg class='bx bx-heart' viewBox='0 0 24 24' width='24' height='24' onclick="updateWishlist('<?= $s->product_id ?>', '<?= $isWished ? 'remove' : 'add' ?>', '<?= $wishlistId ?>' , this)">
                         <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="<?= $isWished ? '#ff007f' : 'none' ?>" stroke="#ff007f" stroke-width="2"/>
                     </svg>
                 <span class="sold" data-get="page/leewaixian/productinfo.php?id=<?= $s->product_id ?>"><?= $s->product_sold?> sold || <?= $s->product_stock?> left</span>
@@ -209,9 +212,8 @@ $_SESSION['path_details'] = $fullPath;
                         $check_wishlist_stm->execute([$wishlist->wishlist_id, $s->product_id]);
                         $isWished = $check_wishlist_stm->fetchColumn() == 0 ? false : true;
                 }
-                    
                 ?>
-                    <svg class='bx bx-heart' viewBox='0 0 24 24' width='24' height='24' onclick="updateWishlist('<?= $s->product_id ?>', '<?= $isWished ? 'remove' : 'add' ?>', '<?= $member_id?$wishlist->wishlist_id :null?>' , this)">
+                    <svg class='bx bx-heart' viewBox='0 0 24 24' width='24' height='24' onclick="updateWishlist('<?= $s->product_id ?>', '<?= $isWished ? 'remove' : 'add' ?>', '<?= $wishlistId ?>' , this)">
                         <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="<?= $isWished ? '#ff007f' : 'none' ?>" stroke="#ff007f" stroke-width="2"/>
                     </svg>
                 <span class="sold" data-get="page/leewaixian/productinfo.php?id=<?= $s->product_id ?>"><?= $s->product_sold?> sold || <?= $s->product_stock?> left</span>

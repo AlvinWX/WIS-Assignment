@@ -2,6 +2,13 @@
 require '../../_base.php';
 include '../../_head.php';
 
+$user = $_SESSION['user'] ?? null;
+$member_id = $user->member_id;
+if(empty($member_id)){
+    redirect('../../login.php');
+    temp('info',"Unauthourized Access");
+}
+
 $success_details = $_SESSION['success_details'];
 
 $amount_paid = $success_details['amount_paid'];
