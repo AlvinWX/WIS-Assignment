@@ -46,7 +46,7 @@ if (is_post()) {
             SET admin_password = SHA1(?)
             WHERE admin_id = ?
         ');
-        $stm->execute(["$new_password", $admin_id]);
+        $stm->execute([$new_password, $admin_id]);
 
         temp('info', 'Password updated');
         redirect('/');
