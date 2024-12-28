@@ -60,10 +60,11 @@ if (is_post()) {
     if ($newName == '') {
         $_err['name'] = 'Name is required';
     }
+    
     // Validate phone
-    if (!$phone) {
+    if (!$newPhone) {
         $_err['phone'] = 'Required';
-    } else if (!preg_match('/^(01)[0-9]{8,9}$/', $phone)) {
+    } else if (!preg_match('/^(01)[0-9]{8,9}$/', $newPhone)) {
         $_err['phone'] = 'Invalid Malaysian phone number. Must start with "01" and contain 10 or 11 digits.';
     }
 
