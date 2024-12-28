@@ -2,9 +2,14 @@
 require '../../_base.php';
 include '../../_head.php';
 
-//Retrieve member cart
-$member_id = $user->member_id; 
+$user = $_SESSION['user'] ?? null;
+$member_id = $user->member_id;
+if(empty($member_id)){
+    redirect('../../login.php');
+    temp('info',"Unauthourized Access");
+}
 
+//Retrieve member cart
 $get_cart_stm = $_db -> prepare('SELECT * FROM cart c JOIN member m ON m.member_id = c.member_id WHERE c.member_id = ?');
 $get_cart_stm -> execute([$member_id]); 
 $shoppingCart = $get_cart_stm -> fetch();
@@ -19,6 +24,16 @@ $get_address_stm = $_db -> prepare('SELECT * FROM `address` WHERE member_id = ?'
 $get_address_stm -> execute([$member_id]); 
 $addresses = $get_address_stm -> fetchAll();
 
+//Retrieve member voucher list
+$get_voucherlist_stm = $_db -> prepare('SELECT * FROM voucher_list v JOIN member m ON m.member_id = v.member_id WHERE v.member_id = ?');
+$get_voucherlist_stm -> execute([$member_id]);
+$voucher_list = $get_voucherlist_stm -> fetch();
+
+//Retrieve member owned vouchers
+$get_voucher_owned = $_db->prepare('SELECT * FROM voucher_owned WHERE voucher_list_id = ?');
+$get_voucher_owned -> execute([$voucher_list -> voucher_list_id]);
+$voucherFound = $get_voucher_owned -> fetchAll();
+
 ?>
 
 <!DOCTYPE html>
@@ -32,21 +47,9 @@ $addresses = $get_address_stm -> fetchAll();
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <script src="../../js/shoppingcart.js" defer></script>
+    <script src="../../js/checkout.js" defer></script>
     <title>Checkout</title>
 </head>
-<script>
-window.onload = function() {
-    document.getElementById('spinnerValue0').blur();
-};
-document.getElementById('payment').addEventListener('submit', function(event) {
-    var addressSelected = document.querySelector('input[name="address"]:checked');
-    if (!addressSelected) {
-        alert('Please select a shipping address.');
-        event.preventDefault(); 
-    }
-});
-</script>
 <body>
     <div id="info"><?= temp('info')?></div>    
     <section class="cart-display">
@@ -114,6 +117,27 @@ document.getElementById('payment').addEventListener('submit', function(event) {
 <div class="heading">
         <h1>Apply Voucher</h1>
     </div>
+    
+    <div class="select-voucher">
+        <div id="selectfield">
+            <p id="selecttext">No Vouchers Applied</p>
+            <img src="../../images/arrow.png" alt="arrow" id="arrowicon">
+        </div>
+
+            <ul id="list" class="hide">
+                <li class="options">
+                    <img src="../../images/novouchers.png">
+                    <p>No Vouchers Applied</p>
+                </li>
+                <?php foreach($voucherFound as $s): ?>
+                <li class="options">
+                    <img src="../../images/voucher_pic/<?= $s -> voucher_img ?>">
+                    <p><?= $s -> voucher_name ?></p>
+                </li>
+                <?php endforeach ?>
+            </ul>
+    </div>
+
 </section>
  
 <section class ="shipping-address">

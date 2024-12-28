@@ -2,6 +2,13 @@
 require '../../_base.php';
 include '../../_head.php';
 
+$user = $_SESSION['user'] ?? null;
+$member_id = $user->member_id;
+if(empty($member_id)){
+    redirect('../../login.php');
+    temp('info',"Unauthourized Access");
+}
+
 $fullPath = $_SERVER['REQUEST_URI'];
 $_SESSION['path_details'] = $fullPath;
 
@@ -9,8 +16,6 @@ $page = req('page', 1);
 require_once '../../lib/SimplePager.php';
 $p = new SimplePager('SELECT * FROM voucher', [], 10, $page);
 $arr = $p->result;
-
-$member_id = $user->member_id; 
 
 //Retrieve member voucher_list
 $get_voucherlist_stm = $_db -> prepare('SELECT * FROM voucher_list v JOIN member m ON m.member_id = v.member_id WHERE v.member_id = ?');

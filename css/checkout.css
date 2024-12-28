@@ -91,7 +91,7 @@ body{
 
 .address-box {
     display: grid;
-    grid-template-columns: min-content min-content 1fr; /* Adjust columns to fit content and expand address */
+    grid-template-columns: min-content min-content 1fr; 
     align-items: center;
     background-color: white;
     border: 1px solid #ddd;
@@ -101,7 +101,7 @@ body{
                 5px 5px 10px rgba(0,0,0,0.15),
                 10px 10px 20px rgba(0,0,0,0.1);
     border-radius: 25px;
-    gap: 10px; /* Control spacing between grid items */
+    gap: 10px; 
 }
 
 .address-box:hover {
@@ -110,39 +110,39 @@ body{
 }
 
 .sequence {
-    margin-right: 10px; /* Space between sequence and radio button */
+    margin-right: 10px; 
     font-weight: 900;
 }
 
 .sequence, .address-box input[type="radio"] {
-    justify-self: center; /* Center these elements in their grid cells */
+    justify-self: center; 
 }
 
 .address-details {
-    overflow: hidden; /* Prevents overflow of text */
+    overflow: hidden; 
     font-weight: 600;
 }
 
 .address-box label {
-    display: contents; /* Allows label to behave like a grid container */
+    display: contents; 
 }
 
 .final-amount {
     display: flex;
     flex-direction: column;
-    width: 100%; /* Adjust width as necessary */
-    margin-top: 20px; /* Space from the previous content */
+    width: 100%; 
+    margin-top: 20px; 
 }
 
 .amount-row {
     display: flex;
-    justify-content: space-between; /* Aligns items to the left and right */
-    padding: 8px 0; /* Adds vertical padding for spacing */
-    border-bottom: 1px solid #ccc; /* Optional: adds a line under each item */
+    justify-content: space-between; 
+    padding: 8px 0; 
+    border-bottom: 1px solid #ccc; 
 }
 
 .amount-row:last-child {
-    border-bottom: none; /* Removes the border from the last item */
+    border-bottom: none; 
 }
 
 .subtitle{
@@ -197,3 +197,67 @@ body{
     opacity: 0.9;
 }
 
+.select-voucher {
+    position: relative; 
+    z-index: 2; 
+}
+
+#selectfield{
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 6px;
+    display: flex;
+    border:3px solid black;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+#selectfield p{
+    margin-left: 30px;
+}
+
+#selectfield img {
+    margin: 1px 8px 1px 0;
+    width: 40px;
+    transition: transform 0.5s;
+}
+
+#list{
+    width: 96%;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 25px;
+    overflow: hidden;
+    position: absolute;
+    top: 100%;
+    background: #FFFFFF; 
+    border: 3px solid #CCCCCC; 
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.15); 
+}
+
+.options{
+    width: 100%;
+    padding: 15px 0 15px 125px;
+    list-style: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.options img{
+    width: 75px;
+    position: absolute;
+    top: 3px;
+    left: 25px;
+}
+
+.options:hover{
+    background: #aeaeae;
+}
+
+.hide{
+    visibility: hidden;
+}
+
+.rotate{
+    transform: rotate(180deg);
+}

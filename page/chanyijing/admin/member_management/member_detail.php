@@ -26,7 +26,7 @@ include '../../../../_head.php';
     <tr>
         <th>Profile Picture</th>
         <td class="profile-pic-container">
-            <img src="../../../../images/profile_pic/<?=$s->member_profile_pic?>"></td>
+            <img src="/images/uploads/profiles/<?=$s->member_profile_pic?>"></td>
         <td>
     <tr>
         <th>Member ID</th>

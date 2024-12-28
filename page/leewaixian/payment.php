@@ -3,7 +3,12 @@ require '../../_base.php';
 require '../../lib/stripe-php-16.4.0/init.php';
 include '../../_head.php';
 
-$member_id = $user->member_id; 
+$user = $_SESSION['user'] ?? null;
+$member_id = $user->member_id;
+if(empty($member_id)){
+    redirect('../../login.php');
+    temp('info',"Unauthourized Access");
+}
 
 //Retrieve shipping address
 $get_address_stm = $_db -> prepare('SELECT * FROM `address` WHERE member_id = ?');

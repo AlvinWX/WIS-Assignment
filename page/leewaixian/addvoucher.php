@@ -1,12 +1,19 @@
 <?php
 include '../../_base.php';
 
+$user = $_SESSION['user'] ?? null;
+$member_id = $user->member_id;
+if(empty($member_id)){
+    redirect('../../login.php');
+    temp('info',"Unauthourized Access");
+}
+
 temp('info', 'Voucher redeemed successfully.');
 $id = req('id');
 $voucher_list_id = req('voucher_list_id');
 $page = req('page');
 
-//Get member id
+//Get member details
 $get_member_id_stm = $_db -> prepare('SELECT * FROM voucher_list v JOIN member m ON m.member_id = v.member_id WHERE voucher_list_id = ?');
 $get_member_id_stm -> execute([$voucher_list_id]);
 $member_details = $get_member_id_stm -> fetch();
