@@ -56,13 +56,13 @@
         </nav>
         <div class="right-logo">
             
-            <a href="/productsearch.php?product_name=&category_id=&minprice=&maxprice=&sort=product_name&dir=asc">
+            <!-- <a href="/productsearch.php?product_name=&category_id=&minprice=&maxprice=&sort=product_name&dir=asc">
                 <img class="search" src="/images/search.png" alt="Search Icon" id="search-icon">
             </a>
 
             <a href="/index.php">
                 <img src="/images/shopping-cart.png" alt="Clickable Image">
-            </a>
+            </a> -->
 
             <a href="/login.php">
                 <img src="/images/user.png" alt="Clickable Image">
