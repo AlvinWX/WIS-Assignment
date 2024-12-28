@@ -25,7 +25,7 @@ include '../../_admin_head.php';
 
 <?php if(count($arr)) {?>
 <p><?= count($arr) ?> record(s)</p>
-<table class="table">
+<table class="table" style="margin-left: auto; margin-right: auto;">
     <tr>
         <th>Id</th>
         <th>Name</th>
@@ -74,7 +74,7 @@ include '../../_admin_head.php';
                             <?php endif; ?>
                     <?php endif; ?>
                 </td>
-                <td><?= $s->product_desc ?></td>
+                <td class="description"><?= $s->product_desc ?></td>
                 <td><?= $s->product_price ?></td>
                 <td><?= $s->category_name?></td>
                 <td>
@@ -90,6 +90,18 @@ include '../../_admin_head.php';
 <button data-get="/page/yongqiaorou/product.php"><i class="fa fa-arrow-left" aria-hidden="true"></i>  Back</button>
 
 <script>
+    
+    document.addEventListener("DOMContentLoaded", function () {
+        const descriptions = document.querySelectorAll(".table td.description");
+
+        descriptions.forEach((desc) => {
+            const words = desc.textContent.split(" "); // Split the text into words
+            if (words.length > 10) {
+                desc.textContent = words.slice(0, 10).join(" ") + " ..."; // Keep the first 10 words and add "..."
+            }
+        });
+    });
+
     function startAutoSlide(carouselId) {
     const carousel = document.getElementById(carouselId);
     const inner = carousel.querySelector('.carousel-inner');

@@ -27,6 +27,9 @@ $discount = (double)$_POST['discount'];
 $total = (double)$_POST['total'];
 $points = (int)$_POST['points'];
 
+$voucher_name = $_POST['voucher_name'];
+$voucher_owned_id = (int)$_POST['voucher_owned_id'];
+
 //Retrive payment card details
 $get_payment_card_stm = $_db -> prepare('SELECT * FROM payment_card WHERE member_id = ?');
 $get_payment_card_stm -> execute([$member_id]); 
@@ -47,7 +50,9 @@ $_SESSION['order_details'] = [
     'subtotal' => (double)$_POST['subtotal'],
     'discount' => (double)$_POST['discount'],
     'total' => (double)$_POST['total'],
-    'points' => (int)$_POST['points']
+    'points' => (int)$_POST['points'],
+    'voucher_name' => $_POST['voucher_name'],
+    'voucher_owned_id' => (int)$_POST['voucher_owned_id']
 ];
 
 
@@ -155,6 +160,7 @@ header("Location: " . $checkout_session->url);
             <div class="heading"><h2>Enter Payment Card Details</h2></div>
             <div class="inputbox">
                 <span>Card Number</span>
+                <?= $voucher_name ?>
                 <input class="top" id="card_number" type="text" maxlength="16" class="card-number-input" name="card_number" placeholder="Enter the 16-digits card" value="<?= $card_number_value ?>">
             </div>
             <div class="inputbox">

@@ -9,6 +9,9 @@ if(empty($member_id)){
     temp('info',"Unauthourized Access");
 }
 
+// Get the discount from the session
+$discount = $_SESSION['discount'] ?? 0; 
+
 //Retrieve member cart
 $get_cart_stm = $_db -> prepare('SELECT * FROM cart c JOIN member m ON m.member_id = c.member_id WHERE c.member_id = ?');
 $get_cart_stm -> execute([$member_id]); 
@@ -28,11 +31,6 @@ $addresses = $get_address_stm -> fetchAll();
 $get_voucherlist_stm = $_db -> prepare('SELECT * FROM voucher_list v JOIN member m ON m.member_id = v.member_id WHERE v.member_id = ?');
 $get_voucherlist_stm -> execute([$member_id]);
 $voucher_list = $get_voucherlist_stm -> fetch();
-
-//Retrieve member owned vouchers
-$get_voucher_owned = $_db->prepare('SELECT * FROM voucher_owned WHERE voucher_list_id = ?');
-$get_voucher_owned -> execute([$voucher_list -> voucher_list_id]);
-$voucherFound = $get_voucher_owned -> fetchAll();
 
 ?>
 
@@ -109,9 +107,17 @@ $voucherFound = $get_voucher_owned -> fetchAll();
             <div class="header-item"></div>
             <div class="header-item"></div>
             <div class="header-item">RM <?= number_format($subtotal, 2) ?></div>
+            <div hidden><?= $subtotal = number_format($subtotal, 2) ?></div>
         </div>
     </div>
 </section>
+
+<?php
+//Retrieve member owned vouchers (but eligible to use only)
+$get_voucher_owned = $_db->prepare('SELECT * FROM voucher_owned WHERE voucher_list_id = ? AND voucher_min_spend <= ?');
+$get_voucher_owned -> execute([$voucher_list -> voucher_list_id, $subtotal]);
+$voucherFound = $get_voucher_owned -> fetchAll();
+?>
 
 <section class ="voucher-apply">
 <div class="heading">
@@ -119,26 +125,26 @@ $voucherFound = $get_voucher_owned -> fetchAll();
     </div>
     
     <div class="select-voucher">
-        <div id="selectfield">
-            <p id="selecttext">No Vouchers Applied</p>
-            <img src="../../images/arrow.png" alt="arrow" id="arrowicon">
-        </div>
-
-            <ul id="list" class="hide">
-                <li class="options">
-                    <img src="../../images/novouchers.png">
-                    <p>No Vouchers Applied</p>
-                </li>
-                <?php foreach($voucherFound as $s): ?>
-                <li class="options">
-                    <img src="../../images/voucher_pic/<?= $s -> voucher_img ?>">
-                    <p><?= $s -> voucher_name ?></p>
-                </li>
-                <?php endforeach ?>
-            </ul>
-            <input type="text" form="payment" value="">
+    <div id="selectfield">
+        <p id="selecttext">No Vouchers Applied</p>
+        <img src="../../images/arrow.png" alt="arrow" id="arrowicon">
     </div>
-
+    <ul id="list" class="hide">
+        <li class="options">
+            <img class="novoucher" src="../../images/novouchers.png">
+            <p class="voucher-option" data-discount="0" data-id="0">No Vouchers Applied</p>
+        </li>
+        <?php foreach($voucherFound as $s): ?>
+        <li class="options">
+            <img class="withvoucher" src="../../images/voucher_pic/<?= $s->voucher_img ?>">
+            <p class="voucher-option" data-discount="<?= $s->voucher_discount ?>" data-id="<?= $s -> voucher_owned_id ?>"><strong><?= $s->voucher_name ?></strong> (Min spend. RM <?= $s -> voucher_min_spend ?>) <div>Owned: <?= $s -> voucher_quantity ?></div></p>
+        </li>
+        <?php endforeach ?>
+    </ul>
+    <input type="text" hidden id="voucherinput" form="payment" name="voucher_name" value="No Vouchers Applied">
+    <input type="number" hidden id="voucherdiscount" form="payment" name="discount_price" value="0">
+    <input type="number"hidden id="voucherownedid" form="payment" name="voucher_owned_id" value="0">
+</div>
 </section>
  
 <section class ="shipping-address">
@@ -161,6 +167,10 @@ $voucherFound = $get_voucher_owned -> fetchAll();
     </div>
 </section>
 
+<?php
+    $discount = 0;
+?>
+
 <section class ="final-total">
     <div class="heading">
         <h1>Final Amount to Pay</h1>
@@ -168,22 +178,22 @@ $voucherFound = $get_voucher_owned -> fetchAll();
     <div class="final-amount">
         <div class="amount-row">
             <span class="subtitle">Subtotal:</span>
-            <span class="value">RM <?= number_format($subtotal, 2) ?></span>
+            <span class="value" id="subtotal">RM <?= number_format($subtotal, 2) ?></span>
             <div hidden><?= $total = $subtotal ?></div>
         </div>
         <div class="amount-row">
             <span class="subtitle">Discount:</span>
-            <span class="value">- RM <?= number_format(0, 2) ?></span>
-            <div hidden><?= $discount = 0; $total -= $discount ?></div>
+            <span class="value" id="discount">- RM <?= number_format($discount, 2) ?></span>
+            <div hidden><?= $total -= $discount ?></div>
         </div>
         <div class="amount-row">
             <span class="subtitle">Total Amount to Pay:</span>
-            <span class="value">RM <?= number_format($subtotal, 2) ?></span>
+            <span class="value" id="finaltotal">RM <?= number_format($total, 2) ?></span>
         </div>
         <div class="amount-row">
             <span class="subtitle">Points earned:</span>
-            <span class="value"><?= floor($subtotal) ?> points</span>
-            <div hidden><?= $points = floor($subtotal) ?></div>
+            <span class="value" id="points"><?= floor($total) ?> points</span>
+            <div hidden><?= $points = floor($total) ?></div>
         </div>
     </div>
 
@@ -197,9 +207,9 @@ $voucherFound = $get_voucher_owned -> fetchAll();
         <input hidden type="number" form="payment" step="0.01" value="<?= $tax ?>" name="tax">
         <input hidden type="number" form="payment" step="0.01" value="<?= $delivery_fee ?>" name="delivery_fee">
         <input hidden type="number" form="payment" step="0.01" value="<?= $subtotal ?>" name="subtotal">
-        <input hidden type="number" form="payment" step="0.01" value="<?= $discount?>" name="discount">
-        <input hidden type="number" form="payment" step="0.01" value="<?= $total ?>" name="total">
-        <input hidden type="number" form="payment" step ="1" value="<?= $points ?>" name="points">
+        <input hidden type="number" id="formdiscount" form="payment" step="0.01" value="<?= $discount?>" name="discount">
+        <input hidden type="number" id="formtotal" form="payment" step="0.01" value="<?= $total ?>" name="total">
+        <input hidden type="number" id="formpoints" form="payment" step ="1" value="<?= $points ?>" name="points">
         <input type="submit" form="payment" class="fakecard" name="submit" value="Payment Card">
         <input type="submit" form="payment" class="stripe" name="submit" value="Stripe">
         <button>Coming Soon</button>
