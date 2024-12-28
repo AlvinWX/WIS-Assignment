@@ -4,6 +4,7 @@ require '../../_base.php';
 
 $user = $_SESSION['user'] ?? null;
 $admin_id = $user->admin_id;
+$youtube_prefix = 'https://www.youtube.com/watch?v=';
 if(empty($admin_id)){
     redirect('../../login.php');
     temp('info',"Unauthourized Access");
@@ -16,6 +17,10 @@ $s = $stm->fetch();
 
 if (!$s) {
     redirect('/');
+}
+
+if (isset($product_youtube_url) && !empty($product_youtube_url) && strpos($product_youtube_url, $youtube_prefix) !== 0) {
+    $product_youtube_url = $youtube_prefix . $product_youtube_url;
 }
 
 // ----------------------------------------------------------------------------
