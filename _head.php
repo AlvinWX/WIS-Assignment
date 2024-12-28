@@ -79,11 +79,13 @@
                 <li><a href="/page/yongqiaorou/product.php">Product Management</a></li>
                         <li><a href="/page/yongqiaorou/category.php">Category Management</a></li>
                         <li><a href="/page/yongqiaorou/voucher.php">Voucher Management</a></li>
+                        <li><a href="/page/chanyijing/admin/admin_management/admin_list.php">Admin Management</a></li>
                 <li><a href="/page/chanyijing/admin/order_management/order_list.php">Order Listing</a></li>
                 <li><a href="#">Member Management</a>
                     <div class="dropdown-content">
                         <a href="/page/chanyijing/admin/member_management/member_list.php">Member List</a>
                         <a href="/page/chanyijing/admin/feedback/member_feedback.php">Member Feedback</a>
+<<<<<<< Updated upstream
 
                         <li><a href="#">Admin Management</a>
                     <div class="dropdown-content">
@@ -95,6 +97,8 @@
                         <?php endif; ?>
                     </div>
                 </li>
+=======
+>>>>>>> Stashed changes
                     <?php endif ?>
                 <?php else: ?>
 
