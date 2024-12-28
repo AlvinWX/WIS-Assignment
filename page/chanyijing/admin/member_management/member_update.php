@@ -33,18 +33,27 @@ if (is_get()) {
 }
 
 if (is_post()) {
-    $member_id       = req('member_id'); 
-    $member_name     = req('member_name');
-    $member_gender   = req('member_gender');
-    $member_email    = req('member_email'); 
-    $member_phone    = req('member_phone'); 
-    $address_street  = req('address_street');
-    $address_postcode= req('address_postcode');
-    $address_city    = req('address_city');
-    $address_state   = req('address_state');
+    $member_id          = req('member_id'); 
+    $member_name        = req('member_name');
+    $member_gender      = req('member_gender');
+    $member_email       = req('member_email'); 
+    $member_phone       = req('member_phone'); 
+    $address_street     = req('address_street');
+    $address_postcode   = req('address_postcode');
+    $address_city       = req('address_city');
+    $address_state      = req('address_state');
+
+    $f = get_file('member_pic');  
 
     // Validation errors array
     $_err = [];
+
+    // Validate member profile pic 
+    if ($f->tmp_name) {  
+        if (!str_Starts_with($f->type, 'image/')) {
+            $_err['member_pic'] = 'Must be image';
+        }
+    }
 
     // Validate member name
     if ($member_name == '') {
@@ -60,7 +69,7 @@ if (is_post()) {
         $_err['member_gender'] = 'Invalid value';
     }
 
-    // Validate member_email
+    // Validate member email
     if ($member_email == '') {
         $_err['member_email'] = 'Email is required.';
     } elseif (!filter_var($member_email, FILTER_VALIDATE_EMAIL)) {
@@ -69,7 +78,18 @@ if (is_post()) {
         $_err['member_email'] = 'Maximum length 320 characters.';
     }
 
-    // Validate address fields
+    // Validate member phone
+    if ($member_phone == '') {
+        $_err['member_phone'] = 'Phone number is required.';
+    } elseif (strlen($member_phone) != 10 && strlen($member_phone) != 11) {
+        $_err['member_phone'] = 'Invalid phone number.';
+    } elseif ($member_phone[0] != '0') {
+        $_err['member_phone'] = 'Phone number must start with 0.';
+    } elseif (!ctype_digit($member_phone)) {
+        $_err['member_phone'] = 'Phone number must contain only digits.';
+    }
+
+    // Validate member address
     if ($address_street == '') {
         $_err['address_street'] = 'Street is required.';
     } elseif (strlen($address_street) > 255) {
@@ -96,19 +116,37 @@ if (is_post()) {
 
     // Output
     if (!$_err) {
-        // Update member table
-        $stm = $_db->prepare('UPDATE member
-                              SET member_name = ?, member_gender = ?, member_email = ?, member_phone = ?
-                              WHERE member_id = ?');
-        $stm->execute([$member_name, $member_gender, $member_email, $member_phone, $member_id]);
+        
+        $f = isset($_FILES['member_pic']) ? $_FILES['member_pic'] : null;
 
-        // Update address table
+        if ($f && $f['error'] == UPLOAD_ERR_OK) {
+            $member_pic = uniqid() . '.jpg';
+            require_once '../../../../lib/SimpleImage.php';
+            $img = new SimpleImage();
+            
+            $img->fromFile($f['tmp_name']) 
+                ->thumbnail(200, 200)
+                ->toFile("../../../../images/uploads/profiles/$member_pic", 'image/jpeg');
+        }
+
+        if(!empty($member_pic)){
+            $stm = $_db->prepare('UPDATE member
+            SET member_profile_pic = ?, member_name = ?, member_gender = ?, member_email = ?, member_phone = ?
+            WHERE member_id = ?');
+            $stm->execute([$member_pic, $member_name, $member_gender, $member_email, $member_phone, $member_id]);
+        } else {
+            $stm = $_db->prepare('UPDATE member
+            SET member_name = ?, member_gender = ?, member_email = ?, member_phone = ?
+            WHERE member_id = ?');
+            $stm->execute([$member_name, $member_gender, $member_email, $member_phone, $member_id]);
+        }
+
         $stm = $_db->prepare('UPDATE address
                               SET address_street = ?, address_postcode = ?, address_city = ?, address_state = ?
                               WHERE member_id = ?');
         $stm->execute([$address_street, $address_postcode, $address_city, $address_state, $member_id]);
 
-        temp('info', 'Record updated successfully.');
+        temp('info', 'Member details updated successfully.');
         redirect('member_list.php');
     }
 }
@@ -121,7 +159,14 @@ include '../../../../_head.php';
     <h3>Update Member Details</h3>
 </div>
 
-<form method="post" class="update-form">
+<form method="post" class="update-form" enctype="multipart/form-data">
+    <label for="member_pic">Profile Picture</label>
+    <label class="upload" tabindex="0">
+        <?= html_file('member_pic','image/*','hidden') ?>
+        <img src="../../../../images/uploads/profiles/<?= $s->member_profile_pic ?>"/>
+    </label>
+    <?= err('member_pic') ?>
+
     <label for="member_id">Member ID</label>
     <b><?= $member_id ?></b>
     <?= err('member_id') ?>
@@ -144,19 +189,19 @@ include '../../../../_head.php';
 
     <label for="address_street">Street</label>
     <?= html_text('address_street', 'maxlength="255"', $address_street) ?>
-    <?= err('address') ?>
+    <?= err('address_street') ?>
 
     <label for="address_postcode">Postcode</label>
     <?= html_text('address_postcode', 'maxlength="5"', $address_postcode) ?>
-    <?= err('address') ?>
+    <?= err('address_postcode') ?>
 
     <label for="address_city">City</label>
     <?= html_text('address_city', 'maxlength="100"', $address_city) ?>
-    <?= err('address') ?>
+    <?= err('address_city') ?>
 
     <label for="address_state">State</label>
     <?= html_text('address_state', 'maxlength="100"', $address_state) ?>
-    <?= err('address') ?>
+    <?= err('address_state') ?>
 
     <section>
         <button data-get="member_list.php">Cancel</button>
