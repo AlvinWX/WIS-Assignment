@@ -81,8 +81,6 @@ if (is_post()) {
                 ->thumbnail(200, 200)
                 ->toFile("../../images/voucher_pic/$voucher_img", 'image/jpeg');
         }
-    } else {
-        $_err['voucher_img'] = 'Voucher Image is required';
     }
 
     // Output
