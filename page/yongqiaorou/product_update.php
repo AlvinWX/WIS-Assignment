@@ -94,9 +94,9 @@ if (is_post()) {
     
                 $extension = pathinfo($name, PATHINFO_EXTENSION);
                 if (!in_array($extension, ['jpg', 'jpeg', 'png', 'webp'])) {
-                    $_err['product_photo'] = 'All files must be images';
+                    $_err['product_photo'] = 'All files must be images. Please upload again.';
                 } else if ($size > 1 * 1024 * 1024) {
-                    $_err['product_photo'] = 'Each image must be under 1MB';
+                    $_err['product_photo'] = 'Each image must be under 1MB. Please upload again.';
                 } else {
                     if(empty($product_cover)){
                         $_err['product_cover'] = 'Cover Picture is required';
