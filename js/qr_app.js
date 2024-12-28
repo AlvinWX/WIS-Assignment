@@ -37,19 +37,20 @@ $(() => {
     
         // Check if the element has a `data-confirm` attribute
         const confirmText = e.target.dataset.confirm;
+        console.log(confirmText);
         if (confirmText) {
             if (!confirm(confirmText)) {
                 // Stop execution if user cancels
                 return false;
+            }else {
+                const url = e.target.dataset.post;
+                const f = $('<form>').appendTo(document.body)[0];
+                f.method = 'POST';
+                f.action = url || location;
+                f.submit();
             }
         }
     
-        // Proceed with POST request
-        const url = e.target.dataset.post;
-        const f = $('<form>').appendTo(document.body)[0];
-        f.method = 'POST';
-        f.action = url || location;
-        f.submit();
     });
 
     
