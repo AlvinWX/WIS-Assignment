@@ -2,9 +2,9 @@
 require '../../_base.php';
 // ----------------------------------------------------------------------------
 
-
 $user = $_SESSION['user'] ?? null;
 $admin_id = $user->admin_id;
+$youtube_prefix = 'https://www.youtube.com/watch?v=';
 if(empty($admin_id)){
     redirect('../../login.php');
     temp('info',"Unauthourized Access");
@@ -22,6 +22,10 @@ if (is_get()) {
     }
 
     extract((array)$s);
+
+    if (isset($product_youtube_url) && strpos($product_youtube_url, $youtube_prefix) !== 0) {
+        $product_youtube_url = $youtube_prefix . $product_youtube_url;
+    }
 }
 
 if (is_post()) {
@@ -53,6 +57,7 @@ if (is_post()) {
     if ($product_price == '') {
         $_err['product_price'] = 'Required';
     }
+
 
     // Validate stock
     if ($product_stock == '') {
@@ -105,6 +110,16 @@ if (is_post()) {
             
         }
         
+    }
+
+    // Validate youtube url
+    if ($product_youtube_url == '') {
+        $_err['product_youtube_url'] = 'Required';
+    } elseif (strpos($product_youtube_url, 'https://www.youtube.com/watch?v=') === 0) {
+        $prefix = 'https://www.youtube.com/watch?v=';
+        $product_youtube_url = str_replace($prefix, '', $product_youtube_url);
+    } else {
+        $_err['product_youtube_url'] = 'Invalid YouTube URL format. It must start with "https://www.youtube.com/watch?v="';
     }
 
     // Output
