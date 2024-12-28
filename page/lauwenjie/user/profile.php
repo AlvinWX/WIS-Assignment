@@ -60,9 +60,13 @@ if (is_post()) {
     if ($newName == '') {
         $_err['name'] = 'Name is required';
     }
-    if ($newPhone == '') {
-        $_err['phone'] = 'Phone is required';
+    // Validate phone
+    if (!$phone) {
+        $_err['phone'] = 'Required';
+    } else if (!preg_match('/^(01)[0-9]{8,9}$/', $phone)) {
+        $_err['phone'] = 'Invalid Malaysian phone number. Must start with "01" and contain 10 or 11 digits.';
     }
+
     if ($newGender == '') {
         $_err['gender'] = 'Gender is required';
     }
@@ -193,15 +197,9 @@ include '../../../_head.php';
 
         <!-- Phone -->
         <label for="phone">Phone</label>
-        <input 
-        type="text" 
-        id="phone" 
-        name="phone" 
-        maxlength="11" 
-        pattern="^01[0-9]{8,9}$" 
-        placeholder="e.g., 0121231234" >
-    <small id="phoneError" style="color: red; display: none;">Invalid phone number format.</small>
-    <?= err('phone') ?>
+        
+        <input type="text" name="phone" maxlength="11" value="<?= htmlspecialchars($userPhone) ?>" />
+        <?= err('phone') ?>
 
         <!-- Gender -->
         <label for="gender">Gender</label>
