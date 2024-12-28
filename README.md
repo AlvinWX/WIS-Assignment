@@ -2,8 +2,13 @@
 
 # Login Credentials
 
+## For testing Purpose
+- **Please use a real email address to register as member for receive email**
+- **For register as admin need to login High tier admin to  register**
+
+
 ## Admin Login:
-# High
+# High Tier 
 - **Email**: `alvinlee123@gmail.com`
 - **Password**: `admin123`
 
