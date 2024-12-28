@@ -128,15 +128,19 @@ include '../../../_head.php';
     <?= html_text('email', 'maxlength="100"') ?>
     <?= err('email') ?>
 
-    <div style="position: relative;">
+    <<div style="position: relative;">
         <label for="password">Password</label>
         <?= html_password('password', 'maxlength="100" class="input-field" style="padding-right: 40px;"') ?>
         <img src="/images/closed-eyes.png" alt="Show Password" id="togglePassword" class="eye-icon">
         <?= err('password') ?>
     </div>
-    <label for="confirm">Confirm</label>
-    <?= html_password('confirm', 'maxlength="100"') ?>
-    <?= err('confirm') ?>
+
+    <div style="position: relative;">
+        <label for="confirm">Confirm Password</label>
+        <?= html_password('confirm', 'maxlength="100" class="input-field" style="padding-right: 40px;"') ?>
+        <img src="/images/closed-eyes.png" alt="Show Password" id="toggleConfirmPassword" class="eye-icon">
+        <?= err('confirm') ?>
+    </div>
 
     <label for="name">Name</label>
     <?= html_text('name', 'maxlength="100"') ?>
