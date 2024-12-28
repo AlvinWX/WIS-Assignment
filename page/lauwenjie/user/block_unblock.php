@@ -1,19 +1,57 @@
 <?php
 include '../../../_base.php';
 
-// ----------------------------------------------------------------------------
+auth('admin');
 
-// Authenticated users (Only Admins can view and block/unblock users)
-auth('admin'); // Ensure only admins can access this page
+$loggedInAdminTier = $_SESSION['admin_tier'] ?? 'Low';
 
-// Get logged-in admin tier (e.g., 'high', 'low')
-$loggedInAdminTier = $_SESSION['admin_tier'] ?? 'Low'; // Default to 'low' if not set
+// Get search, filter, and sort parameters
+$search = req('search') ?? '';
+$filter_status = req('status_filter') ?? '';
+$sort_order = req('sort') === 'desc' ? 'DESC' : 'ASC';
 
-// Fetch all admins and members
-$admins = $_db->query('SELECT admin_id, admin_name, status FROM admin')->fetchAll();
-$members = $_db->query('SELECT member_id, member_name, status FROM member')->fetchAll();
+// Build query for admins
+$query = "SELECT admin_id, admin_name, status FROM admin";
+$conditions = [];
+$params = [];
 
-// Handle block/unblock request
+if ($search) {
+    $conditions[] = "admin_name LIKE ?";
+    $params[] = '%' . $search . '%';
+}
+if ($filter_status) {
+    $conditions[] = "status = ?";
+    $params[] = $filter_status;
+}
+if (!empty($conditions)) {
+    $query .= " WHERE " . implode(' AND ', $conditions);
+}
+$query .= " ORDER BY admin_id $sort_order";
+$stm = $_db->prepare($query);
+$stm->execute($params);
+$admins = $stm->fetchAll();
+
+// Build query for members
+$query = "SELECT member_id, member_name, status FROM member";
+$conditions = [];
+$params = [];
+
+if ($search) {
+    $conditions[] = "member_name LIKE ?";
+    $params[] = '%' . $search . '%';
+}
+if ($filter_status) {
+    $conditions[] = "status = ?";
+    $params[] = $filter_status;
+}
+if (!empty($conditions)) {
+    $query .= " WHERE " . implode(' AND ', $conditions);
+}
+$query .= " ORDER BY member_id $sort_order";
+$stm = $_db->prepare($query);
+$stm->execute($params);
+$members = $stm->fetchAll();
+
 if (is_post()) {
     $user_id = req('user_id');
     $user_type = req('user_type');
@@ -23,99 +61,98 @@ if (is_post()) {
     }
 
     if (!$_err) {
-        // Determine the table and field based on user type
-        if ($user_type == 'member') {
-            $table = 'member';
-        } else {
-            $table = 'admin';
-        }
+        $table = ($user_type == 'member') ? 'member' : 'admin';
 
-        // Fetch current status
         $stm = $_db->prepare("SELECT status FROM $table WHERE ${user_type}_id = ?");
         $stm->execute([$user_id]);
         $current_status = $stm->fetchColumn();
 
-        // Toggle the status between 'active' and 'blocked'
         $new_status = ($current_status == 'active') ? 'blocked' : 'active';
 
-        // Update the status
         $stm = $_db->prepare("UPDATE $table SET status = ? WHERE ${user_type}_id = ?");
         $stm->execute([$new_status, $user_id]);
 
         temp('info', ucfirst($user_type) . ' status updated to ' . $new_status);
-        redirect('/page/lauwenjie/user/block_unblock.php'); // Refresh the page after action
+        redirect('/page/lauwenjie/user/block_unblock.php');
     }
 }
-
-// ----------------------------------------------------------------------------
 
 $_title = 'Admin | Manage Users';
 include '../../../_head.php';
 ?>
 <link rel="stylesheet" href="/css/wj_app.css">
-<div class="block-con"></div>
-<div class="block-container">
-<h2>Admins</h2>
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Status</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-    <?php foreach ($admins as $a): ?>
-    <tr>
-        <td><?= htmlspecialchars($a->admin_id) ?></td>
-        <td><?= htmlspecialchars($a->admin_name) ?></td>
-        <td class="<?= htmlspecialchars($a->status) ?>"><?= ucfirst($a->status) ?></td>
-        <td>
-            <?php if ($loggedInAdminTier === 'High'): ?>
-                <?php if ($a->status === 'active'): ?>
-                    <button class="red-btn" data-id="<?= $a->admin_id ?>" data-type="admin" data-action="block">Block</button>
-                <?php elseif ($a->status === 'blocked'): ?>
-                    <button class="blue-btn" data-id="<?= $a->admin_id ?>" data-type="admin" data-action="unblock">Unblock</button>
-                <?php endif; ?>
-            <?php endif; ?>
-        </td>
-    </tr>
-    <?php endforeach; ?>
-    </tbody>
-</table>
-</div>
-<div class="block-container">
-<h2>Members</h2>
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Status</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach ($members as $member): ?>
+<div class="block-con">
+    <form method="get" action="">
+        <input type="text" name="search" placeholder="Search by name" value="<?= htmlspecialchars($search) ?>">
+        <select name="status_filter">
+            <option value="">All</option>
+            <option value="active" <?= $filter_status == 'active' ? 'selected' : '' ?>>Active</option>
+            <option value="blocked" <?= $filter_status == 'blocked' ? 'selected' : '' ?>>Blocked</option>
+        </select>
+        <select name="sort">
+            <option value="asc" <?= $sort_order == 'ASC' ? 'selected' : '' ?>>Sort by ID (ASC)</option>
+            <option value="desc" <?= $sort_order == 'DESC' ? 'selected' : '' ?>>Sort by ID (DESC)</option>
+        </select>
+        <button type="submit">Apply</button>
+    </form>
+
+    <div class="block-container">
+        <h2>Admins</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($admins as $a): ?>
+            <tr>
+                <td><?= htmlspecialchars($a->admin_id) ?></td>
+                <td><?= htmlspecialchars($a->admin_name) ?></td>
+                <td class="<?= htmlspecialchars($a->status) ?>"><?= ucfirst($a->status) ?></td>
+                <td>
+                    <?php if ($loggedInAdminTier === 'High'): ?>
+                        <button class="confirm-action-btn" data-id="<?= $a->admin_id ?>" data-type="admin" data-status="<?= $a->status ?>">
+                            <?= $a->status == 'active' ? 'Block' : 'Unblock' ?>
+                        </button>
+                    <?php endif; ?>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="block-container">
+        <h2>Members</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($members as $member): ?>
             <tr>
                 <td><?= htmlspecialchars($member->member_id) ?></td>
                 <td><?= htmlspecialchars($member->member_name) ?></td>
                 <td class="<?= htmlspecialchars($member->status) ?>"><?= ucfirst($member->status) ?></td>
                 <td>
-                    <form method="post" style="display:inline;" id="blockUnblockForm">
-                        <input type="hidden" name="user_id" value="<?= $member->member_id ?>">
-                        <input type="hidden" name="user_type" value="member">
-                        <button type="button" class="confirm-action-btn" data-id="<?= $member->member_id ?>" data-type="member" data-status="<?= $member->status ?>">
-                            <?= $member->status == 'active' ? 'Block' : 'Unblock' ?>
-                        </button>
-                    </form>
+                    <button class="confirm-action-btn" data-id="<?= $member->member_id ?>" data-type="member" data-status="<?= $member->status ?>">
+                        <?= $member->status == 'active' ? 'Block' : 'Unblock' ?>
+                    </button>
                 </td>
             </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
-</div>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
 </div>
 <script>
     // Handle the double confirmation
@@ -139,7 +176,4 @@ include '../../../_head.php';
         });
     });
 </script>
-
-<?php
-include '../../../_foot.php';
-?>
+<?php include '../../../_foot.php'; ?>

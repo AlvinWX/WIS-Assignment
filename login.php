@@ -9,7 +9,6 @@ $otp_verified = false;
 if (is_post()) {
     $email = req('email');
     $password = req('password');
-    $remember = req('remember') === 'on';
 
     // Email Login Validation
     if ($email == '') {
@@ -34,12 +33,10 @@ if (is_post()) {
 
     if (!$_err) {
         // Check if the user is a member
-        // Check if the user is a member
         $stm = $_db->prepare('
             SELECT *, "member" AS userType FROM member
             WHERE member_email = ? AND member_password = SHA1(?)
         ');
-        $stm->execute([$email, $password]);
         $stm->execute([$email, $password]);
         $user = $stm->fetch();
 
@@ -82,9 +79,7 @@ if (is_post()) {
     }
 }
 
-// Auto-fill if "Remember Me" was set
-$email = $_COOKIE['email'] ?? '';
-$password = isset($_COOKIE['password']) ? '' : '';
+
 $_title = 'Login';
 include '_head.php';
 ?>
@@ -109,10 +104,7 @@ include '_head.php';
         <button type="reset" class="login-btn">Reset</button>
     </form>
     </br>
-    <div class="remember-box">
-            <input type="checkbox" name="remember" id="remember">
-            <label for="remember" style="cursor: pointer;" class="remember-text">Remember Me</label>
-        </div>
+
     </form>
 
     <a>Don't have an account?</a>
