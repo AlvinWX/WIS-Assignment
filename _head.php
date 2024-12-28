@@ -76,11 +76,18 @@
         <!-- Show logout and other admin-related links only if the user is logged in -->
         <?php if ($user): ?>
             <?php if ($user->userType == 'admin'): ?>
-                <li><a href="/page/yongqiaorou/product.php">Product Management</a></li>
-                        <li><a href="/page/yongqiaorou/category.php">Category Management</a></li>
-                        <li><a href="/page/yongqiaorou/voucher.php">Voucher Management</a></li>
-                        <li><a href="/page/chanyijing/admin/admin_management/admin_list.php">Admin Management</a></li>
-                <li><a href="/page/chanyijing/admin/order_management/order_list.php">Order Listing</a></li>
+                <li><a href="#">Product Management</a>
+                <div class="dropdown-content">
+                    <a href="/page/yongqiaorou/product.php">Product Management</a>
+                    <a href="/page/yongqiaorou/category.php">Category Management</a>
+                </div>
+                </li>
+                <li><a href="#">Order Management</a>
+                    <div class="dropdown-content">
+                        <a href="/page/yongqiaorou/voucher.php">Voucher Management</a>
+                        <a href="/page/chanyijing/admin/order_management/order_list.php">Order Listing</a>
+                    </div>
+                    </li>
                 <li><a href="#">Member Management</a>
                     <div class="dropdown-content">
                         <a href="/page/chanyijing/admin/member_management/member_list.php">Member List</a>
