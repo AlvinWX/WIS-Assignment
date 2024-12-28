@@ -1,6 +1,7 @@
 <?php
 require '../../_base.php';
 
+auth();
 $user = $_SESSION['user'] ?? null;
 $admin_id = $user->admin_id;
 if(empty($admin_id)){
