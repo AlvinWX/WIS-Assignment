@@ -1,6 +1,7 @@
 <?php
 require '../../_base.php';
 
+auth();
 $user = $_SESSION['user'] ?? null;
 $admin_id = $user->admin_id;
 if(empty($admin_id)){
@@ -36,7 +37,7 @@ if ($search_value != '') {
     $query .= " AND p.$search_field LIKE :search_value";
     $bindValues[':search_value'] = '%' . $search_value . '%';
 }
-
+$query .= " ORDER BY product_id ASC";
 // Prepare and execute the query
 $stmt = $_db->prepare($query);
 foreach ($bindValues as $param => $value) {
