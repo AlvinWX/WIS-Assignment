@@ -38,7 +38,7 @@
 
 
 	function autoSliding(){
-		deletInterval = setInterval(timer, 3000);
+		deletInterval = setInterval(timer, 5000);
 		function timer(){
 			slideNext();
 			indicators();

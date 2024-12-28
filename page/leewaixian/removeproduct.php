@@ -1,6 +1,13 @@
 <?php
 include '../../_base.php';
 
+$user = $_SESSION['user'] ?? null;
+$member_id = $user->member_id;
+if(empty($member_id)){
+    redirect('../../login.php');
+    temp('info',"Unauthourized Access");
+}
+
 temp('info', 'Item removed form cart.');
 $id = req('id');
 $cart = req('cart_id');

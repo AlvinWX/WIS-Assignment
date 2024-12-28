@@ -1,6 +1,13 @@
 <?php
 require '../../_base.php';  // Ensure this points to your database connection settings
 
+$user = $_SESSION['user'] ?? null;
+$member_id = $user->member_id;
+if(empty($member_id)){
+    redirect('../../login.php');
+    temp('info',"Unauthourized Access");
+}
+
 if (isset($_POST['product_id'], $_POST['action'])) {
     $product_id = $_POST['product_id'];
     $wishlist_id = $_POST['wishlist_id'];  // Assume session contains wishlist_id

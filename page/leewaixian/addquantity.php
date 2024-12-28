@@ -2,6 +2,13 @@
 require '../../_base.php';
 include '../../_head.php';
 
+$user = $_SESSION['user'] ?? null;
+$member_id = $user->member_id;
+if(empty($member_id)){
+    redirect('../../login.php');
+    temp('info',"Unauthourized Access");
+}
+
 $productID = req('id');
 
 $fullPath = $_SESSION['path_details'];
@@ -24,8 +31,6 @@ if(str_contains($fullPath, 'productsearch.php')){
 
 
 //Retrieve member cart
-$member_id = $user->member_id; 
-
 $get_cart_stm = $_db -> prepare('SELECT * FROM cart c JOIN member m ON m.member_id = c.member_id WHERE c.member_id = ?');
 $get_cart_stm -> execute([$member_id]);
 $shoppingCart = $get_cart_stm -> fetch();

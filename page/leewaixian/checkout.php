@@ -2,9 +2,14 @@
 require '../../_base.php';
 include '../../_head.php';
 
-//Retrieve member cart
-$member_id = $user->member_id; 
+$user = $_SESSION['user'] ?? null;
+$member_id = $user->member_id;
+if(empty($member_id)){
+    redirect('../../login.php');
+    temp('info',"Unauthourized Access");
+}
 
+//Retrieve member cart
 $get_cart_stm = $_db -> prepare('SELECT * FROM cart c JOIN member m ON m.member_id = c.member_id WHERE c.member_id = ?');
 $get_cart_stm -> execute([$member_id]); 
 $shoppingCart = $get_cart_stm -> fetch();
@@ -18,6 +23,16 @@ $cart_products = $get_products_stm -> fetchAll();
 $get_address_stm = $_db -> prepare('SELECT * FROM `address` WHERE member_id = ?');
 $get_address_stm -> execute([$member_id]); 
 $addresses = $get_address_stm -> fetchAll();
+
+//Retrieve member voucher list
+$get_voucherlist_stm = $_db -> prepare('SELECT * FROM voucher_list v JOIN member m ON m.member_id = v.member_id WHERE v.member_id = ?');
+$get_voucherlist_stm -> execute([$member_id]);
+$voucher_list = $get_voucherlist_stm -> fetch();
+
+//Retrieve member owned vouchers
+$get_voucher_owned = $_db->prepare('SELECT * FROM voucher_owned WHERE voucher_list_id = ?');
+$get_voucher_owned -> execute([$voucher_list -> voucher_list_id]);
+$voucherFound = $get_voucher_owned -> fetchAll();
 
 ?>
 
@@ -46,6 +61,18 @@ document.getElementById('payment').addEventListener('submit', function(event) {
         event.preventDefault(); 
     }
 });
+
+var selectfield = document.getElementById("selectfield");
+var selecttext = document.getElementById("selecttext");
+var options = document.getElementsByClassName("options");
+
+for(option of options){
+    option.onclick = function(){
+        alert('click');
+        selecttext.innerHTML = this.textContent;
+    }
+}
+
 </script>
 <body>
     <div id="info"><?= temp('info')?></div>    
@@ -114,6 +141,23 @@ document.getElementById('payment').addEventListener('submit', function(event) {
 <div class="heading">
         <h1>Apply Voucher</h1>
     </div>
+    
+    <div class="select-voucher">
+        <div id="selectfield">
+            <p id="selecttext">No Vouchers Applied</p>
+            <img src="" alt="arrow">
+        </div>
+
+            <ul id="list">
+                <?php foreach($voucherFound as $s): ?>
+                <li class="options">
+                    <img src="../../images/voucher_pic/<?= $s -> voucher_img ?>">
+                    <p><?= $s -> voucher_name ?></p>
+                </li>
+                <?php endforeach ?>
+            </ul>
+    </div>
+
 </section>
  
 <section class ="shipping-address">

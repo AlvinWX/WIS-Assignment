@@ -15,7 +15,12 @@ if (!$s) {
     redirect('/');
 }
 
-$member_id = $user->member_id; 
+$user = $_SESSION['user'] ?? null;
+$member_id = $user->member_id;
+if(empty($member_id)){
+    redirect('../../login.php');
+    temp('info',"Unauthourized Access");
+}
 
 //Retrieve member voucher_list
 $get_voucherlist_stm = $_db -> prepare('SELECT * FROM voucher_list v JOIN member m ON m.member_id = v.member_id WHERE v.member_id = ?');
