@@ -14,7 +14,7 @@ if (is_post()) {
     $stm->execute([$admin_id, date("Y-m-d H:i:s"), $id]);
 
     temp('info', 'Product recovered');
-
+    redirect('product.php');
 }
 $arr = $_db->query('SELECT * FROM product p JOIN category c ON p.category_id = c.category_id WHERE p.product_status = 0')->fetchAll();
 
