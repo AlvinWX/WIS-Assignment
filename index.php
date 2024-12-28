@@ -37,7 +37,7 @@ $check_wishlist_exists_stm = $_db -> prepare('SELECT COUNT(*) FROM wishlist w JO
 $check_wishlist_exists_stm -> execute([$member_id]);
 
 if($check_wishlist_exists_stm -> fetchColumn() == 0){
-    /* If the member first time go into the page (The member don't have the wsihlist before) */
+    /* If the member first time go into the page (The member don't have the wishlist before) */
     $create_wishlist_stm = $_db -> prepare('INSERT INTO wishlist (member_id) VALUES (?)');
     $create_wishlist_stm -> execute([$member_id]);
 } 
@@ -46,6 +46,16 @@ if($check_wishlist_exists_stm -> fetchColumn() == 0){
 $get_wishlist_stm = $_db -> prepare('SELECT * FROM wishlist w JOIN member m ON m.member_id = w.member_id WHERE w.member_id = ?');
 $get_wishlist_stm -> execute([$member_id]);
 $wishlist = $get_wishlist_stm -> fetch();
+
+//VOUCHER LIST
+$check_voucher_list_exists_stm = $_db -> prepare('SELECT COUNT(*) FROM voucher_list v JOIN member m ON m.member_id = v.member_id WHERE v.member_id = ?');
+$check_voucher_list_exists_stm -> execute([$member_id]);
+
+if($check_voucher_list_exists_stm -> fetchColumn() == 0){
+    /* If the member first time go into the page (The member don't have the voucher list before) */
+    $create_voucherlist_stm = $_db -> prepare('INSERT INTO voucher_list (member_id) VALUES (?)');
+    $create_voucherlist_stm -> execute([$member_id]);
+}
 
 $fullPath = $_SERVER['REQUEST_URI'];
 
