@@ -66,7 +66,7 @@ if (is_post()) {
                 <p>
                     Please click <a href='$url'>here</a> to reset your password.
                 </p>
-                <p>From, 😺 Admin</p>
+                <p>From, 😺 Tar Grocer</p>
             ";
 
             $m->send();

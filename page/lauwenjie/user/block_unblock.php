@@ -7,7 +7,7 @@ include '../../../_base.php';
 auth('admin'); // Ensure only admins can access this page
 
 // Get logged-in admin tier (e.g., 'high', 'low')
-$loggedInAdminTier = $_SESSION['admin_tier'] ?? 'low'; // Default to 'low' if not set
+$loggedInAdminTier = $_SESSION['admin_tier'] ?? 'Low'; // Default to 'low' if not set
 
 // Fetch all admins and members
 $admins = $_db->query('SELECT admin_id, admin_name, status FROM admin')->fetchAll();
@@ -71,7 +71,7 @@ include '../../../_head.php';
         <td><?= htmlspecialchars($a->admin_name) ?></td>
         <td class="<?= htmlspecialchars($a->status) ?>"><?= ucfirst($a->status) ?></td>
         <td>
-            <?php if ($loggedInAdminTier === 'high'): ?>
+            <?php if ($loggedInAdminTier === 'High'): ?>
                 <?php if ($a->status === 'active'): ?>
                     <button class="red-btn" data-id="<?= $a->admin_id ?>" data-type="admin" data-action="block">Block</button>
                 <?php elseif ($a->status === 'blocked'): ?>

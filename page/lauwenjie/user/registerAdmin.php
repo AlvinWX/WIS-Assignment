@@ -2,7 +2,7 @@
 include '../../../_base.php';
 
 // ----------------------------------------------------------------------------
-
+auth('admin');
 if (is_post()) {
     $email    = req('email');
     $password = req('password');
