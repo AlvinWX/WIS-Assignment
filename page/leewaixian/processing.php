@@ -30,6 +30,8 @@ $subtotal = $order_details['subtotal'];
 $discount = $order_details['discount'];
 $total = $order_details['total'];
 $points = $order_details['points'];
+$voucher_name = $order_details['voucher_name'];
+$voucher_owned_id = $order_details['voucher_owned_id'];
 
 if($paymentMethod=="Payment Card"){
     //Payment form
@@ -107,7 +109,7 @@ $receivedDate = (new DateTime('+3 days'))->format('Y-m-d 0:0:0');
 
 $create_order_stm->execute([
     $order_subtotal, $tax, $delivery_fee, $subtotal,
-    'Voucher', $discount, $total, $points,
+    $voucher_name, $discount, $total, $points,
     $orderDate, $shipDate, $receivedDate,
     'Pending', $ad->shipping_address_id, $user->member_id
 ]);
@@ -149,6 +151,14 @@ foreach ($cart_products as $a){
     $update_product_quantity_stm -> execute([$a->quantity, $a->quantity, $a->product_id]);
 }
 
+//Deduct Member's Voucher (if any)
+if($voucher_name != "No Vouchers Applied"){
+    $deduct_voucher_stm = $_db -> prepare('UPDATE voucher_owned SET voucher_quantity = voucher_quantity - 1 WHERE voucher_owned_id = ?');
+    $deduct_voucher_stm -> execute([$voucher_owned_id]);
+
+    //Remove the voucher_owned OR voucher quantity is 0
+    $remove_voucher_owned_stm = $_db -> query('DELETE FROM voucher_owned WHERE voucher_quantity = 0');
+}
 
 //Clear shopping cart
 $clear_order_cart = $_db -> prepare('DELETE FROM cart_product WHERE cart_id = ?');

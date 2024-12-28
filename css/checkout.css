@@ -207,7 +207,7 @@ body{
     box-sizing: border-box;
     border-radius: 6px;
     display: flex;
-    border:3px solid black;
+    border: 3px solid black;
     justify-content: space-between;
     cursor: pointer;
 }
@@ -243,10 +243,17 @@ body{
     position: relative;
 }
 
-.options img{
+.options .novoucher{
     width: 75px;
     position: absolute;
     top: 3px;
+    left: 25px;
+}
+
+.options .withvoucher{
+    width: 75px;
+    position: absolute;
+    top: 20px;
     left: 25px;
 }
 

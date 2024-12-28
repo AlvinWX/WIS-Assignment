@@ -20,4 +20,16 @@ function confirmDelete(id, cart, page) {
     }
 }
 
+document.getElementById('quantitySelect').addEventListener('submit', function(event) {
+  var quantityInput = document.getElementById('spinnerValue');
+  var quantity = parseInt(quantityInput.value, 10);
+  var maxQuantity = parseInt(quantityInput.max, 10);
+  var minQuantity = parseInt(quantityInput.min, 10);
+
+  if (isNaN(quantity) || quantity < minQuantity || quantity > maxQuantity) {
+      alert('Please enter a valid quantity between ' + minQuantity + ' and ' + maxQuantity + '.');
+      event.preventDefault(); // Prevent form submission
+  }
+});
+
 
