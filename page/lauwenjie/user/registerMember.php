@@ -37,9 +37,23 @@ if (is_post()) {
     }
     else if (!is_email($email)) {
         $_err['email'] = 'Invalid email';
-    }
-    else if (!is_unique($email, 'pending_members', 'member_email') && !is_unique($email, 'member', 'member_email')) {
-        $_err['email'] = 'Duplicated';
+    } 
+    else {
+        // Check if the email exists in any table (pending_members, member, admin)
+        $stm = $_db->prepare('
+            SELECT COUNT(*) FROM pending_members WHERE member_email = ?
+            UNION ALL
+            SELECT COUNT(*) FROM member WHERE member_email = ?
+            UNION ALL
+            SELECT COUNT(*) FROM admin WHERE admin_email = ?
+        ');
+        $stm->execute([$email, $email, $email]);
+        $counts = $stm->fetchAll(PDO::FETCH_COLUMN);
+        
+        // If any of the counts is greater than 0, the email is already registered
+        if (array_sum($counts) > 0) {
+            $_err['email'] = 'Email already registered (member or admin).';
+        }
     }
 
     // Validate: password
@@ -54,12 +68,13 @@ if (is_post()) {
     if (!$confirm) {
         $_err['confirm'] = 'Required';
     }
-    else if (strlen($confirm) < 5 || strlen($confirm) > 100) {
-        $_err['confirm'] = 'Between 5-100 characters';
-    }
     else if ($confirm != $password) {
         $_err['confirm'] = 'Not matched';
     }
+    else if (strlen($confirm) < 5 || strlen($confirm) > 100) {
+        $_err['confirm'] = 'Between 5-100 characters';
+    }
+    
 
     // Validate: name
     if (!$name) {
@@ -123,62 +138,102 @@ if (is_post()) {
         $_err['state'] = 'Maximum 100 characters';
     }
 
-    // DB operation
-    if (!$_err) {
-        $photo = save_photo($f, '../../../images/uploads/profiles');
+    // DB operation after member registration
+if (!$_err) {
+    $photo = save_photo($f, '../../../images/uploads/profiles');
 
-        $stm = $_db->query('SELECT MAX(member_id) AS maxID FROM pending_members');
-        $result = $stm->fetch(PDO::FETCH_ASSOC);
-        $lastID = $result['maxID'] ?? 'PM00000';
-        $newID = sprintf('PM%05d', (int)substr($lastID, 2) + 1);
+    // Get the latest member ID to generate new one
+    $stm = $_db->query('SELECT MAX(member_id) AS maxID FROM member');
+    $result = $stm->fetch();
+    $lastID = $result->maxID ?? 'MB00000'; // Ensure valid lastID
+    $newID = sprintf('MB%05d', (int)substr($lastID, 2) + 1); // Ensure formatting
 
-        $token = sha1(uniqid() . rand());
-        $currentDate = date('Y-m-d');
+    $token = sha1(uniqid() . rand());
+    $currentDate = date('Y-m-d');
+    $tokenExpiry = date('Y-m-d H:i:s', strtotime('+5 minutes'));
 
-        try {
-            $stm = $_db->prepare('
-                INSERT INTO pending_members (member_id, member_name, member_password, member_email, member_phone, member_gender, member_profile_pic, member_date_joined, token)
-                VALUES (?, ?, SHA1(?), ?, ?, ?, ?, ?, ?)
-            ');
-            $stm->execute([$newID, $name, $password, $email, $phone, $gender, $photo, $currentDate, $token]);
+    try {
+        // Prepare the insert statement
+        $stm = $_db->prepare('
+            INSERT INTO pending_members (
+                member_id, 
+                member_name, 
+                member_password, 
+                member_email, 
+                member_phone, 
+                member_gender, 
+                member_profile_pic, 
+                member_date_joined, 
+                token, 
+                token_expiry, 
+                status, 
+                member_points, 
+                member_address, 
+                member_postcode, 
+                member_city, 
+                member_state
+            )
+            VALUES (?, ?, SHA1(?), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ');
+    
+        // Bind values and execute
+        $stm->execute([
+            $newID, 
+            $name, 
+            $password, 
+            $email, 
+            $phone, 
+            $gender, 
+            $photo, 
+            $currentDate, 
+            $token, 
+            $tokenExpiry, 
+            'active', 
+            100, 
+            $address, 
+            $postcode, 
+            $city, 
+            $state
+        ]);
 
-            $url = base("page/lauwenjie/user/activate.php?token=$token");
-            $m = get_mail();
-            $m->addAddress($email, $name);
-            $m->addEmbeddedImage("../../../images/uploads/profiles/$photo", 'photo');
-            $m->isHTML(true);
-            $m->Subject = 'Activate your account';
-            $m->Body = "
-                <img src='cid:photo' style='width: 200px; height: 200px; border: 1px solid #333'>
-                <p>Dear $name,</p>
-                <h1 style='color: red'>Activate Your Account</h1>
-                <p>Please click <a href='$url'>here</a> to activate your account.</p>
-                <p>From, 😺 Admin</p>
-            ";
+        // Send activation email
+        $url = base("page/lauwenjie/user/activate.php?token=$token");
+        $m = get_mail();
+        $m->addAddress($email, $name);
+        $m->addEmbeddedImage("../../../images/uploads/profiles/$photo", 'photo');
+        $m->isHTML(true);
+        $m->Subject = 'Activate your account';
+        $m->Body = "
+            <img src='cid:photo' style='width: 200px; height: 200px; border: 1px solid #333'>
+            <p>Dear $name,</p>
+            <h1 style='color: red'>Activate Your Account</h1>
+            <p>Please click <a href='$url'>here</a> to activate your account.</p>
+            <p>From, 😺 Admin</p>
+        ";
 
-            if ($m->send()) {
-                echo 'Activation link sent to your email.';
-            } else {
-                $_err['email'] = 'Failed to send email.';
-            }
-        } catch (PDOException $e) {
-            if ($e->getCode() == 23000) {
-                $_err['email'] = 'Email already registered.';
-            } else {
-                throw $e;
-            }
+        if ($m->send()) {
+            echo 'Activation link sent to your email.';
+            temp('info', 'Email sent, please verify your account!');
+        } else {
+            $_err['email'] = 'Failed to send email.';
         }
-
-        redirect('/login.php');
+    } catch (PDOException $e) {
+        if ($e->getCode() == 23000) {
+            $_err['email'] = 'Email already registered.';
+        } else {
+            throw $e;
+        }
     }
-}  
 
+    redirect('/login.php');
+}
+}
 // ----------------------------------------------------------------------------
 
 $_title = 'User | Register Member';
 include '../../../_head.php';
 ?>
-
+<div id="info"><?= temp('info')?></div>
 <div class="register-container">
 <h2>Register as Member</h2>
 <form method="post" class="form" enctype="multipart/form-data">
@@ -219,9 +274,7 @@ include '../../../_head.php';
         name="phone" 
         maxlength="11" 
         pattern="^01[0-9]{8,9}$" 
-        placeholder="e.g., 0121231234" 
-        required
-        oninput="validatePhone()">
+        placeholder="e.g., 0121231234" >
     <small id="phoneError" style="color: red; display: none;">Invalid phone number format.</small>
     <?= err('phone') ?>
 

@@ -232,10 +232,10 @@ function sort_buttons2($fields, $sort, $dir, $href = '') {
 // ============================================================================           
 // Demo Accounts:
 // --------------
-//bait2173.email@gmail.com    ncom fsil wjzk ptre 
-//aacs3173@gmail.com        xxna ftdu plga hzxl 
-//liaw.casual@gmail.com        buvq yftx klma vezl 
-//liawcv1@gmail.com        pztq znli gpjg tooe
+// bait2173.email@gmail.com    ncom fsil wjzk ptre 
+// aacs3173@gmail.com        xxna ftdu plga hzxl 
+// liaw.casual@gmail.com        buvq yftx klma vezl 
+// liawcv1@gmail.com        pztq znli gpjg tooe
 
 function get_mail() {
     require_once 'lib/PHPMailer.php';
@@ -246,8 +246,8 @@ function get_mail() {
     $m->SMTPAuth = true;
     $m->Host = 'smtp.gmail.com';
     $m->Port = 587;
-    $m->Username = 'liawcv1@gmail.com';
-    $m->Password = 'pztq znli gpjg tooe';
+    $m->Username = 'aacs3173@gmail.com';
+    $m->Password = 'xxna ftdu plga hzxl';
     $m->CharSet = 'utf-8';
     $m->setFrom($m->Username, 'TAR GROCER Admin');
 
@@ -294,6 +294,7 @@ function is_unique($value, $table, $field) {
     return $stm->fetchColumn() == 0;
 }
 
+// Check if email exists in either the member or admin tables
 // Check if email exists in either the member or admin tables
 function is_exists($value, $table, $field) {
     global $_db;

@@ -63,8 +63,9 @@ if (is_post()) {
             $stm = $_db->prepare('DELETE FROM token_admin WHERE id = ?');
             $stm->execute([$id]);
         }
-
         temp('success', 'Password updated successfully.');
+        sleep(5);
+        
         redirect('/login.php');
     }
 }
@@ -74,23 +75,54 @@ if (is_post()) {
 $_title = 'Reset Password';
 include '../../../_head.php';
 ?>
-
+<div id="info"><?= temp('info')?></div>
 <div class="login-container">
     <form method="post" class="form">
         <h2>Reset Password</h2>
+        <div style="position: relative;">
         <label for="password">New Password</label>
-        <?= html_password('password', 'maxlength="100"') ?>
+        <?= html_password('password', 'maxlength="100" class="input-field" style="padding-right: 40px;"') ?>
+        <img src="/images/closed-eyes.png" alt="Show Password" id="togglePassword" class="eye-icon">
         <?= err('password') ?>
+        </div>
         
+        <div style="position: relative;">
         <label for="confirm_password">Confirm Password</label>
-        <?= html_password('confirm_password', 'maxlength="100"') ?>
+        <?= html_password('password', 'maxlength="100" class="input-field" style="padding-right: 40px;"') ?>
+        <img src="/images/closed-eyes.png" alt="Show Password" id="togglePassword" class="eye-icon">
         <?= err('confirm_password') ?>
+        </div>
         <section>
-            <button>Submit</button>
-            <button type="reset">Reset</button>
+            <button class="login-btn">Submit</button>
+            <button type="reset" class="login-btn">Reset</button>
         </section>
     </form>
 </div>
+
+<script>
+// Toggle visibility for password
+    document.getElementById('togglePassword').addEventListener('click', function () {
+        const passwordInput = document.querySelector('[name="password"]');
+        toggleVisibility(passwordInput, this);
+    });
+
+    // Toggle visibility for confirm password
+    document.getElementById('toggleConfirmPassword').addEventListener('click', function () {
+        const confirmPasswordInput = document.querySelector('[name="confirm"]');
+        toggleVisibility(confirmPasswordInput, this);
+    });
+
+    function toggleVisibility(input, toggleIcon) {
+        if (input.type === 'password') {
+            input.type = 'text';
+            toggleIcon.src = '/images/opened-eye.png';
+        } else {
+            input.type = 'password';
+            toggleIcon.src = '/images/closed-eyes.png';
+        }
+    }
+</script>
+
 
 <?php
 include '../../../_foot.php';

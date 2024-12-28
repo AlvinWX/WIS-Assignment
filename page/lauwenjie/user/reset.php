@@ -55,15 +55,12 @@ if (is_post()) {
             $m = get_mail();
             $m->addAddress($u->member_email ?? $u->admin_email, $u->member_name ?? $u->admin_name);
 
-            if (!empty($u->photo)) {
-                $m->addEmbeddedImage("../../../images/uploads/profiles/" . ($u->photo ?? $u->admin_profile_pic), 'photo');
-            }
+            
 
             $m->isHTML(true);
             $m->Subject = 'Reset Password';
             $m->Body = "
-                <img src='cid:photo'
-                     style='width: 200px; height: 200px; border: 1px solid #333'>
+                
                 <p>Dear " . ($u->member_name ?? $u->admin_name) . ",</p>
                 <h1 style='color: red'>Reset Password</h1>
                 <p>
@@ -73,6 +70,7 @@ if (is_post()) {
             ";
 
             $m->send();
+            temp('info', 'Email sent!');
         } else {
             $_err['email'] = 'Email does not exist';
         }
@@ -84,7 +82,7 @@ if (is_post()) {
 $_title = 'User | Reset Password';
 include '../../../_head.php';
 ?>
-
+<div id="info"><?= temp('info')?></div>
 <div class="login-container">
     <form method="post" class="form">
         <h2>Reset Password</h2>
