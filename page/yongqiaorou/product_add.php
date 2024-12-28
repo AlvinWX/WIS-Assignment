@@ -110,7 +110,7 @@ if (is_post()) {
                 $_err['product_photo'] = 'Each image must be under 1MB';
             } else {
                 $unique_name = uniqid() . '.' . $extension;
-                if (move_uploaded_file($tmp_name, "../../images/uploads/$unique_name")) {
+                if (move_uploaded_file($tmp_name, "../../images/uploads/products/$unique_name")) {
                     $photo_resources[] = $unique_name;
                 } else {
                     $_err['product_photo'] = 'Failed to upload file';
@@ -230,7 +230,7 @@ include '../../_admin_head.php';
         const ext = resource.split('.').pop().toLowerCase();
         const previewElement = document.createElement(ext === 'mp4' || ext === 'avi' ? 'video' : 'img');
 
-        previewElement.src = `../../images/uploads/${resource}`;
+        previewElement.src = `../../images/uploads/products/${resource}`;
         previewElement.style.maxWidth = '200px'; 
         previewElement.style.margin = '5px'; 
         
