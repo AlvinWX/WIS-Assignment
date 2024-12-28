@@ -65,7 +65,6 @@ if (is_post()) {
             $product_subtotal = $op['quantity'] * $op['price'];
             ?>
             <p><strong>Product Name :</strong> <?= $prod['product_name'] ?></p>
-            
             <p><strong>Quantity     :</strong> <?= $op['quantity'] ?></p>
             <p><strong>Price        :</strong>RM <?= number_format($op['price'], 2) ?></p>
             <p><strong>Subtotal     :</strong>RM <?= number_format($product_subtotal, 2) ?></p>
