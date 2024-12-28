@@ -85,7 +85,6 @@
                     <div class="dropdown-content">
                         <a href="/page/chanyijing/admin/member_management/member_list.php">Member List</a>
                         <a href="/page/chanyijing/admin/feedback/member_feedback.php">Member Feedback</a>
-<<<<<<< Updated upstream
 
                         <li><a href="#">Admin Management</a>
                     <div class="dropdown-content">
