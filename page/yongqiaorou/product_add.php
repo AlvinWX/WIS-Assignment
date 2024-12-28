@@ -91,7 +91,7 @@ if (is_post()) {
     $photo_resources = [];
 
     if (empty($photo_files) || empty($photo_files['name'][0])) {
-        $_err['product_photo'] = 'At least one extra photo is required';
+        $_err['product_photo'] = 'At least one extra photo is required. Please upload again.';
     } else if (is_array($photo_files['name'])) {
         foreach ($photo_files['name'] as $index => $name) {
             $tmp_name = $photo_files['tmp_name'][$index];
@@ -99,7 +99,7 @@ if (is_post()) {
             $error = $photo_files['error'][$index];
 
             if ($error === UPLOAD_ERR_NO_FILE || empty($name)) {
-                $_err['product_photo'] = 'At least one extra photo is required';
+                $_err['product_photo'] = 'At least one extra photo is required. Please upload again.';
                 break;
             }
 
