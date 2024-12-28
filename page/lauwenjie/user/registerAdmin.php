@@ -128,7 +128,7 @@ include '../../../_head.php';
     <?= html_text('email', 'maxlength="100"') ?>
     <?= err('email') ?>
 
-    <<div style="position: relative;">
+    <div style="position: relative;">
         <label for="password">Password</label>
         <?= html_password('password', 'maxlength="100" class="input-field" style="padding-right: 40px;"') ?>
         <img src="/images/closed-eyes.png" alt="Show Password" id="togglePassword" class="eye-icon">
