@@ -121,12 +121,10 @@ if (is_post()) {
 
 
     // Validate youtube url
-    if ($product_youtube_url == '') {
-        $_err['product_youtube_url'] = 'Required';
-    } elseif (strpos($product_youtube_url, 'https://www.youtube.com/watch?v=') === 0) {
+    if (!empty($product_youtube_url) && strpos($product_youtube_url, 'https://www.youtube.com/watch?v=') === 0) {
         $prefix = 'https://www.youtube.com/watch?v=';
         $product_youtube_url = str_replace($prefix, '', $product_youtube_url);
-    } else {
+    } else if(!empty($product_youtube_url) && (strpos($product_youtube_url, 'https://www.youtube.com/watch?v=') != 0)){
         $_err['product_youtube_url'] = 'Invalid YouTube URL format. It must start with "https://www.youtube.com/watch?v="';
     }
 

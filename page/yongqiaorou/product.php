@@ -7,6 +7,14 @@ if(empty($admin_id)){
     temp('info',"Unauthourized Access");
     redirect('../../login.php');
 }
+// Pagination settings
+$records_per_page = 10; // Number of records per page
+$page = isset($_GET['page']) && is_numeric($_GET['page']) ? intval($_GET['page']) : 1;
+$offset = ($page - 1) * $records_per_page;
+
+// Sorting settings
+$sort_field = isset($_GET['sort_field']) ? $_GET['sort_field'] : 'product_name';
+$sort_order = isset($_GET['sort_order']) && in_array(strtolower($_GET['sort_order']), ['asc', 'desc']) ? strtoupper($_GET['sort_order']) : 'ASC';
 
 $categories = $_db->query("SELECT * FROM category WHERE category_status = 1")->fetchAll();
 $query = "SELECT * FROM product p JOIN category c ON p.category_id = c.category_id WHERE p.product_status = 1";
@@ -25,25 +33,34 @@ $min_price = isset($_GET['min_price']) ? $_GET['min_price'] : '';
 $max_price = isset($_GET['max_price']) ? $_GET['max_price'] : '';
 if ($min_price != '' && $max_price != '') {
     $query .= " AND p.product_price BETWEEN :min_price AND :max_price";
-    $bindValues[':min_price'] = $min_price;
-    $bindValues[':max_price'] = $max_price;
+    $stmt = $_db->prepare($query . " ORDER BY $sort_field $sort_order LIMIT :limit OFFSET :offset");
+    $stmt->bindValue(':min_price', $min_price);
+    $stmt->bindValue(':max_price', $max_price);
+} else {
+    $stmt = $_db->prepare($query . " ORDER BY $sort_field $sort_order LIMIT :limit OFFSET :offset"); 
 }
 
 // Handle search field and search value if set
 $search_field = isset($_GET['search_field']) ? $_GET['search_field'] : 'product_name';
 $search_value = isset($_GET['search']) ? $_GET['search'] : '';
 if ($search_value != '') {
-    $query .= " AND p.$search_field LIKE :search_value";
-    $bindValues[':search_value'] = '%' . $search_value . '%';
+    $query .= " AND p.$search_field LIKE :search_value"; // Default to the product table
+    $stmt = $_db->prepare($query . " ORDER BY $sort_field $sort_order LIMIT :limit OFFSET :offset");
+    $stmt->bindValue(':search_value', '%' . $search_value . '%');
 }
 
-// Prepare and execute the query
-$stmt = $_db->prepare($query);
-foreach ($bindValues as $param => $value) {
-    $stmt->bindValue($param, $value);
-}
+$stmt->bindValue(':limit', $records_per_page, PDO::PARAM_INT);
+$stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+
 $stmt->execute();
 $arr = $stmt->fetchAll();
+
+// Fetch total record count for pagination
+$total_query = "SELECT COUNT(*) FROM product p WHERE p.product_status = 1";
+$total_stmt = $_db->prepare($total_query);
+$total_stmt->execute();
+$total_records = $total_stmt->fetchColumn();
+$total_pages = ceil($total_records / $records_per_page);
 
 $_title = 'Product List'; 
 include '../../_admin_head.php'; 
@@ -79,10 +96,21 @@ include '../../_admin_head.php';
             <input type="number" step="0.01" id="minPriceInput" name="min_price" placeholder="Min Price" style="padding: 5px; width: 100px;" value="<?= isset($_GET['min_price']) ? htmlspecialchars($_GET['min_price']) : '' ?>">
             <input type="number" step="0.01" id="maxPriceInput" name="max_price" placeholder="Max Price" style="padding: 5px; width: 100px;" value="<?= isset($_GET['max_price']) ? htmlspecialchars($_GET['max_price']) : '' ?>">
         </div>
-
         <button type="submit" style="padding: 5px 10px;">Search</button>
     </div>
-
+    <div>
+    <select name="sort_field" style="padding: 5px; margin-right: 10px;">
+            <option value="product_id" <?= $sort_field === 'product_id' ? 'selected' : '' ?>>Id</option>
+            <option value="product_name" <?= $sort_field === 'product_name' ? 'selected' : '' ?>>Name</option>
+            <option value="product_price" <?= $sort_field === 'product_price' ? 'selected' : '' ?>>Price</option>
+            <option value="product_stock" <?= $sort_field === 'product_stock' ? 'selected' : '' ?>>Stock</option>
+        </select>
+    <select name="sort_order" id="sort_order" style="padding: 5px; margin-right: 10px;">
+            <option value="ASC" <?= $sort_order === 'ASC' ? 'selected' : '' ?>>Ascending</option>
+            <option value="DESC" <?= $sort_order === 'DESC' ? 'selected' : '' ?>>Descending</option>
+    </select>
+    <button type="submit" style="padding: 5px 10px;">Sort</button>
+    </div>
 </form>
 
 <?php
@@ -144,9 +172,9 @@ if(count($arr)) { ?>
                                     <div class="carousel-inner" data-current="0">
                                         <?php foreach ($resources as $index => $resource): ?>
                                             <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
-                                                <?php if (strpos(mime_content_type("../../images/uploads/$resource"), 'image/') !== false): ?>
-                                                    <img class="d-block w-100 custom-carousel-item" src="/../../images/uploads/<?= $resource ?>" alt="Resource <?= $index + 1 ?>">
-                                                <?php elseif (strpos(mime_content_type("../../images/uploads/$resource"), 'video/') !== false): ?>
+                                                <?php if (strpos(mime_content_type("../../images/uploads/products/$resource"), 'image/') !== false): ?>
+                                                    <img class="d-block w-100 custom-carousel-item" src="/../../images/uploads/products/<?= $resource ?>" alt="Resource <?= $index + 1 ?>">
+                                                <?php elseif (strpos(mime_content_type("../../images/uploads/products/$resource"), 'video/') !== false): ?>
                                                     <video class="d-block w-100 custom-carousel-item" controls>
                                                         <source src="/../../images/uploads/<?= $resource ?>" type="video/<?= pathinfo($resource, PATHINFO_EXTENSION) ?>">
                                                     </video>
@@ -191,7 +219,20 @@ if(count($arr)) { ?>
             <?php endforeach ?>
         </table>
     </div> 
-
+<!-- Pagination Links -->
+<div style="text-align: center; margin-top: 20px;">
+    <?php if ($page > 1): ?>
+        <a href="?page=<?= $page - 1 ?>&<?= http_build_query($_GET) ?>" style="margin-right: 10px;">Previous</a>
+    <?php endif; ?>
+    <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+        <a href="?page=<?= $i ?>&<?= http_build_query($_GET) ?>" style="margin-right: 5px; <?= $i === $page ? 'font-weight: bold;' : '' ?>">
+            <?= $i ?>
+        </a>
+    <?php endfor; ?>
+    <?php if ($page < $total_pages): ?>
+        <a href="?page=<?= $page + 1 ?>&<?= http_build_query($_GET) ?>">Next</a>
+    <?php endif; ?>
+</div>
 <?php 
     if(!empty($stock_alert)){
         $names = '';
@@ -289,6 +330,25 @@ function updateSlide(inner, index) {
     inner.setAttribute('data-current', index); // Update current index
 }
 
+document.addEventListener("DOMContentLoaded", function() {
+    const sortFields = document.querySelectorAll("th[data-sortable]");
+    sortFields.forEach(field => {
+        field.addEventListener("click", function() {
+            const currentSortOrder = new URLSearchParams(window.location.search).get('sort_order');
+            const newSortOrder = (currentSortOrder === 'ASC' || currentSortOrder === null) ? 'DESC' : 'ASC';
+            const currentSortField = new URLSearchParams(window.location.search).get('sort_field');
+            const newSortField = field.dataset.sortField;
+            
+            // Update the URL to reflect the new sorting
+            const urlParams = new URLSearchParams(window.location.search);
+            urlParams.set('sort_field', newSortField);
+            urlParams.set('sort_order', newSortOrder);
+            
+            // Redirect with the new sort parameters
+            window.location.search = urlParams.toString();
+        });
+    });
+});
 </script>
 
 <?php
