@@ -3,6 +3,13 @@ require '../../_base.php';
 
 include '../../_head.php';
 
+$user = $_SESSION['user'] ?? null;
+$member_id = $user->member_id;
+if(empty($member_id)){
+    redirect('../../login.php');
+    temp('info',"Unauthourized Access");
+}
+
 $id = req('id');
 
 $fullPath = $_SESSION['path_details'];
@@ -16,8 +23,6 @@ if (!$s) {
 }
 
 //Retrieve member cart
-$member_id = $user->member_id; 
-
 $get_cart_stm = $_db -> prepare('SELECT * FROM cart c JOIN member m ON m.member_id = c.member_id WHERE c.member_id = ?');
 $get_cart_stm -> execute([$member_id]);
 $shoppingCart = $get_cart_stm -> fetch();
@@ -97,11 +102,11 @@ window.onload = function() {
         <div class="slides">
         <img src="../../images/product_pic/<?= $s->product_cover ?>" alt="Resource <?= $index + 1 ?>" class="image active">
         <?php foreach ($resources as $index => $resource):?>
-                            <?php if (strpos(mime_content_type("../../uploads/$resource"), 'image/') !== false): ?>
-                                <img src="../../uploads/<?= $resource ?>" alt="Resource <?= $index + 1 ?>" class="image">
-                            <?php elseif (strpos(mime_content_type("../../uploads/$resource"), 'video/') !== false): ?>
+                            <?php if (strpos(mime_content_type("../../images/uploads/products/$resource"), 'image/') !== false): ?>
+                                <img src="../../images/uploads/products/<?= $resource ?>" alt="Resource <?= $index + 1 ?>" class="image">
+                            <?php elseif (strpos(mime_content_type("../../images/uploads/$resource"), 'video/') !== false): ?>
                                 <video controls>
-                                    <source src="../../uploads/<?= $resource ?>" type="video/<?= pathinfo($resource, PATHINFO_EXTENSION) ?>" class="image">
+                                    <source src="../../images/uploads/<?= $resource ?>" type="video/<?= pathinfo($resource, PATHINFO_EXTENSION) ?>" class="image">
                                 </video>
                             <?php endif; ?>
                         <?php endforeach; ?>
@@ -116,11 +121,11 @@ window.onload = function() {
             <img class="img active" src="../../images/product_pic/<?= $s->product_cover ?>" alt="Resource <?= $index + 1 ?>" attr='0' onclick="switchImage(this)">
             <?php for($i = 1; $i <= count($resources); $i++): $resource = $resources[$i-1] ?>
 			    
-                <?php if (strpos(mime_content_type("../../uploads/$resource"), 'image/') !== false): ?>
-                                <img class="img" attr='<?= $i ?>' onclick="switchImage(this)" src="../../uploads/<?= $resource ?>" alt="Resource <?= $index + 1 ?>">
-                            <?php elseif (strpos(mime_content_type("../../uploads/$resource"), 'video/') !== false): ?>
+                <?php if (strpos(mime_content_type("../../images/uploads/products/$resource"), 'image/') !== false): ?>
+                                <img class="img" attr='<?= $i ?>' onclick="switchImage(this)" src="../../images/uploads/products/<?= $resource ?>" alt="Resource <?= $index + 1 ?>">
+                            <?php elseif (strpos(mime_content_type("../../images/uploads/products/$resource"), 'video/') !== false): ?>
                                 <video controls>
-                                    <source class="img" attr='<?= $i ?>' onclick="switchImage(this)" src="../../uploads/<?= $resource ?>" type="video/<?= pathinfo($resource, PATHINFO_EXTENSION) ?>">
+                                    <source class="img" attr='<?= $i ?>' onclick="switchImage(this)" src="../../images/uploads/products/<?= $resource ?>" type="video/<?= pathinfo($resource, PATHINFO_EXTENSION) ?>">
                                 </video>
                             <?php endif; ?>
             <?php endfor; ?>
@@ -133,7 +138,7 @@ window.onload = function() {
             ?>
                 <div class = "media">
                     <span>Relevant media:</span>
-                    <iframe width="560" height="315" src="<?= $s -> product_youtube_url ?>" title="YouTube video player" frameborder="5" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/<?= $s -> product_youtube_url ?>" title="YouTube video player" frameborder="5" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 </div>
             <?php endif ?>
 

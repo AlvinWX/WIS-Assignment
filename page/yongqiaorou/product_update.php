@@ -2,9 +2,9 @@
 require '../../_base.php';
 // ----------------------------------------------------------------------------
 
-
 $user = $_SESSION['user'] ?? null;
 $admin_id = $user->admin_id;
+$youtube_prefix = 'https://www.youtube.com/watch?v=';
 if(empty($admin_id)){
     redirect('../../login.php');
     temp('info',"Unauthourized Access");
@@ -22,6 +22,10 @@ if (is_get()) {
     }
 
     extract((array)$s);
+
+    if (isset($product_youtube_url) && !empty($product_youtube_url) && strpos($product_youtube_url, $youtube_prefix) !== 0) {
+        $product_youtube_url = $youtube_prefix . $product_youtube_url;
+    }
 }
 
 if (is_post()) {
@@ -53,6 +57,7 @@ if (is_post()) {
     if ($product_price == '') {
         $_err['product_price'] = 'Required';
     }
+
 
     // Validate stock
     if ($product_stock == '') {
@@ -97,7 +102,7 @@ if (is_post()) {
                         $_err['product_cover'] = 'Cover Picture is required';
                     }else{
                         $unique_name = uniqid() . '.' . pathinfo($name, PATHINFO_EXTENSION);
-                        move_uploaded_file($tmp_name, "../../uploads/$unique_name");
+                        move_uploaded_file($tmp_name, "../../images/uploads/products/$unique_name");
                         $photo_resources[] = $unique_name;
                     }
                 }
@@ -105,6 +110,14 @@ if (is_post()) {
             
         }
         
+    }
+
+    // Validate youtube url
+    if (!empty($product_youtube_url) && (strpos($product_youtube_url, 'https://www.youtube.com/watch?v=') === 0)) {
+        $prefix = 'https://www.youtube.com/watch?v=';
+        $product_youtube_url = str_replace($prefix, '', $product_youtube_url);
+    } else if(!empty($product_youtube_url) && (strpos($product_youtube_url, 'https://www.youtube.com/watch?v=') != 0)){
+        $_err['product_youtube_url'] = 'Invalid YouTube URL format. It must start with "https://www.youtube.com/watch?v="';
     }
 
     // Output
@@ -196,7 +209,7 @@ include '../../_admin_head.php';
     existingResources.forEach(resource => {
         const previewElement = document.createElement('img');  // Always create an img element for image resources
 
-        previewElement.src = `../../uploads/${resource}`;  // Ensure correct path for image resource
+        previewElement.src = `../../images/uploads/products/${resource}`;  // Ensure correct path for image resource
         previewElement.style.maxWidth = '200px'; 
         previewElement.style.margin = '5px'; 
         

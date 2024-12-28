@@ -110,7 +110,7 @@ if (is_post()) {
                 $_err['product_photo'] = 'Each image must be under 1MB';
             } else {
                 $unique_name = uniqid() . '.' . $extension;
-                if (move_uploaded_file($tmp_name, "../../uploads/$unique_name")) {
+                if (move_uploaded_file($tmp_name, "../../images/uploads/products/$unique_name")) {
                     $photo_resources[] = $unique_name;
                 } else {
                     $_err['product_photo'] = 'Failed to upload file';
@@ -120,6 +120,13 @@ if (is_post()) {
     }
 
 
+    // Validate youtube url
+    if (!empty($product_youtube_url) && strpos($product_youtube_url, 'https://www.youtube.com/watch?v=') === 0) {
+        $prefix = 'https://www.youtube.com/watch?v=';
+        $product_youtube_url = str_replace($prefix, '', $product_youtube_url);
+    } else if(!empty($product_youtube_url) && (strpos($product_youtube_url, 'https://www.youtube.com/watch?v=') != 0)){
+        $_err['product_youtube_url'] = 'Invalid YouTube URL format. It must start with "https://www.youtube.com/watch?v="';
+    }
 
     // Output
     if (!$_err) {      
@@ -221,7 +228,7 @@ include '../../_admin_head.php';
         const ext = resource.split('.').pop().toLowerCase();
         const previewElement = document.createElement(ext === 'mp4' || ext === 'avi' ? 'video' : 'img');
 
-        previewElement.src = `../..uploads/${resource}`;
+        previewElement.src = `../../images/uploads/products/${resource}`;
         previewElement.style.maxWidth = '200px'; 
         previewElement.style.margin = '5px'; 
         

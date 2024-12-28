@@ -2,15 +2,20 @@
 require '../../_base.php';
 include '../../_head.php';
 
-//Retrieve member cart
-$member_id = $user->member_id; 
+$user = $_SESSION['user'] ?? null;
+$member_id = $user->member_id;
+if(empty($member_id)){
+    redirect('../../login.php');
+    temp('info',"Unauthourized Access");
+}
 
+//Retrieve member cart
 $get_cart_stm = $_db -> prepare('SELECT * FROM cart c JOIN member m ON m.member_id = c.member_id WHERE c.member_id = ?');
 $get_cart_stm -> execute([$member_id]); 
 $shoppingCart = $get_cart_stm -> fetch();
 
 //Retrieve added to cart already items
-$get_products_stm = $_db -> prepare('SELECT * FROM cart_product WHERE cart_id = ?');
+$get_products_stm = $_db -> prepare('SELECT * FROM cart_product c JOIN product p ON p.product_id = c.product_id WHERE cart_id = ? AND product_status = 1');
 $get_products_stm -> execute([$shoppingCart->cart_id]); 
 $cart_products = $get_products_stm -> fetchAll();
 

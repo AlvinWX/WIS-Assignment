@@ -144,11 +144,11 @@ if(count($arr)) { ?>
                                     <div class="carousel-inner" data-current="0">
                                         <?php foreach ($resources as $index => $resource): ?>
                                             <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
-                                                <?php if (strpos(mime_content_type("../../uploads/$resource"), 'image/') !== false): ?>
-                                                    <img class="d-block w-100 custom-carousel-item" src="/../../uploads/<?= $resource ?>" alt="Resource <?= $index + 1 ?>">
-                                                <?php elseif (strpos(mime_content_type("../../uploads/$resource"), 'video/') !== false): ?>
+                                                <?php if (strpos(mime_content_type("../../images/uploads/products/$resource"), 'image/') !== false): ?>
+                                                    <img class="d-block w-100 custom-carousel-item" src="/../../images/uploads/products/<?= $resource ?>" alt="Resource <?= $index + 1 ?>">
+                                                <?php elseif (strpos(mime_content_type("../../images/uploads/products/$resource"), 'video/') !== false): ?>
                                                     <video class="d-block w-100 custom-carousel-item" controls>
-                                                        <source src="/../../uploads/<?= $resource ?>" type="video/<?= pathinfo($resource, PATHINFO_EXTENSION) ?>">
+                                                        <source src="/../../images/uploads/products/<?= $resource ?>" type="video/<?= pathinfo($resource, PATHINFO_EXTENSION) ?>">
                                                     </video>
                                                 <?php endif; ?>
                                             </div>
@@ -191,6 +191,7 @@ if(count($arr)) { ?>
             <?php endforeach ?>
         </table>
     </div> 
+
 <?php 
     if(!empty($stock_alert)){
         $names = '';
@@ -203,10 +204,11 @@ if(count($arr)) { ?>
         $verb = count($stock_alert) == 1 ? 'is' : 'are';
         temp('info', "$names $verb low stock now!!");
     }
-?>
-<?php }else{?>
+    $stock_alert = [];
+}else{?>
     <p class="err">No record found.</p>
-<?php }?>
+<?php 
+}?>
 <a href="product_recover.php"><span id="dot" class="dot_left" style="color:rgb(245, 167, 167);"><i class="fa fa-trash" aria-hidden="true"></i></span></a>
 <a href="product_add.php"><span id="dot" class="dot_right"><i class="fa fa-plus" aria-hidden="true"></i></span></a>
 <script>
