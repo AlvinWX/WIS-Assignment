@@ -70,25 +70,55 @@ $_title = 'Member | Password';
 include '../../../_head.php';
 ?>
 
-<form method="post" class="form">
-    <label for="password">Current Password</label>
-    <?= html_password('password', 'maxlength="100"') ?>
-    <?= err('password') ?>
+<div class="login-container">
+<h2>Change Password</h2>
+    <form method="post" class="form">
+        <!-- Current Password -->
+        <div style="position: relative;">
+            <label for="password">Current Password</label>
+            <?= html_password('password', 'maxlength="100" class="input-field" style="padding-right: 40px;"') ?>
+            <img src="/images/closed-eyes.png" alt="Show Password" id="togglePassword" class="eye-icon">
+            <?= err('password') ?>
+        </div>
 
-    <label for="new_password">New Password</label>
-    <?= html_password('new_password', 'maxlength="100"') ?>
-    <?= err('new_password') ?>
+        <!-- New Password -->
+        <div style="position: relative;">
+            <label for="new_password">New Password</label>
+            <?= html_password('new_password', 'maxlength="100" class="input-field" style="padding-right: 40px;"') ?>
+            <img src="/images/closed-eyes.png" alt="Show Password" id="togglePassword" class="eye-icon">
+            <?= err('new_password') ?>
+        </div>
 
-    <label for="confirm">Confirm New Password</label>
-    <?= html_password('confirm', 'maxlength="100"') ?>
-    <?= err('confirm') ?>
+        <!-- Confirm New Password -->
+        <div style="position: relative;">
+            <label for="confirm">Confirm New Password</label>
+            <?= html_password('confirm', 'maxlength="100" class="input-field" style="padding-right: 40px;"') ?>
+            <img src="/images/closed-eyes.png" alt="Show Password" id="togglePassword" class="eye-icon">
+            <?= err('confirm') ?>
+        </div>
 
-    <section>
-        <button>Submit</button>
-        <button type="reset">Reset</button>
-    </section>
-</form>
+        <section>
+            <button class="login-btn">Submit</button>
+            <button type="reset" class="login-btn">Reset</button>
+        </section>
+    </form>
+</div>
 
+<script>
+    // Toggle password visibility
+    document.querySelectorAll('.eye-icon').forEach(item => {
+        item.addEventListener('click', function() {
+            const passwordField = this.previousElementSibling;
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                this.src = "/images/opened-eye.png"; // Change icon to open eye
+            } else {
+                passwordField.type = "password";
+                this.src = "/images/closed-eyes.png"; // Change icon to closed eye
+            }
+        });
+    });
+</script>
 <?php
 include '../../../_foot.php';
 ?>

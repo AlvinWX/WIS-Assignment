@@ -85,7 +85,6 @@
                     <div class="dropdown-content">
                         <a href="/page/chanyijing/admin/member_management/member_list.php">Member List</a>
                         <a href="/page/chanyijing/admin/feedback/member_feedback.php">Member Feedback</a>
-<<<<<<< Updated upstream
 
                         <li><a href="#">Admin Management</a>
                     <div class="dropdown-content">
@@ -97,8 +96,6 @@
                         <?php endif; ?>
                     </div>
                 </li>
-=======
->>>>>>> Stashed changes
                     <?php endif ?>
                 <?php else: ?>
 
@@ -132,9 +129,9 @@
                         <a href="/page/lauwenjie/user/profile.php">Profile</a>
                          <!-- Add dynamic password option based on user type -->
                         <?php if ($user->userType == 'admin'): ?>
-                            <a href="/page/lauwenjie/admin/adminPassword.php">Change Admin Password</a>
+                            <a href="/page/lauwenjie/user/passwordAdmin.php">Change Password</a>
                         <?php else: ?>
-                            <a href="/page/lauwenjie/member/memberPassword.php">Change Member Password</a>
+                            <a href="/page/lauwenjie/user/password.php">Change Password</a>
                         <?php endif; ?>
                         <a href="/logout.php">Logout</a>
                     </div>

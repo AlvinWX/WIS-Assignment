@@ -23,8 +23,8 @@ if (is_post()) {
     else if (!is_email($email)) {
         $_err['email'] = 'Invalid email';
     }
-    else if (!is_unique($email, 'admin', 'admin_email')) {
-        $_err['email'] = 'Duplicated';
+    else if (!is_unique($email, 'pending_members', 'member_email') && !is_unique($email, 'member', 'member_email') && !is_unique($email, 'admin', 'admin_email')) {
+        $_err['email'] = 'Email already registered (in member or admin).';
     }
 
     // Validate: password
@@ -89,17 +89,17 @@ if (is_post()) {
 
         // (2) Generate adminID (Assuming adminID is a unique value, e.g., 'AM00001')
         $stm = $_db->query('SELECT MAX(admin_id) AS maxID FROM admin');
-        $result = $stm->fetch(PDO::FETCH_ASSOC);
-        $lastID = $result['maxID'] ?? 'AM00000';
+        $result = $stm->fetch();
+        $lastID = $result->maxID ?? 'AM00000';
         $newID = sprintf('AM%05d', (int)substr($lastID, 2) + 1);
 
         // (3) Insert user (admin)
         $stm = $_db->prepare('
-        INSERT INTO admin (admin_id, admin_name, admin_password, admin_email, admin_phone, admin_gender, admin_profile_pic, admin_tier)
-        VALUES (?, ?, SHA1(?), ?, ?, ?, ?, ?)
+        INSERT INTO admin (admin_id, admin_name, admin_password, admin_email, admin_phone, admin_gender, admin_profile_pic, admin_tier, status)
+        VALUES (?, ?, SHA1(?), ?, ?, ?, ?, ?,?)
         ');
         $currentDate = date('Y-m-d');
-        $stm->execute([$newID, $name, $password, $email, $phone, $gender, $photo, $adminTier]);
+        $stm->execute([$newID, $name, $password, $email, $phone, $gender, $photo, $adminTier, 'active']);
 
 
         temp('info', 'Record inserted');
@@ -125,10 +125,12 @@ include '../../../_head.php';
     <?= html_text('email', 'maxlength="100"') ?>
     <?= err('email') ?>
 
-    <label for="password">Password</label>
-    <?= html_password('password', 'maxlength="100"') ?>
-    <?= err('password') ?>
-
+    <div style="position: relative;">
+        <label for="password">Password</label>
+        <?= html_password('password', 'maxlength="100" class="input-field" style="padding-right: 40px;"') ?>
+        <img src="/images/closed-eyes.png" alt="Show Password" id="togglePassword" class="eye-icon">
+        <?= err('password') ?>
+    </div>
     <label for="confirm">Confirm</label>
     <?= html_password('confirm', 'maxlength="100"') ?>
     <?= err('confirm') ?>
@@ -138,7 +140,14 @@ include '../../../_head.php';
     <?= err('name') ?>
 
     <label for="phone">Phone</label>
-    <?= html_text('phone', 'maxlength="15" pattern="[0-9+()-]{10,15}" placeholder="Enter phone number"') ?>
+    <input 
+        type="text" 
+        id="phone" 
+        name="phone" 
+        maxlength="11" 
+        pattern="^01[0-9]{8,9}$" 
+        placeholder="e.g., 0121231234" >
+    <small id="phoneError" style="color: red; display: none;">Invalid phone number format.</small>
     <?= err('phone') ?>
 
     <label for="gender">Gender</label>
@@ -164,5 +173,28 @@ include '../../../_head.php';
     </section>
 </form>
 </div>
+<script>
+// Toggle visibility for password
+    document.getElementById('togglePassword').addEventListener('click', function () {
+        const passwordInput = document.querySelector('[name="password"]');
+        toggleVisibility(passwordInput, this);
+    });
+
+    // Toggle visibility for confirm password
+    document.getElementById('toggleConfirmPassword').addEventListener('click', function () {
+        const confirmPasswordInput = document.querySelector('[name="confirm"]');
+        toggleVisibility(confirmPasswordInput, this);
+    });
+
+    function toggleVisibility(input, toggleIcon) {
+        if (input.type === 'password') {
+            input.type = 'text';
+            toggleIcon.src = '/images/opened-eye.png';
+        } else {
+            input.type = 'password';
+            toggleIcon.src = '/images/closed-eyes.png';
+        }
+    }
+</script>
 <?php
 include '../../../_foot.php';
