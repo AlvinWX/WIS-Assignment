@@ -29,7 +29,6 @@ if (is_post()) {
         $_err['recaptcha'] = 'Please verify you are not a robot.';
     }
     // Validate: email
-    // Validate: email
     if (!$email) {
         $_err['email'] = 'Required';
     }
@@ -38,9 +37,23 @@ if (is_post()) {
     }
     else if (!is_email($email)) {
         $_err['email'] = 'Invalid email';
-    }
-    else if (!is_unique($email, 'pending_members', 'member_email') && !is_unique($email, 'member', 'member_email') && !is_unique($email, 'admin', 'admin_email')) {
-        $_err['email'] = 'Email already registered (in member or admin).';
+    } 
+    else {
+        // Check if the email exists in any table (pending_members, member, admin)
+        $stm = $_db->prepare('
+            SELECT COUNT(*) FROM pending_members WHERE member_email = ?
+            UNION ALL
+            SELECT COUNT(*) FROM member WHERE member_email = ?
+            UNION ALL
+            SELECT COUNT(*) FROM admin WHERE admin_email = ?
+        ');
+        $stm->execute([$email, $email, $email]);
+        $counts = $stm->fetchAll(PDO::FETCH_COLUMN);
+        
+        // If any of the counts is greater than 0, the email is already registered
+        if (array_sum($counts) > 0) {
+            $_err['email'] = 'Email already registered (member or admin).';
+        }
     }
 
     // Validate: password
@@ -55,12 +68,13 @@ if (is_post()) {
     if (!$confirm) {
         $_err['confirm'] = 'Required';
     }
-    else if (strlen($confirm) < 5 || strlen($confirm) > 100) {
-        $_err['confirm'] = 'Between 5-100 characters';
-    }
     else if ($confirm != $password) {
         $_err['confirm'] = 'Not matched';
     }
+    else if (strlen($confirm) < 5 || strlen($confirm) > 100) {
+        $_err['confirm'] = 'Between 5-100 characters';
+    }
+    
 
     // Validate: name
     if (!$name) {
@@ -128,22 +142,59 @@ if (is_post()) {
 if (!$_err) {
     $photo = save_photo($f, '../../../images/uploads/profiles');
 
-    // Get new member ID logic
+    // Get the latest member ID to generate new one
     $stm = $_db->query('SELECT MAX(member_id) AS maxID FROM member');
     $result = $stm->fetch();
-    $lastID = $result->maxID ?? 'MB00000';
-    $newID = sprintf('MB%05d', (int)substr($lastID, 2) + 1);
+    $lastID = $result->maxID ?? 'MB00000'; // Ensure valid lastID
+    $newID = sprintf('MB%05d', (int)substr($lastID, 2) + 1); // Ensure formatting
 
     $token = sha1(uniqid() . rand());
     $currentDate = date('Y-m-d');
+    $tokenExpiry = date('Y-m-d H:i:s', strtotime('+5 minutes'));
 
     try {
-        // Insert new user as a pending member (with default 'active' status)
+        // Prepare the insert statement
         $stm = $_db->prepare('
-            INSERT INTO pending_members (member_id, member_name, member_password, member_email, member_phone, member_gender, member_profile_pic, member_date_joined, token, status, member_points, member_address, member_postcode, member_city, member_state)
-            VALUES (?, ?, SHA1(?), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO pending_members (
+                member_id, 
+                member_name, 
+                member_password, 
+                member_email, 
+                member_phone, 
+                member_gender, 
+                member_profile_pic, 
+                member_date_joined, 
+                token, 
+                token_expiry, 
+                status, 
+                member_points, 
+                member_address, 
+                member_postcode, 
+                member_city, 
+                member_state
+            )
+            VALUES (?, ?, SHA1(?), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ');
-        $stm->execute([$newID, $name, $password, $email, $phone, $gender, $photo, $currentDate, $token, 'active', 100, $address, $postcode, $city, $state]);
+    
+        // Bind values and execute
+        $stm->execute([
+            $newID, 
+            $name, 
+            $password, 
+            $email, 
+            $phone, 
+            $gender, 
+            $photo, 
+            $currentDate, 
+            $token, 
+            $tokenExpiry, 
+            'active', 
+            100, 
+            $address, 
+            $postcode, 
+            $city, 
+            $state
+        ]);
 
         // Send activation email
         $url = base("page/lauwenjie/user/activate.php?token=$token");

@@ -34,10 +34,12 @@ if (is_post()) {
 
     if (!$_err) {
         // Check if the user is a member
+        // Check if the user is a member
         $stm = $_db->prepare('
             SELECT *, "member" AS userType FROM member
             WHERE member_email = ? AND member_password = SHA1(?)
         ');
+        $stm->execute([$email, $password]);
         $stm->execute([$email, $password]);
         $user = $stm->fetch();
 
