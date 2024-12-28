@@ -113,7 +113,9 @@ $_title = 'Admin | Register';
 include '../../../_head.php';
 ?>
 <link rel="stylesheet" href="/css/wj_app.css">
+<div id="info"><?= temp('info')?></div>
 <div class="login-container">
+    <h2>Admin Registration</h2>
 <form method="post" class="form" enctype="multipart/form-data">
 <label for="photo">Photo</label>
     <label class="upload" tabindex="0">
@@ -132,9 +134,13 @@ include '../../../_head.php';
         <img src="/images/closed-eyes.png" alt="Show Password" id="togglePassword" class="eye-icon">
         <?= err('password') ?>
     </div>
-    <label for="confirm">Confirm</label>
-    <?= html_password('confirm', 'maxlength="100"') ?>
-    <?= err('confirm') ?>
+
+    <div style="position: relative;">
+        <label for="confirm">Confirm Password</label>
+        <?= html_password('confirm', 'maxlength="100" class="input-field" style="padding-right: 40px;"') ?>
+        <img src="/images/closed-eyes.png" alt="Show Password" id="toggleConfirmPassword" class="eye-icon">
+        <?= err('confirm') ?>
+    </div>
 
     <label for="name">Name</label>
     <?= html_text('name', 'maxlength="100"') ?>

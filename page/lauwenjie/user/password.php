@@ -6,6 +6,13 @@ include '../../../_base.php';
 // Authenticated users (Members only)
 auth('member'); // Assume this function ensures only members can access
 
+$user = $_SESSION['user'] ?? null;
+$member_id = $user->member_id;
+if(empty($member_id)){
+    redirect('/login.php');
+    temp('info',"Unauthorized Access");
+}
+
 if (is_post()) {
     $new_password = req('new_password');
     $confirm      = req('confirm');
@@ -29,6 +36,17 @@ if (is_post()) {
         $_err['confirm'] = 'Not matched';
     }
 
+    // Check if the new password is the same as the current password
+    $stm = $_db->prepare('
+        SELECT member_password FROM member WHERE member_id = ?
+    ');
+    $stm->execute([$member_id]);
+    $current_password = $stm->fetchColumn();
+
+    if (sha1($new_password) === $current_password) {
+        $_err['new_password'] = 'New password cannot be the same as the current password';
+    }
+
     // DB operation
     if (!$_err) {
         // Update member password
@@ -37,8 +55,7 @@ if (is_post()) {
             SET member_password = SHA1(?)
             WHERE member_id = ?
         ');
-        $stm->execute([$new_password, $_user->id]);
-
+        $stm->execute([$new_password, $member_id]);
         temp('info', 'Password updated');
         redirect('/');
     }
@@ -51,9 +68,9 @@ include '../../../_head.php';
 ?>
 
 <div class="login-container">
-        <h2>Change Password</h2>
+        <h2>Change Password </h2>
     <form method="post" class="form">
-    
+
         <!-- New Password -->
         <div style="position: relative;">
             <label for="new_password">New Password</label>
@@ -92,6 +109,7 @@ include '../../../_head.php';
         });
     });
 </script>
+
 <?php
 include '../../../_foot.php';
 ?>

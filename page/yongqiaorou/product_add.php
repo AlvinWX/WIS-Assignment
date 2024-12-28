@@ -91,7 +91,7 @@ if (is_post()) {
     $photo_resources = [];
 
     if (empty($photo_files) || empty($photo_files['name'][0])) {
-        $_err['product_photo'] = 'At least one extra photo is required';
+        $_err['product_photo'] = 'At least one extra photo is required. ';
     } else if (is_array($photo_files['name'])) {
         foreach ($photo_files['name'] as $index => $name) {
             $tmp_name = $photo_files['tmp_name'][$index];
@@ -99,21 +99,21 @@ if (is_post()) {
             $error = $photo_files['error'][$index];
 
             if ($error === UPLOAD_ERR_NO_FILE || empty($name)) {
-                $_err['product_photo'] = 'At least one extra photo is required';
+                $_err['product_photo'] = 'At least one extra photo is required. ';
                 break;
             }
 
             $extension = pathinfo($name, PATHINFO_EXTENSION);
             if (!in_array($extension, ['jpg', 'jpeg', 'png', 'webp'])) {
-                $_err['product_photo'] = 'All files must be images';
+                $_err['product_photo'] = 'All files must be images. Please upload again.';
             } else if ($size > 1 * 1024 * 1024) {
-                $_err['product_photo'] = 'Each image must be under 1MB';
+                $_err['product_photo'] = 'Each image must be under 1MB. Please upload again.';
             } else {
                 $unique_name = uniqid() . '.' . $extension;
                 if (move_uploaded_file($tmp_name, "../../images/uploads/products/$unique_name")) {
                     $photo_resources[] = $unique_name;
                 } else {
-                    $_err['product_photo'] = 'Failed to upload file';
+                    $_err['product_photo'] = 'Failed to upload file. Please upload again.';
                 }
             }
         }

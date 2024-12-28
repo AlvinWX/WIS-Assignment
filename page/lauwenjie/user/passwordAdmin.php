@@ -6,11 +6,17 @@ include '../../../_base.php';
 // Authenticated users (Admins only)
 auth('admin'); // Assume this function ensures only admins can access
 
+$user = $_SESSION['user'] ?? null;
+$admin_id = $user->admin_id;
+if(empty($admin_id)){
+    redirect('/login.php');
+    temp('info',"Unauthorized Access");
+}
+
 if (is_post()) {
 
     $new_password = req('new_password');
     $confirm      = req('confirm');
-
 
     // Validate: new_password
     if ($new_password == '') {
@@ -31,6 +37,17 @@ if (is_post()) {
         $_err['confirm'] = 'Not matched';
     }
 
+    // Check if the new password is the same as the current password
+    $stm = $_db->prepare('
+        SELECT admin_password FROM admin WHERE admin_id = ?
+    ');
+    $stm->execute([$admin_id]);
+    $current_password = $stm->fetchColumn();
+
+    if (sha1($new_password) === $current_password) {
+        $_err['new_password'] = 'New password cannot be the same as the current password';
+    }
+
     // DB operation
     if (!$_err) {
         // Update admin password
@@ -39,7 +56,7 @@ if (is_post()) {
             SET admin_password = SHA1(?)
             WHERE admin_id = ?
         ');
-        $stm->execute([$new_password, $_user->id]);
+        $stm->execute([$new_password, $admin_id]);
 
         temp('info', 'Password updated');
         redirect('/');

@@ -4,7 +4,7 @@ include '_base.php';
 $max_attempts = 3;
 $block_time = 60;
 $_err = [];
-$otp_verified = false;
+
 
 if (is_post()) {
     $email = req('email');
@@ -40,8 +40,8 @@ if (is_post()) {
         $stm->execute([$email, $password]);
         $user = $stm->fetch();
 
+        // Check if the user is an admin if not found as a member
         if (!$user) {
-            // Check if the user is an admin if not found as a member
             $stm = $_db->prepare('
                 SELECT *, "admin" AS userType FROM admin
                 WHERE admin_email = ? AND admin_password = SHA1(?)
@@ -50,26 +50,31 @@ if (is_post()) {
             $user = $stm->fetch();
         }
 
+        // Check user status
         if ($user) {
-            unset($_SESSION['login_attempts'][$email]); // Reset attempts on success
-            temp('info', 'Login successful as ' . $user->userType);
-            $_SESSION['user'] = $user;
-            $_SESSION['user_type'] = $user->userType;
-
-            if ($user->userType === 'admin') {
-                $_SESSION['admin_tier'] = $user->admin_tier;
-                redirect('/page/chanyijing/admin/admin_management/admin_detail.php');
+            if ($user->status === 'blocked') {
+                temp('info', 'Account is blocked');
             } else {
-                redirect('/index.php');
-            }
+                unset($_SESSION['login_attempts'][$email]); // Reset attempts on success
+                temp('info', 'Login successful as ' . $user->userType);
+                $_SESSION['user'] = $user;
+                $_SESSION['user_type'] = $user->userType;
 
-            if ($remember) {
-                setcookie('email', $email, time() + 86400 * 30, '/'); // 30 days
-                setcookie('password', sha1($password), time() + 86400 * 30, '/');
+                if ($user->userType === 'admin') {
+                    $_SESSION['admin_tier'] = $user->admin_tier;
+                    redirect('/page/chanyijing/admin/admin_management/admin_detail.php');
+                } else {
+                    redirect('/index.php');
+                }
+
+                if ($remember) {
+                    setcookie('email', $email, time() + 86400 * 30, '/'); // 30 days
+                    setcookie('password', sha1($password), time() + 86400 * 30, '/');
+                }
+                exit();
             }
-            exit();
         } else {
-            $_err['password'] = 'Incorrect email or password';
+            $_err['password'] = 'Incorrect email, password, or account not active';
             if (!isset($_SESSION['login_attempts'][$email])) {
                 $_SESSION['login_attempts'][$email] = ['count' => 1, 'time' => time()];
             } else {
@@ -78,7 +83,6 @@ if (is_post()) {
         }
     }
 }
-
 
 $_title = 'Login';
 include '_head.php';

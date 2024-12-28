@@ -75,9 +75,9 @@ $voucher_list = $get_voucherlist_stm -> fetch();
             </div>
         </div>
 
-            <div class="price-item">RM <?= number_format($s->product_price, 2) ?></div>
+            <div class="price-item">RM <?= sprintf("%.2f", $s->product_price)  ?></div>
             <div class="amount-item"><?= $a->quantity ?></div>
-            <div class="total-item">RM <?= number_format($s->product_price * $a->quantity, 2);  ?></div>
+            <div class="total-item">RM <?= sprintf("%.2f", $s->product_price * $a->quantity, 2);  ?></div>
             <div hidden><?= $order_subtotal += ($s->product_price * $a->quantity)?></div>
         </div>
         <?php endforeach ?>
@@ -85,29 +85,29 @@ $voucher_list = $get_voucherlist_stm -> fetch();
             <div class="header-item">Order Subtotal</div>
             <div class="header-item"></div>
             <div class="header-item"></div>
-            <div class="header-item">RM <?= number_format($order_subtotal, 2) ?></div>
+            <div class="header-item">RM <?= sprintf("%.2f", $order_subtotal)  ?></div>
             <div hidden><?= $subtotal += $order_subtotal?></div>
         </div>
         <div class="table-header">
             <div class="header-item">SST (6 %)</div>
             <div class="header-item"></div>
             <div class="header-item"></div>
-            <div class="header-item">RM <?= number_format($order_subtotal*0.06, 2) ?></div>
-            <div hidden><?= $tax = $order_subtotal*0.06; $subtotal += $tax?></div>
+            <div class="header-item">RM <?= sprintf("%.2f", $order_subtotal*0.06)  ?></div>
+            <div hidden><?= $tax = sprintf("%.2f", $order_subtotal*0.06); $subtotal += $tax?></div>
         </div>
         <div class="table-header">
             <div class="header-item">Delivery Fees (3 %)</div>
             <div class="header-item"></div>
             <div class="header-item"></div>
-            <div class="header-item">RM <?= number_format($order_subtotal*0.03, 2) ?></div>
-            <div hidden><?= $delivery_fee = $order_subtotal*0.03; $subtotal += $delivery_fee?></div>
+            <div class="header-item">RM <?= sprintf("%.2f", $order_subtotal*0.03)  ?></div>
+            <div hidden><?= $delivery_fee = sprintf("%.2f", $order_subtotal*0.03); $subtotal += $delivery_fee?></div>
         </div>
         <div class="table-header">
             <div class="header-item">Subtotal</div>
             <div class="header-item"></div>
             <div class="header-item"></div>
-            <div class="header-item">RM <?= number_format($subtotal, 2) ?></div>
-            <div hidden><?= $subtotal = number_format($subtotal, 2) ?></div>
+            <div class="header-item">RM <?= sprintf("%.2f", $subtotal)  ?></div>
+            <div hidden><?= $subtotal = sprintf("%.2f", $subtotal)  ?></div>
         </div>
     </div>
 </section>
@@ -178,17 +178,17 @@ $voucherFound = $get_voucher_owned -> fetchAll();
     <div class="final-amount">
         <div class="amount-row">
             <span class="subtitle">Subtotal:</span>
-            <span class="value" id="subtotal">RM <?= number_format($subtotal, 2) ?></span>
+            <span class="value" id="subtotal">RM <?= sprintf("%.2f", $subtotal)  ?></span>
             <div hidden><?= $total = $subtotal ?></div>
         </div>
         <div class="amount-row">
             <span class="subtitle">Discount:</span>
-            <span class="value" id="discount">- RM <?= number_format($discount, 2) ?></span>
+            <span class="value" id="discount">- RM <?= sprintf("%.2f", $discount)  ?></span>
             <div hidden><?= $total -= $discount ?></div>
         </div>
         <div class="amount-row">
             <span class="subtitle">Total Amount to Pay:</span>
-            <span class="value" id="finaltotal">RM <?= number_format($total, 2) ?></span>
+            <span class="value" id="finaltotal">RM <?= sprintf("%.2f", $total)  ?></span>
         </div>
         <div class="amount-row">
             <span class="subtitle">Points earned:</span>

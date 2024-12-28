@@ -81,7 +81,9 @@ $_title = 'Admin | Manage Users';
 include '../../../_head.php';
 ?>
 <link rel="stylesheet" href="/css/wj_app.css">
+<div id="info"><?= temp('info') ?></div>
 <div class="block-con">
+    <h2>Block & Unblock User</h2>
     <form method="get" action="">
         <input type="text" name="search" placeholder="Search by name" value="<?= htmlspecialchars($search) ?>">
         <select name="status_filter">
@@ -115,9 +117,13 @@ include '../../../_head.php';
                 <td class="<?= htmlspecialchars($a->status) ?>"><?= ucfirst($a->status) ?></td>
                 <td>
                     <?php if ($loggedInAdminTier === 'High'): ?>
-                        <button class="confirm-action-btn" data-id="<?= $a->admin_id ?>" data-type="admin" data-status="<?= $a->status ?>">
-                            <?= $a->status == 'active' ? 'Block' : 'Unblock' ?>
-                        </button>
+                        <form method="post" class="action-form">
+                            <input type="hidden" name="user_id" value="<?= $a->admin_id ?>">
+                            <input type="hidden" name="user_type" value="admin">
+                            <button type="button" class="confirm-action-btn">
+                                <?= $a->status == 'active' ? 'Block' : 'Unblock' ?>
+                            </button>
+                        </form>
                     <?php endif; ?>
                 </td>
             </tr>
@@ -144,9 +150,13 @@ include '../../../_head.php';
                 <td><?= htmlspecialchars($member->member_name) ?></td>
                 <td class="<?= htmlspecialchars($member->status) ?>"><?= ucfirst($member->status) ?></td>
                 <td>
-                    <button class="confirm-action-btn" data-id="<?= $member->member_id ?>" data-type="member" data-status="<?= $member->status ?>">
-                        <?= $member->status == 'active' ? 'Block' : 'Unblock' ?>
-                    </button>
+                    <form method="post" class="action-form">
+                        <input type="hidden" name="user_id" value="<?= $member->member_id ?>">
+                        <input type="hidden" name="user_type" value="member">
+                        <button type="button" class="confirm-action-btn">
+                            <?= $member->status == 'active' ? 'Block' : 'Unblock' ?>
+                        </button>
+                    </form>
                 </td>
             </tr>
             <?php endforeach; ?>
@@ -154,24 +164,15 @@ include '../../../_head.php';
         </table>
     </div>
 </div>
+
 <script>
-    // Handle the double confirmation
-    const confirmButtons = document.querySelectorAll('.confirm-action-btn');
-    let selectedButton = null;
-
-    confirmButtons.forEach(button => {
+    // Handle confirmation and form submission
+    document.querySelectorAll('.confirm-action-btn').forEach(button => {
         button.addEventListener('click', function() {
-            const status = this.getAttribute('data-status');
-            const action = status === 'active' ? 'block' : 'unblock';
-            selectedButton = this;
-
-            // Show the confirmation alert box
-            const isConfirmed = window.confirm("Are you sure you want to " + action + " this user?");
-            
-            if (isConfirmed) {
-                // Submit the form for the selected button
-                const form = selectedButton.closest('form');
-                form.submit();
+            const action = this.textContent.trim();
+            const confirmAction = confirm(`Are you sure you want to ${action.toLowerCase()} this user?`);
+            if (confirmAction) {
+                this.closest('form').submit();
             }
         });
     });
