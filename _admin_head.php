@@ -29,28 +29,45 @@
             <li><a href="/index.php">Home</a></li>
             <?php endif; ?>
 
-            <!-- Show logout and other admin-related links only if the user is logged in -->
             <?php if ($user): ?>
-                <?php if ($user->userType == 'admin'): ?>
-                    <li><a href="/page/yongqiaorou/product.php">Product Management</a></li>
-                            <li><a href="/page/yongqiaorou/category.php">Category Management</a></li>
-                            <li><a href="/page/yongqiaorou/voucher.php">Voucher Management</a></li>
-                    <li><a href="/page/chanyijing/admin/order_management/order_list.php">Order Listing</a></li>
-                    <li><a href="#">Member Management</a>
-                        <div class="dropdown-content">
-                            <a href="/page/chanyijing/admin/member_management/member_list.php">Member List</a>
-                            <a href="/page/chanyijing/admin/feedback/member_feedback.php">Member Feedback</a>
-                            <a href="/page/chanyijing/admin/admin_management/admin_list.php">Admin Management</a>
+            <?php if ($user->userType == 'admin'): ?>
+                <li><a href="#">Product Management</a>
+                <div class="dropdown-content">
+                    <a href="/page/yongqiaorou/product.php">Product Management</a>
+                    <a href="/page/yongqiaorou/category.php">Category Management</a>
+                </div>
+                </li>
+                <li><a href="#">Order Management</a>
+                    <div class="dropdown-content">
+                        <a href="/page/yongqiaorou/voucher.php">Voucher Management</a>
+                        <a href="/page/chanyijing/admin/order_management/order_list.php">Order Listing</a>
+                    </div>
+                    </li>
+                <li><a href="#">Member Management</a>
+                    <div class="dropdown-content">
+                        <a href="/page/chanyijing/admin/member_management/member_list.php">Member List</a>
+                        <a href="/page/chanyijing/admin/feedback/member_feedback.php">Member Feedback</a>
+
+                        <li><a href="#">Admin Management</a>
+                    <div class="dropdown-content">
+                        <a href="/page/chanyijing/admin/admin_management/admin_list.php">Admin List</a>
+                        <a href="/page/lauwenjie/user/block_unblock.php">Block & Unblock User</a>
+                        <?php if ($user->admin_tier === 'High'): ?>
+                            <a href="/page/lauwenjie/user/registerAdmin.php">Register Admin</a>
+                        <?php endif; ?>
+                    </div>
+                </li>
                     <?php endif ?>
-                    <?php else: ?>
-                        <li><a href="/login.php">Login</a></li>
-                    <?php endif ?>
-                    <?php if ($user): ?>
-                    <?php if ($user->userType == 'member'): ?>
-                    <li><a href="/productsearch.php?product_name=&category_id=&minprice=&maxprice=&sort=product_name&dir=asc">View Products</a></li>
-                    <li><a href="/page/chanyijing/member/order_history/history_list.php">Order History</a></li>
-                    <?php endif ?>
-                    <?php endif ?>
+                <?php else: ?>
+
+                <?php endif ?>
+                <?php if ($user): ?>
+                <?php if ($user->userType == 'member'): ?>
+                        <li><a href="/page/leewaixian/productsearch.php?product_name=&category_id=&minprice=&maxprice=&sort=product_name&dir=asc">View Products</a></li>
+                        <li><a href="/page/leewaixian/redeemvoucher.php">Redeem Vouchers</a></li>
+                        <li><a href="/page/chanyijing/member/order_history/history_list.php">Order History</a></li>
+                        <?php endif ?>
+                        <?php endif ?>
 
             </ul>
         </nav>
