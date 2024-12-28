@@ -109,7 +109,7 @@ include '../../../../_head.php';
         <tr>
             <td><?= $prod['product_id'] ?></td>
             <td><?= $prod['product_name'] ?></td>
-            <td><img src="/images/uploads/products/<?= $prod['product_cover'] ?>" alt="<?= $prod['product_name'] ?>" style="width: 150px;"></td>
+            <td><img src="../../../../images/product_pic/<?= $prod['product_cover'] ?>" alt="<?= $prod['product_name'] ?>" style="width: 120px"; /></td>
             <td><?= $op['quantity'] ?></td>
             <td><?= number_format($op['price'], 2) ?></td>
             <td><?= number_format($product_subtotal, 2) ?></td>
@@ -186,8 +186,8 @@ include '../../../../_head.php';
         <td><?= $pm->name ?></td>
     </tr>
     <tr>
-        <th>Payment Amount (RM)</th>
-        <td><?= number_format($p->amount, 2) ?></td>
+        <th>Payment Amount</th>
+        <td>RM <?= number_format($p->amount, 2) ?></td>
     </tr>
 </table>
 
