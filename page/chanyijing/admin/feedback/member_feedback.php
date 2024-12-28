@@ -77,5 +77,8 @@ include '../../../../_head.php';
     </table>
 <?php endif ?>
 
+<button data-get="member_feedback.php">All Feedback(s)</button>
+<br/><br/><br/>
+
 <?php
 include '../../../../_foot.php';

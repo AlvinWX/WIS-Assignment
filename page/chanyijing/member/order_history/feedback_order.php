@@ -33,7 +33,7 @@ if (is_post()) {
                               VALUES (?, ?, ?, ?, NOW(), ?, ?)');
         $stm->execute([$productSatisfaction, $serviceSatisfaction, $teamSatisfaction, $improvementSuggestions, $member_id, $order_id]);
 
-        temp('info', 'Thank you for your feedback!');
+        temp('info', 'Feedback sent');
         redirect('feedback_thank.php');
     }
 }
