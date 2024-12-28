@@ -7,28 +7,10 @@ include '../../../_base.php';
 auth('admin'); // Assume this function ensures only admins can access
 
 if (is_post()) {
-    $password     = req('password');
+
     $new_password = req('new_password');
     $confirm      = req('confirm');
 
-    // Validate: password
-    if ($password == '') {
-        $_err['password'] = 'Required';
-    }
-    else if (strlen($password) < 5 || strlen($password) > 100) {
-        $_err['password'] = 'Between 5-100 characters';
-    }
-    else {
-        $stm = $_db->prepare('
-            SELECT COUNT(*) FROM admin
-            WHERE admin_password = SHA1(?) AND admin_id = ?
-        ');
-        $stm->execute([$password, $_user->id]);
-        
-        if ($stm->fetchColumn() == 0) {
-            $_err['password'] = 'Not matched';
-        }
-    }
 
     // Validate: new_password
     if ($new_password == '') {
@@ -73,13 +55,6 @@ include '../../../_head.php';
 <div class="login-container">
     <h2>Change Password</h2>
     <form method="post" class="form">
-        <!-- Current Password -->
-        <div style="position: relative;">
-            <label for="password">Current Password</label>
-            <?= html_password('password', 'maxlength="100" class="input-field" style="padding-right: 40px;"') ?>
-            <img src="/images/closed-eyes.png" alt="Show Password" id="togglePassword" class="eye-icon">
-            <?= err('password') ?>
-        </div>
 
         <!-- New Password -->
         <div style="position: relative;">

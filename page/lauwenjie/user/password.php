@@ -7,28 +7,8 @@ include '../../../_base.php';
 auth('member'); // Assume this function ensures only members can access
 
 if (is_post()) {
-    $password     = req('password');
     $new_password = req('new_password');
     $confirm      = req('confirm');
-
-    // Validate: password
-    if ($password == '') {
-        $_err['password'] = 'Required';
-    }
-    else if (strlen($password) < 5 || strlen($password) > 100) {
-        $_err['password'] = 'Between 5-100 characters';
-    }
-    else {
-        $stm = $_db->prepare('
-            SELECT COUNT(*) FROM member
-            WHERE member_password = SHA1(?) AND member_id = ?
-        ');
-        $stm->execute([$password, $_user->id]);
-        
-        if ($stm->fetchColumn() == 0) {
-            $_err['password'] = 'Not matched';
-        }
-    }
 
     // Validate: new_password
     if ($new_password == '') {
@@ -69,18 +49,11 @@ if (is_post()) {
 $_title = 'Member | Password';
 include '../../../_head.php';
 ?>
-<link rel="stylesheet" href="/css/wj_app.css">
-<div class="login-container">
-<h2>Change Password</h2>
-    <form method="post" class="form">
-        <!-- Current Password -->
-        <div style="position: relative;">
-            <label for="password">Current Password</label>
-            <?= html_password('password', 'maxlength="100" class="input-field" style="padding-right: 40px;"') ?>
-            <img src="/images/closed-eyes.png" alt="Show Password" id="togglePassword" class="eye-icon">
-            <?= err('password') ?>
-        </div>
 
+<div class="login-container">
+        <h2>Change Password</h2>
+    <form method="post" class="form">
+    
         <!-- New Password -->
         <div style="position: relative;">
             <label for="new_password">New Password</label>
