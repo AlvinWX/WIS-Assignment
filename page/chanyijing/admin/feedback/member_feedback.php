@@ -1,5 +1,3 @@
-
-
 <?php
 require '../../../../_base.php';
 
@@ -17,7 +15,7 @@ $fields = [
 ];
 
 // Retrieve search parameters
-$feedback_id = req('feedback_id');
+$member_id = req('member_id');
 
 // Retrieve sort parameters
 $sort = req('sort');
@@ -28,11 +26,11 @@ in_array($dir, ['asc', 'desc']) || $dir = 'asc';
 
 // SQL query with filters and sorting
 $f_stm = $_db->prepare('SELECT * FROM feedback
-                      WHERE feedback_id LIKE ?
+                      WHERE member_id LIKE ?
                       ORDER BY ' . $sort . ' ' . $dir);
 
-$f_stm->execute(["%$feedback_id%"]);
-$fb= $f_stm->fetchAll();
+$f_stm->execute(["%$member_id%"]);
+$fb = $f_stm->fetchAll();
 
 //-----------------------------------------------------------------------------
 
@@ -42,7 +40,7 @@ include '../../../../_head.php';
 <link rel="stylesheet" href="/css/yj_app.css">
 <div class="search-bar">
     <form>
-        <?= html_search('feedback_id', 'placeholder="Enter feedback ID to search"') ?>
+        <?= html_search('member_id', 'placeholder="Enter member ID to search"') ?>
         <button>Search</button>
     </form>
 </div>
@@ -77,5 +75,9 @@ include '../../../../_head.php';
     </table>
 <?php endif ?>
 
+<button data-get="member_feedback.php">All Feedback(s)</button>
+<br/><br/><br/>
+
 <?php
 include '../../../../_foot.php';
+?>

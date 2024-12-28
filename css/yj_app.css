@@ -448,7 +448,7 @@ button.pink-btn:hover {
 }
 
 .feedback-form-container input[type="range"] {
-    width: 100%;
+    width: 90%;
 }
 
 .feedback-form-container .slider-labels {
@@ -459,7 +459,7 @@ button.pink-btn:hover {
 }
 
 .feedback-form-container textarea {
-    width: 100%;
+    width: 90%;
     font-size: 16px;
     border-radius: 5px;
     border: 1px solid #ddd;

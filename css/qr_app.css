@@ -2,7 +2,7 @@
 /* Main Content Styles          */
 /* =========================== */
 main {
-    padding: 20px 50px;
+    padding: 20px 0px !important;
     text-align: center;
 }
 
@@ -290,6 +290,11 @@ select, input[type="text"], input[type="number"] {
 .table tr:hover td {
     background-color: #f0f0f0; /* Light gray background on row hover */
     cursor: pointer; /* Pointer cursor on hover */
+}
+
+.table td.description {
+    text-overflow: ellipsis; /* Add "..." for truncated text */
+    max-width: 300px; /* Set a fixed width for the column */
 }
 
 .table td:last-child {

@@ -4,6 +4,7 @@ require '../../_base.php';
 
 $user = $_SESSION['user'] ?? null;
 $admin_id = $user->admin_id;
+$youtube_prefix = 'https://www.youtube.com/watch?v=';
 if(empty($admin_id)){
     redirect('../../login.php');
     temp('info',"Unauthourized Access");
@@ -18,12 +19,16 @@ if (!$s) {
     redirect('/');
 }
 
+if (isset($product_youtube_url) && !empty($product_youtube_url) && strpos($product_youtube_url, $youtube_prefix) !== 0) {
+    $product_youtube_url = $youtube_prefix . $product_youtube_url;
+}
+
 // ----------------------------------------------------------------------------
 $_title = 'Detail';
 include '../../_admin_head.php';
 ?>
 
-<table class="table detail" style="margin-top: 100px">
+<table class="table detail" style="margin-top: 100px; margin-left:auto; margin-right:auto;">
     <tr>
         <th>Id</th>
         <td><?= $s->product_id ?></td>

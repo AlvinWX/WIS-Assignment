@@ -90,7 +90,6 @@
                     <div class="dropdown-content">
                         <a href="/page/chanyijing/admin/admin_management/admin_list.php">Admin List</a>
                         <a href="/page/lauwenjie/user/block_unblock.php">Block & Unblock User</a>
-                        <!-- Display 'Register Admin' only for high-tier admins -->
                         <?php if ($user->admin_tier === 'High'): ?>
                             <a href="/page/lauwenjie/user/registerAdmin.php">Register Admin</a>
                         <?php endif; ?>
