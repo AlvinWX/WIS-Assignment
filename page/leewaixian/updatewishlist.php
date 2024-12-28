@@ -1,5 +1,5 @@
 <?php
-require '../../_base.php';  // Ensure this points to your database connection settings
+require '../../_base.php'; 
 
 $user = $_SESSION['user'] ?? null;
 $member_id = $user->member_id;
@@ -10,7 +10,7 @@ if(empty($member_id)){
 
 if (isset($_POST['product_id'], $_POST['action'])) {
     $product_id = $_POST['product_id'];
-    $wishlist_id = $_POST['wishlist_id'];  // Assume session contains wishlist_id
+    $wishlist_id = $_POST['wishlist_id'];
 
     if ($_POST['action'] == 'add') {
         $stmt = $_db->prepare('INSERT INTO wishlist_product (wishlist_id, product_id) VALUES (?, ?)');
