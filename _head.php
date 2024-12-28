@@ -95,9 +95,7 @@
                             <a href="/page/lauwenjie/user/registerAdmin.php">Register Admin</a>
                         <?php endif; ?>
                     </div>
-                </li>
-=======
->>>>>>> Stashed changes
+                        </li>
                     <?php endif ?>
                 <?php else: ?>
 
