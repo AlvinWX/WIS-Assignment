@@ -30,6 +30,10 @@ body, html {
     height: 550px;
 }
 
+th, td{
+    line-height: 2em;
+}
+
 .order-details {
     margin-top: 20px;
 }
