@@ -3,129 +3,95 @@ include '../../../_base.php';
 
 // ----------------------------------------------------------------------------
 
-
-// TODO: (1) Delete expired tokens
+// Delete expired tokens
 $_db->query('DELETE FROM token WHERE expire < NOW()');
+$_db->query('DELETE FROM token_admin WHERE expire < NOW()');
 
 $id = req('id');
 
-// TODO: (2) Is token id valid?
-if (!is_exists($id, 'token', 'id')) {
+// Validate token ID
+$stm = $_db->prepare('
+    SELECT member_id AS user_id, "member" AS user_type
+    FROM token WHERE id = ?
+    UNION
+    SELECT admin_id AS user_id, "admin" AS user_type
+    FROM token_admin WHERE id = ?
+');
+$stm->execute([$id, $id]);
+$user = $stm->fetch();
+
+if (!$user) {
     temp('info', 'Invalid token. Try again');
     redirect('/');
 }
 
 if (is_post()) {
-    $email = req('email');
+    $password = req('password');
+    $confirmPassword = req('confirm_password');
 
-    // Validate: email
-    if ($email == '') {
-        $_err['email'] = 'Required';
-    } elseif (!is_email($email)) {
-        $_err['email'] = 'Invalid email';
+    // Validate: password and confirmation
+    if ($password == '') {
+        $_err['password'] = 'Password is required.';
+    } elseif (strlen($password) < 8) {
+        $_err['password'] = 'Password must be at least 8 characters long.';
+    } elseif ($password !== $confirmPassword) {
+        $_err['confirm_password'] = 'Passwords do not match.';
     }
 
-    // Send reset token (if valid)
-    if (!$_err) {
-        // (1) Check if the user is a member or admin
-        $stm = $_db->prepare('
-            UPDATE member
-            SET member_password = SHA1(?)
-            WHERE member_id = (SELECT member_id FROM token WHERE id = ?);
-
-            DELETE FROM token WHERE id = ?;
-        ');
-        $stm->execute([$email, $email]);
-        $user = $stm->fetch();
-
-        // If a user was found (either member or admin)
-        if ($user) {
-            // (2) Generate token id
-            $id = sha1(uniqid() . rand());
-
-            // (3) Determine the appropriate IDs for member or admin
-            if ($user->userType == 'member') {
-                $memberId = $user->memberId;  // Assuming memberId is the ID for a member
-                $adminId = null;
-            } else {
-                $adminId = $user->adminId;  // Assuming adminId is the ID for an admin
-                $memberId = null;
-            }
-
-            // (4) Delete any existing token for the user
-            $stm = $_db->prepare('DELETE FROM token WHERE member_id = ? OR admin_id = ?');
-            $stm->execute([$memberId, $adminId]);
-
-            // (5) Insert new token with the appropriate member_id or admin_id
+    if (empty($_err)) {
+        // Update the password
+        if ($user->user_type === 'member') {
             $stm = $_db->prepare('
-                INSERT INTO token (id, expire, member_id, admin_id)
-                VALUES (?, ADDTIME(NOW(), "00:05"), ?, ?);
+                UPDATE member
+                SET member_password = SHA1(?)
+                WHERE member_id = ?
             ');
-            $stm->execute([$id, $memberId, $adminId]);
+            $stm->execute([$password, $user->user_id]);
 
-            // (6) Generate token URL
-            $url = base("page/lauwenjie/user/token.php?id=$id");
+            // Remove token after successful password update
+            $stm = $_db->prepare('DELETE FROM token WHERE id = ?');
+            $stm->execute([$id]);
+        } elseif ($user->user_type === 'admin') {
+            $stm = $_db->prepare('
+                UPDATE admin
+                SET admin_password = SHA1(?)
+                WHERE admin_id = ?
+            ');
+            $stm->execute([$password, $user->user_id]);
 
-            // (7) Prepare and send email content based on user role (member or admin)
-            $m = get_mail();
-            $m->addAddress($user->email, $user->name);
-            $m->addEmbeddedImage(("../photos/$user->photo"), 'photo');
-            $m->isHTML(true);
-            $m->Subject = 'Reset Password';
-
-            // Customize email based on user role (member or admin)
-            $roleMessage = ($user->userType == 'admin') ?
-                "As an admin, please use this link to reset your password." :
-                "As a member, please use this link to reset your password.";
-
-            $m->Body = "
-                <img src='cid:photo'
-                     style='width: 200px; height: 200px;
-                            border: 1px solid #333'>
-                <p>Dear $user->name,</p>
-                <h1 style='color: red'>Reset Password</h1>
-                <p>$roleMessage</p>
-                <p>Please click <a href='$url'>here</a> to reset your password.</p>
-                <p>From, 😺 Admin</p>
-            ";
-
-            // Send email and handle the result
-            if ($m->send()) {
-                echo 'Reset password link sent to your email.';
-            } else {
-                $_err['email'] = 'Failed to send email.';
-            }
-        } else {
-            $_err['email'] = 'User not found';
+            // Remove token after successful password update
+            $stm = $_db->prepare('DELETE FROM token_admin WHERE id = ?');
+            $stm->execute([$id]);
         }
+
+        temp('success', 'Password updated successfully.');
+        redirect('/login.php');
     }
 }
 
 // ----------------------------------------------------------------------------
 
-$_title = 'Member | Reset Password';
+$_title = 'Reset Password';
 include '../../../_head.php';
 ?>
 
-
 <div class="login-container">
-<form method="post" class="form">
-    <h2>Reset Password</h2>
-    <label for="password">New Password</label>
-    <?= html_password('password', 'maxlength="100"') ?>
-    <?= err('password') ?>
-
-<form method="post" class="form">
-    <label for="email">Email</label>
-    <?= html_text('email', 'maxlength="100"') ?>
-    <?= err('email') ?>
-
-    <section>
-        <button>Submit</button>
-        <button type="reset">Reset</button>
-    </section>
-</form>
+    <form method="post" class="form">
+        <h2>Reset Password</h2>
+        <label for="password">New Password</label>
+        <?= html_password('password', 'maxlength="100"') ?>
+        <?= err('password') ?>
+        
+        <label for="confirm_password">Confirm Password</label>
+        <?= html_password('confirm_password', 'maxlength="100"') ?>
+        <?= err('confirm_password') ?>
+        <section>
+            <button>Submit</button>
+            <button type="reset">Reset</button>
+        </section>
+    </form>
 </div>
+
 <?php
 include '../../../_foot.php';
 ?>

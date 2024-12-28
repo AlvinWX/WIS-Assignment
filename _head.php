@@ -68,25 +68,36 @@
         <nav>
     <ul>
         <!-- Show Home link only if the user is not an admin -->
-        <?php if (!$user || $user->userType != 'admin'): ?>
+        <?php if (!$user || $user->userType == 'member'): ?>
             <li><a href="/index.php">Home</a></li>
         <?php endif; ?>
-
+        <!-- <li><a href="/login.php">Login</a></li> -->
+         
         <!-- Show logout and other admin-related links only if the user is logged in -->
         <?php if ($user): ?>
             <?php if ($user->userType == 'admin'): ?>
                 <li><a href="/page/yongqiaorou/product.php">Product Management</a></li>
                         <li><a href="/page/yongqiaorou/category.php">Category Management</a></li>
                         <li><a href="/page/yongqiaorou/voucher.php">Voucher Management</a></li>
+                        <li><a href="/page/chanyijing/admin/admin_management/admin_list.php">Admin Management</a></li>
                 <li><a href="/page/chanyijing/admin/order_management/order_list.php">Order Listing</a></li>
                 <li><a href="#">Member Management</a>
                     <div class="dropdown-content">
                         <a href="/page/chanyijing/admin/member_management/member_list.php">Member List</a>
                         <a href="/page/chanyijing/admin/feedback/member_feedback.php">Member Feedback</a>
-                        <a href="/page/chanyijing/admin/admin_management/admin_list.php">Admin Management</a>
+
+                        <li><a href="#">Admin Management</a>
+                    <div class="dropdown-content">
+                        <a href="/page/chanyijing/admin/admin_management/admin_list.php">Admin List</a>
+                        <a href="/page/lauwenjie/user/block_unblock.php">Block & Unblock User</a>
+                        <?php if ($user->admin_tier === 'High'): ?>
+                            <a href="/page/lauwenjie/user/registerAdmin.php">Register Admin</a>
+                        <?php endif; ?>
+                    </div>
+                        </li>
                     <?php endif ?>
                 <?php else: ?>
-                    <li><a href="/login.php">Login</a></li>
+
                 <?php endif ?>
                 <?php if ($user): ?>
                 <?php if ($user->userType == 'member'): ?>
@@ -114,7 +125,13 @@
                 <div class="dropdown">
                     <img src="/images/user.png" alt="User Icon" class="user-icon">
                     <div class="dropdown-content">
-                        <a href="/user/profile.php">Profile</a>
+                        <a href="/page/lauwenjie/user/profile.php">Profile</a>
+                         <!-- Add dynamic password option based on user type -->
+                        <?php if ($user->userType == 'admin'): ?>
+                            <a href="/page/lauwenjie/admin/adminPassword.php">Change Admin Password</a>
+                        <?php else: ?>
+                            <a href="/page/lauwenjie/member/memberPassword.php">Change Member Password</a>
+                        <?php endif; ?>
                         <a href="/logout.php">Logout</a>
                     </div>
                 </div>

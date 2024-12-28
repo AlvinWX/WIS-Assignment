@@ -125,7 +125,7 @@ if (is_post()) {
 
     // DB operation
     if (!$_err) {
-        $photo = save_photo($f, '../uploads/profiles');
+        $photo = save_photo($f, '../../../images/uploads/profiles');
 
         $stm = $_db->query('SELECT MAX(member_id) AS maxID FROM pending_members');
         $result = $stm->fetch(PDO::FETCH_ASSOC);
@@ -142,10 +142,10 @@ if (is_post()) {
             ');
             $stm->execute([$newID, $name, $password, $email, $phone, $gender, $photo, $currentDate, $token]);
 
-            $url = base("user/activate.php?token=$token");
+            $url = base("page/lauwenjie/user/activate.php?token=$token");
             $m = get_mail();
             $m->addAddress($email, $name);
-            $m->addEmbeddedImage("../uploads/profiles/$photo", 'photo');
+            $m->addEmbeddedImage("../../../images/uploads/profiles/$photo", 'photo');
             $m->isHTML(true);
             $m->Subject = 'Activate your account';
             $m->Body = "

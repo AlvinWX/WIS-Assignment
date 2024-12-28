@@ -5,6 +5,9 @@ require '../../../../_base.php';
 
 if (is_post()) {
     $member_id = req('member_id');
+    
+    $stm = $_db->prepare('DELETE FROM address WHERE member_id = ?');
+    $stm->execute([$member_id]);
 
     $stm = $_db->prepare('DELETE FROM member WHERE member_id = ?');
     $stm->execute([$member_id]);

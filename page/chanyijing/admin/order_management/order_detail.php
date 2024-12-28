@@ -1,4 +1,4 @@
-
+<link rel="stylesheet" href="/css/yj_app.css">
 
 <?php
 require '../../../../_base.php';
@@ -68,7 +68,7 @@ if(is_post()){
                 }
             }
 
-            if (in_array($order_status, ['Pending', 'Packed', 'Cancelled'])) {
+            if (in_array($order_status, ['Pending', 'Packed'])) {
                 $stm = $_db->prepare('UPDATE `order` SET ship_date = NULL, received_date = NULL WHERE order_id = ?');
                 $stm->execute([$order_id]);
             }
@@ -163,7 +163,7 @@ include '../../../../_head.php';
         <tr>
             <td><?= $prod['product_id'] ?></td>
             <td><?= $prod['product_name'] ?></td>
-            <td><img src="/images/uploads/products/<?=  $prod['product_cover'] ?>" alt="<?= $prod['product_name'] ?>" style="width: 150px;"></td>
+            <td><img src="/images/uploads/products/<?= $prod['product_cover'] ?>" alt="<?= $prod['product_name'] ?>" style="width: 150px;"></td>
             <td><?= $op['quantity'] ?></td>
             <td><?= number_format($op['price'], 2) ?></td>
             <td><?= number_format($product_subtotal, 2) ?></td>

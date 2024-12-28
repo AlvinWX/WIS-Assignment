@@ -232,10 +232,10 @@ function sort_buttons2($fields, $sort, $dir, $href = '') {
 // ============================================================================           
 // Demo Accounts:
 // --------------
-// AACS3173@gmail.com           npsg gzfd pnio aylm
-// BAIT2173.email@gmail.com     ytwo bbon lrvw wclr
-// liaw.casual@gmail.com        wtpa kjxr dfcb xkhg
-// liawcv1@gmail.com            obyj shnv prpa kzvj
+//bait2173.email@gmail.com    ncom fsil wjzk ptre 
+//aacs3173@gmail.com        xxna ftdu plga hzxl 
+//liaw.casual@gmail.com        buvq yftx klma vezl 
+//liawcv1@gmail.com        pztq znli gpjg tooe
 
 function get_mail() {
     require_once 'lib/PHPMailer.php';
@@ -246,8 +246,8 @@ function get_mail() {
     $m->SMTPAuth = true;
     $m->Host = 'smtp.gmail.com';
     $m->Port = 587;
-    $m->Username = 'targrocer@outlook.com';
-    $m->Password = 'tar123grocer';
+    $m->Username = 'liawcv1@gmail.com';
+    $m->Password = 'pztq znli gpjg tooe';
     $m->CharSet = 'utf-8';
     $m->setFrom($m->Username, 'TAR GROCER Admin');
 
@@ -278,36 +278,6 @@ function err($key) {
 }
 
 // ============================================================================
-// Email Functions
-// ============================================================================
-
-// Demo Accounts:
-// --------------
-// AACS3173@gmail.com           npsg gzfd pnio aylm
-// BAIT2173.email@gmail.com     ytwo bbon lrvw wclr
-// liaw.casual@gmail.com        wtpa kjxr dfcb xkhg
-// liawcv1@gmail.com            obyj shnv prpa kzvj
-
-// // Initialize and return mail object
-// function get_mail() {
-//     require_once 'lib/PHPMailer.php';
-//     require_once 'lib/SMTP.php';
-
-//     $m = new PHPMailer(true);
-//     $m->isSMTP();
-//     $m->SMTPAuth = true;
-//     $m->Host = 'smtp.gmail.com';
-//     $m->Port = 587;
-//     $m->Username = 'aacs3173@gmail.com';
-//     $m->Password = 'xxna ftdu plga hzxl';
-//     $m->CharSet = 'utf-8';
-//     $m->setFrom($m->Username, '😺 Admin');
-
-//     return $m;
-// }
-
-
-// ============================================================================
 // Database Setups and Functions
 // ============================================================================
 
@@ -329,16 +299,11 @@ function is_exists($value, $table, $field) {
     global $_db;
     
     // Check in member table
-    $stm = $_db->prepare("SELECT COUNT(*) FROM member WHERE $field = ?");
+    $stm = $_db->prepare("SELECT COUNT(*) FROM $table WHERE $field = ?");
     $stm->execute([$value]);
     if ($stm->fetchColumn() > 0) {
         return true;
     }
-
-    // Check in admin table
-    $stm = $_db->prepare("SELECT COUNT(*) FROM admin WHERE $field = ?");
-    $stm->execute([$value]);
-    return $stm->fetchColumn() > 0;
 }
 // ============================================================================
 // Security
@@ -424,8 +389,7 @@ $_orderStatuses = [
     'Pending' => 'Pending',
     'Packed' => 'Packed',
     'Shipped' => 'Shipped',
-    'Delivered' => 'Delivered',
-    'Cancelled' => 'Cancelled'
+    'Delivered' => 'Delivered'
 ];
 
 $_members = $_db->query('SELECT member_id, member_name FROM member')

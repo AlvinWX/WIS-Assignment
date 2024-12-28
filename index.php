@@ -2,6 +2,11 @@
 require '_base.php';
 include '_head.php';
 
+auth();
+$user = $_SESSION['user'] ?? null; 
+$success = $_SESSION['flash_success'] ?? '';
+$error = $_SESSION['flash_error'] ?? '';
+
 $top_selling_arr = $_db->query('SELECT * FROM product p JOIN category c ON p.category_id = c.category_id WHERE product_status=1 AND product_stock > 0 ORDER BY product_sold desc LIMIT 5')->fetchAll();
 $lowest_price_arr = $_db->query('SELECT * FROM product p JOIN category c ON p.category_id = c.category_id WHERE product_status=1 AND product_stock > 0 ORDER BY product_price asc LIMIT 5')->fetchAll();
 $user = $_SESSION['user'] ?? null;

@@ -77,7 +77,7 @@ nav a::before {
     bottom: 0;
     left: 50%;
     width: 0;
-    height: 2px;
+    height: 1.2px;
     background-color: #333;
     transition: width 0.3s ease, left 0.3s ease;
 }
@@ -614,3 +614,4 @@ button.register-btn:hover {
     color: red;
     font-size: 14px;
 }
+
