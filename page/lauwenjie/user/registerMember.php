@@ -213,6 +213,7 @@ if (!$_err) {
 
         if ($m->send()) {
             echo 'Activation link sent to your email.';
+            temp('info', 'Email sent, please verify your account!');
         } else {
             $_err['email'] = 'Failed to send email.';
         }
@@ -232,7 +233,7 @@ if (!$_err) {
 $_title = 'User | Register Member';
 include '../../../_head.php';
 ?>
-
+<div id="info"><?= temp('info')?></div>
 <div class="register-container">
 <h2>Register as Member</h2>
 <form method="post" class="form" enctype="multipart/form-data">
