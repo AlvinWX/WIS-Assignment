@@ -90,4 +90,4 @@ include '../../_admin_head.php';
     </section>
 </form>
 <?php
-include '../../_admin_foot.php';
+include '../../_foot.php';

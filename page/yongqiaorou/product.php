@@ -168,7 +168,7 @@ if(count($arr)) { ?>
                             <?php endif; ?>
                     <?php endif; ?>
                 </td>
-                <td  class="description"><?= $s->product_desc ?></td>
+                <td class="description"><?= $s->product_desc ?></td>
                 <td><?= $s->product_price ?></td>
                 <td><?= $s->category_name?></td>
                 <td>
