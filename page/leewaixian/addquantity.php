@@ -29,7 +29,6 @@ if(str_contains($fullPath, 'productsearch.php')){
     $fullPath = "wishlist.php?sort={$sort}&dir={$dir}&page=$page";
 }
 
-
 //Retrieve member cart
 $get_cart_stm = $_db -> prepare('SELECT * FROM cart c JOIN member m ON m.member_id = c.member_id WHERE c.member_id = ?');
 $get_cart_stm -> execute([$member_id]);
