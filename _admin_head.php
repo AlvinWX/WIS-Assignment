@@ -72,18 +72,36 @@
             </ul>
         </nav>
         <div class="right-logo">
-            
-            <a href="/productsearch.php?product_name=&category_id=&minprice=&maxprice=&sort=product_name&dir=asc">
-                <img class="search" src="/images/search.png" alt="Search Icon" id="search-icon">
-            </a>
-
-            <a href="/index.php">
-                <img src="/images/shopping-cart.png" alt="Clickable Image">
-            </a>
-
-            <a href="/login.php">
-                <img src="/images/user.png" alt="Clickable Image">
-            </a>
+            <?php if ($user && $user->userType == 'member'): ?>
+                <a href="/page/leewaixian/wishlist.php">
+                    <img class="search" src="/images/love.png" alt="Wishlist" id="search-icon">
+                </a>
+                <a href="/page/leewaixian/shoppingcart.php">
+                    <img src="/images/shopping-cart.png" alt="Shopping Cart">
+                    <?php if(count($cart_products)>0): ?>
+                        <span class="quantity"><?= count($cart_products) ?></span>
+                    <?php endif ?>
+                </a>
+            <?php endif ?>
+            <?php if ($user): ?>
+                <div class="dropdown">
+                    <img src="/images/user.png" alt="User Icon" class="user-icon">
+                    <div class="dropdown-content">
+                        <a href="/page/lauwenjie/user/profile.php">Profile</a>
+                         <!-- Add dynamic password option based on user type -->
+                        <?php if ($user->userType == 'admin'): ?>
+                            <a href="/page/lauwenjie/user/passwordAdmin.php">Change Password</a>
+                        <?php else: ?>
+                            <a href="/page/lauwenjie/user/password.php">Change Password</a>
+                        <?php endif; ?>
+                        <a href="/logout.php">Logout</a>
+                    </div>
+                </div>
+            <?php else: ?>
+                <a href="/login.php">
+                    <img src="/images/user.png" alt="Login">
+                </a>
+            <?php endif ?>
         </div>
         <div class="search-container" id="search-container">
             <input type="text" class="search-bar" placeholder="Search...">
