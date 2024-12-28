@@ -115,6 +115,7 @@ include '../../../_head.php';
 <link rel="stylesheet" href="/css/wj_app.css">
 <div id="info"><?= temp('info')?></div>
 <div class="login-container">
+    <h2>Admin Registration</h2>
 <form method="post" class="form" enctype="multipart/form-data">
 <label for="photo">Photo</label>
     <label class="upload" tabindex="0">
