@@ -23,8 +23,6 @@ unset($_SESSION['flash_success'], $_SESSION['flash_error']);
 
 
 //CART
-$member_id = $user->member_id; 
-
 $check_cart_exists_stm = $_db -> prepare('SELECT COUNT(*) FROM cart c JOIN member m ON m.member_id = c.member_id WHERE c.member_id = ?');
 $check_cart_exists_stm -> execute([$member_id]); 
 
