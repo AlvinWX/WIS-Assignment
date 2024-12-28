@@ -102,7 +102,7 @@ if (is_post()) {
                         $_err['product_cover'] = 'Cover Picture is required';
                     }else{
                         $unique_name = uniqid() . '.' . pathinfo($name, PATHINFO_EXTENSION);
-                        move_uploaded_file($tmp_name, "../../images/uploads/$unique_name");
+                        move_uploaded_file($tmp_name, "../../images/uploads/products/$unique_name");
                         $photo_resources[] = $unique_name;
                     }
                 }
