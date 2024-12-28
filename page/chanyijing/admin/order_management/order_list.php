@@ -8,7 +8,7 @@ require '../../../../_base.php';
 $fields = [
     'order_id'   => 'Order ID',
     'order_date' => 'Order Date',
-    'order_total' => 'Total (RM)',
+    'total' => 'Total (RM)',
     'order_status' => 'Order Status',
 ];
 
