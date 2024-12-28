@@ -27,6 +27,12 @@ if (isset($_SESSION['user'])) {
     } elseif ($currentUser->userType == 'admin') {
         // Admin data retrieval (if necessary)
         // No address handling needed for admin
+        $userID = $currentUser->admin_id;      // Example: admin ID
+        $userName = $currentUser->admin_name;  // Example: admin name
+        $userEmail = $currentUser->admin_email; // Example: admin email
+        $userPhone = $currentUser->admin_phone; // Example: admin phone
+        $userGender = $currentUser->admin_gender; // Example: admin gender
+        $userProfilePic = $currentUser->admin_profile_pic; // Example: admin profile picture
     }
 } else {
     // Redirect to login page if the user is not logged in
@@ -136,10 +142,22 @@ if (is_post()) {
             $_SESSION['user']->member_gender = $newGender;
             $_SESSION['user']->member_profile_pic = $newProfilePic ?? $userProfilePic;
         } elseif ($currentUser->userType == 'admin') {
-            // Admin profile update code (if necessary)
+            // Update admin profile (no address needed for admin)
+            $stm = $_db->prepare('
+                UPDATE admin 
+                SET admin_name = ?, admin_phone = ?, admin_gender = ?, admin_profile_pic = ? 
+                WHERE admin_id = ?
+            ');
+            $stm->execute([$newName, $newPhone, $newGender, $newProfilePic ?? $userProfilePic, $userID]);
+
+            // Update session with new admin data
+            $_SESSION['user']->admin_name = $newName;
+            $_SESSION['user']->admin_phone = $newPhone;
+            $_SESSION['user']->admin_gender = $newGender;
+            $_SESSION['user']->admin_profile_pic = $newProfilePic ?? $userProfilePic;
         }
 
-        temp('info', 'Profile and address updated successfully');
+        temp('info', 'Profile updated successfully');
         redirect('/page/lauwenjie/user/profile.php');
     }
 }
