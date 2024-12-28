@@ -48,7 +48,8 @@ $arr = $stmt->fetchAll();
 $_title = 'Product List'; 
 include '../../_admin_head.php'; 
 ?>
-
+<style>
+</style>
 <form method="GET" action="" class="search-form" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
     <!-- Category Dropdown -->
     <div style="display: flex; align-items: center; gap: 10px;">
@@ -167,7 +168,7 @@ if(count($arr)) { ?>
                             <?php endif; ?>
                     <?php endif; ?>
                 </td>
-                <td><?= $s->product_desc ?></td>
+                <td  class="description"><?= $s->product_desc ?></td>
                 <td><?= $s->product_price ?></td>
                 <td><?= $s->category_name?></td>
                 <td>
@@ -241,6 +242,18 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.custom-carousel').forEach(carousel => {
         const carouselId = carousel.id;
         startAutoSlide(carouselId); // Initialize auto-slide for each carousel
+    });
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const descriptions = document.querySelectorAll(".table td.description");
+
+    descriptions.forEach((desc) => {
+        const words = desc.textContent.split(" "); // Split the text into words
+        if (words.length > 10) {
+            desc.textContent = words.slice(0, 10).join(" ") + " ..."; // Keep the first 10 words and add "..."
+        }
     });
 });
 

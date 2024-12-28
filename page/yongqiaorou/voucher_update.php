@@ -63,14 +63,26 @@ if (is_post()) {
 
     
     $voucher_file = isset($_FILES['voucher_img']) ? $_FILES['voucher_img'] : null;
+    
     if ($voucher_file && $voucher_file['error'] == UPLOAD_ERR_OK) {
-        $voucher_img = uniqid() . '.jpg';
-
-        require_once '../../lib/SimpleImage.php';
-        $img = new SimpleImage();
-        $img->fromFile($voucher_file['tmp_name'])
-            ->thumbnail(200, 200)
-            ->toFile("../../images/voucher_pic/$voucher_img", 'image/jpeg');
+        if ($voucher_file['size'] > 1*1024*1024) {
+            $_err['voucher_img'] = 'The uploaded image exceeds the size limit of 1MB.';
+        } 
+        elseif (!in_array(mime_content_type($voucher_file['tmp_name']), ['image/jpeg', 'image/png', 'image/gif'])) {
+            $_err['voucher_img'] = 'The uploaded file is not a valid image. Only JPG, PNG, and GIF are allowed.';
+        } 
+        else {
+            // Process the image
+            $voucher_img = uniqid() . '.jpg';
+    
+            require_once '../../lib/SimpleImage.php';
+            $img = new SimpleImage();
+            $img->fromFile($voucher_file['tmp_name'])
+                ->thumbnail(200, 200)
+                ->toFile("../../images/voucher_pic/$voucher_img", 'image/jpeg');
+        }
+    } else {
+        $_err['voucher_img'] = 'Voucher Image is required';
     }
 
     // Output
