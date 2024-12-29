@@ -24,7 +24,7 @@ $_title = 'Detail';
 include '../../_admin_head.php';
 ?>
 
-<table class="table detail" style="margin-top: 100px">
+<table class="table detail" style="margin-top: 100px; margin-left:auto; margin-right:auto;">
     <tr>
         <th>Id</th>
         <td><?= $s->voucher_id ?></td>
