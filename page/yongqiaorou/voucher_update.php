@@ -81,6 +81,10 @@ if (is_post()) {
                 ->thumbnail(200, 200)
                 ->toFile("../../images/voucher_pic/$voucher_img", 'image/jpeg');
         }
+    }else if(empty($voucher_img)){
+        $try = $_db->prepare("SELECT voucher_img FROM voucher WHERE voucher_id = ?");
+        $try->execute([$id]);
+        $voucher_img = $try->fetchColumn();
     }
 
     // Output

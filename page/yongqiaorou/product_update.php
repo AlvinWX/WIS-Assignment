@@ -80,6 +80,10 @@ if (is_post()) {
         $img->fromFile($cover_file['tmp_name'])
             ->thumbnail(200, 200)
             ->toFile("../../images/product_pic/$product_cover", 'image/jpeg');
+    }else if(empty($product_cover)){
+        $try = $_db->prepare("SELECT product_cover FROM product WHERE product_id = ?");
+        $try->execute([$id]);
+        $product_cover = $try->fetchColumn();
     }
 
     // Handle product_photo (multiple images)
