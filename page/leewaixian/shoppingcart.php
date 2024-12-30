@@ -15,7 +15,7 @@ $get_cart_stm -> execute([$member_id]);
 $shoppingCart = $get_cart_stm -> fetch();
 
 //Retrieve added to cart already items
-$get_products_stm = $_db -> prepare('SELECT * FROM cart_product c JOIN product p ON p.product_id = c.product_id WHERE cart_id = ? AND product_status = 1');
+$get_products_stm = $_db -> prepare('SELECT * FROM cart_product c JOIN product p ON p.product_id = c.product_id WHERE cart_id = ? AND product_status = 1 AND product_stock > 0');
 $get_products_stm -> execute([$shoppingCart->cart_id]); 
 $cart_products = $get_products_stm -> fetchAll();
 

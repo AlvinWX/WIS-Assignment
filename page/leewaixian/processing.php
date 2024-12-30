@@ -138,6 +138,12 @@ $add_payment_stm = $_db -> prepare('INSERT INTO payment
 VALUES (?, ?, ?, ?)');
 $add_payment_stm -> execute([$orderDate, $total, $id->order_id, $payment_method_id]);
 
+//Retrieve added to cart already items
+$get_products_stm = $_db -> prepare('SELECT * FROM cart_product c JOIN product p ON p.product_id = c.product_id WHERE cart_id = ? AND product_status = 1 AND product_stock > 0');
+$get_products_stm -> execute([$shoppingCart->cart_id]); 
+$cart_products = $get_products_stm -> fetchAll();
+
+
 //Insert new record into the order_product table
 foreach ($cart_products as $a){
     $create_order_product_stm = $_db -> prepare('INSERT INTO order_product 
